@@ -1,0 +1,240 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --blush: #F9DBBD;
+  --rose: #FFA5AB;
+  --mauve: #DA627D;
+  --wine: #A53860;
+  --deep: #450920;
+  --white: #fff;
+  --off: #FDF7F2;
+  --navy: #001f3f;
+  --teal: #004d4d;
+  --gold: #C5A059;
+  --ivory: #F8F9FA;
+  --dark: #121212;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--off);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.auth-container {
+  display: flex;
+  max-width: 1000px;
+  width: 100%;
+  background: var(--white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(69, 9, 32, 0.15);
+  min-height: 650px;
+  position: relative;
+}
+
+.image-side {
+  position: relative;
+  overflow: hidden;
+  background: var(--deep);
+  width: 50%;
+  transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
+  z-index: 10;
+}
+
+.image-slider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.slide.active {
+  animation: slideShow 6s infinite;
+}
+
+@keyframes slideShow {
+  0% {
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  35% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.image-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 3rem;
+  background: linear-gradient(to top, rgba(69, 9, 32, 0.95), transparent);
+  color: var(--white);
+  z-index: 11;
+}
+
+.image-overlay h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--blush);
+}
+
+.form-side {
+  width: 50%;
+  padding: 3rem;
+  background: var(--ivory);
+  position: relative;
+  transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.auth-form {
+  position: absolute;
+  top: 3rem;
+  left: 3rem;
+  right: 3rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+
+.auth-form.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.form-title {
+  font-size: 2.2rem;
+  color: var(--deep);
+  margin-bottom: 0.5rem;
+}
+
+.form-subtitle {
+  color: var(--wine);
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+/* Input Styling */
+.input-group {
+  margin-bottom: 1.2rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: var(--deep);
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1.5px solid var(--blush);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--mauve);
+  box-shadow: 0 0 0 3px rgba(218, 98, 125, 0.1);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.btn-main {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, var(--mauve), var(--wine));
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 1rem 0;
+}
+
+.auth-container.signup-mode .image-side {
+  transform: translateX(100%);
+}
+
+.auth-container.signup-mode .form-side {
+  transform: translateX(-100%);
+}
+
+.toggle-text span {
+  color: var(--mauve);
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.social-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.social-btn {
+  padding: 0.6rem;
+  background: white;
+  border: 1px solid var(--blush);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.terms-check {
+  font-size: 0.8rem;
+  margin: 1rem 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.inline-link {
+  background: none;
+  border: none;
+  color: var(--mauve);
+  text-decoration: underline;
+  cursor: pointer;
+}

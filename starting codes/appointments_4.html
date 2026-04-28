@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Appointments — Maison Velour</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --blush: #F9DBBD;
+      --rose: #FFA5AB;
+      --mauve: #DA627D;
+      --wine: #A53860;
+      --deep: rgb(127, 25, 64);
+      --white: #fff;
+      --off: #FDF7F2;
+      --gold: #C5A059;
+      --gold-light: #e8c97e;
+      --ivory: #F8F9FA;
+      --dark: #121212;
+      --muted: #6b7a8d;
+      --card-shadow: 0 8px 40px rgba(69, 9, 32, 0.12);
+
+      --fs-apt: clamp(0.65rem, 1.2vw, 0.75rem);
+      --fs-label: clamp(0.7rem, 1.4vw, 0.8rem);
+      --fs-title: clamp(1.4rem, 4vw, 2rem);
+      --fs-heading: clamp(2rem, 6vw, 3.5rem);
+      --fs-service: clamp(1rem, 2.5vw, 1.35rem);
+      --fs-meta: clamp(0.78rem, 1.6vw, 0.9rem);
+      --fs-btn: clamp(0.7rem, 1.5vw, 0.8rem);
+
+      --spacing-sm: clamp(0.5rem, 2vw, 1rem);
+      --spacing-md: clamp(1rem, 3vw, 1.75rem);
+      --spacing-lg: clamp(1.5rem, 5vw, 3rem);
+      --card-pad: clamp(1.25rem, 4vw, 2.5rem);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background-color: var(--off);
+      background-image:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(197,160,89,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 90% 110%, rgba(165,56,96,0.07) 0%, transparent 55%);
+      min-height: 100dvh;
+      color: var(--dark);
+    }
+
+    /* ── Grain overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: min(900px, 96vw);
+      margin: 0 auto;
+      padding: var(--spacing-md) var(--spacing-sm) var(--spacing-lg);
+    }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-bottom: var(--spacing-lg);
+      padding-top: clamp(0.5rem, 2vw, 1rem);
+    }
+
+    .back-btn {
+      position: absolute;
+      left: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.4em;
+      font-family: 'Jost', sans-serif;
+      font-size: var(--fs-label);
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.4em 0;
+      transition: color 0.25s;
+    }
+    .back-btn::before {
+      content: '←';
+      font-size: 1.1em;
+      transition: transform 0.25s;
+    }
+    .back-btn:hover { color: var(--wine); }
+    .back-btn:hover::before { transform: translateX(-3px); }
+
+    .page-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--fs-heading);
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      color: var(--dark);
+      line-height: 1;
+    }
+
+    /* ── Gold rule ── */
+    .gold-rule {
+      width: clamp(60px, 12vw, 100px);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: calc(var(--spacing-lg) * -0.5) auto var(--spacing-md);
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--white);
+      border: 1px solid rgba(197,160,89,0.18);
+      border-radius: clamp(10px, 2vw, 16px);
+      box-shadow: var(--card-shadow), 0 1px 0 rgba(197,160,89,0.15) inset;
+      padding: var(--card-pad);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* corner ornament */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: clamp(60px, 15vw, 100px);
+      height: clamp(60px, 15vw, 100px);
+      background: radial-gradient(ellipse at top right, rgba(197,160,89,0.08), transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ── Apt number ── */
+    .apt-number {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5em;
+      font-size: var(--fs-apt);
+      font-family: 'Jost', sans-serif;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(197,160,89,0.35);
+      border-radius: 100px;
+      padding: 0.35em 1em;
+      background: rgba(197,160,89,0.05);
+      margin-bottom: var(--spacing-sm);
+    }
+    .apt-number::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    /* ── Status ── */
+    .status-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6em;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .status-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      font-weight: 400;
+      color: var(--dark);
+      letter-spacing: 0.02em;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4em;
+      font-size: var(--fs-apt);
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.3em 0.9em;
+      border-radius: 100px;
+    }
+    .status-badge.confirmed {
+      background: rgba(165,56,96,0.08);
+      color: var(--wine);
+      border: 1px solid rgba(165,56,96,0.2);
+    }
+    .status-badge.confirmed::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--wine);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    /* ── Thin divider ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(197,160,89,0.25) 30%, rgba(197,160,89,0.25) 70%, transparent);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* ── Content row ── */
+    .content-row {
+      display: grid;
+      grid-template-columns: clamp(150px, 42%, 280px) 1fr;
+      gap: clamp(1rem, 4vw, 2.5rem);
+      align-items: start;
+    }
+
+    /* ── Image ── */
+    .service-image {
+      aspect-ratio: 4 / 3;
+      border-radius: clamp(8px, 1.5vw, 12px);
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(249,219,189,0.6) 0%, rgba(255,165,171,0.3) 50%, rgba(218,98,125,0.2) 100%);
+      border: 1px solid rgba(197,160,89,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .service-image::after {
+      content: '✦';
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      color: rgba(197,160,89,0.35);
+    }
+
+    /* ── Service info ── */
+    .service-info {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.6rem, 2vw, 1rem);
+    }
+
+    .service-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--fs-service);
+      font-weight: 500;
+      color: var(--dark);
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+    }
+
+    .meta-list {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.4rem, 1.2vw, 0.65rem);
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: baseline;
+      gap: 0;
+    }
+
+    .meta-key {
+      font-size: var(--fs-meta);
+      color: var(--muted);
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      min-width: clamp(52px, 12vw, 72px);
+      flex-shrink: 0;
+    }
+
+    .meta-sep {
+      color: rgba(197,160,89,0.5);
+      margin: 0 0.5em;
+      font-size: 0.8em;
+    }
+
+    .meta-val {
+      font-size: var(--fs-meta);
+      color: var(--dark);
+      font-weight: 400;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── Actions ── */
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: clamp(0.5rem, 2vw, 0.75rem);
+      margin-top: clamp(0.75rem, 2vw, 1.25rem);
+    }
+
+    .btn {
+      font-family: 'Jost', sans-serif;
+      font-size: var(--fs-btn);
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: clamp(0.5em, 1.5vw, 0.65em) clamp(1.2em, 3vw, 1.8em);
+      border-radius: 100px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--wine), var(--deep));
+      color: var(--white);
+      border: none;
+      box-shadow: 0 4px 20px rgba(127,25,64,0.3);
+    }
+    .btn-primary:hover {
+      box-shadow: 0 6px 28px rgba(127,25,64,0.45);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid rgba(107,122,141,0.3);
+    }
+    .btn-ghost:hover {
+      color: var(--wine);
+      border-color: rgba(165,56,96,0.3);
+      background: rgba(165,56,96,0.04);
+    }
+
+    /* ── Filter tabs ── */
+    .filter-tabs {
+      display: flex;
+      align-items: flex-end;
+      gap: 0;
+      border-bottom: 1px solid rgba(165,56,96,0.15);
+      margin-bottom: var(--spacing-lg);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .filter-tabs::-webkit-scrollbar { display: none; }
+
+    .tab {
+      font-family: 'Jost', sans-serif;
+      font-size: clamp(0.65rem, 1.5vw, 0.75rem);
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 0.6em clamp(0.8em, 2.5vw, 1.4em);
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+      margin-bottom: -1px;
+    }
+    .tab:hover { color: var(--wine); }
+    .tab.active {
+      color: var(--wine);
+      border-bottom-color: var(--wine);
+      font-weight: 500;
+    }
+
+    /* ── Cards container ── */
+    .cards-container {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(1rem, 3vw, 1.5rem);
+    }
+
+    /* ── Card hidden state ── */
+    .card { transition: opacity 0.3s, transform 0.3s; }
+    .card.hidden { display: none; }
+
+    /* ── Fade-in animation ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .apt-number { animation: fadeUp 0.5s ease both; }
+    .status-row { animation: fadeUp 0.5s 0.08s ease both; }
+    .divider    { animation: fadeUp 0.5s 0.14s ease both; }
+    .content-row{ animation: fadeUp 0.5s 0.2s  ease both; }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .card.visible { animation: cardIn 0.3s ease both; }
+
+    /* ── Empty state ── */
+    .empty-state {
+      display: none;
+      text-align: center;
+      padding: clamp(2rem, 8vw, 4rem) 1rem;
+      color: var(--muted);
+    }
+    .empty-state.show { display: block; }
+    .empty-state-icon {
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      margin-bottom: 0.5em;
+      opacity: 0.4;
+    }
+    .empty-state p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      font-style: italic;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 480px) {
+      .content-row {
+        grid-template-columns: 1fr;
+      }
+      .service-image {
+        width: min(200px, 60vw);
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <header class="header">
+      <button class="back-btn" onclick="history.back()">Back</button>
+      <h1 class="page-title">Appointments</h1>
+    </header>
+
+    <!-- Filter Tabs -->
+    <nav class="filter-tabs" role="tablist" aria-label="Appointment filters">
+      <button class="tab active" data-filter="all" role="tab" aria-selected="true">All</button>
+      <button class="tab" data-filter="upcoming" role="tab" aria-selected="false">Upcoming</button>
+      <button class="tab" data-filter="completed" role="tab" aria-selected="false">Completed</button>
+      <button class="tab" data-filter="cancelled" role="tab" aria-selected="false">Cancelled</button>
+    </nav>
+
+    <div class="cards-container" id="cardsContainer">
+
+      <!-- Card 1: Upcoming -->
+      <div class="card visible" data-status="upcoming">
+        <div class="apt-number">#APT-00042</div>
+        <div class="status-row">
+          <span class="status-label">Status:</span>
+          <span class="status-badge confirmed">Upcoming</span>
+        </div>
+        <div class="divider"></div>
+        <div class="content-row">
+          <div class="service-image" aria-label="Service image placeholder"></div>
+          <div class="service-info">
+            <p class="service-name">Signature Facial Treatment</p>
+            <div class="meta-list">
+              <div class="meta-item">
+                <span class="meta-key">Branch</span>
+                <span class="meta-sep">—</span>
+                <span class="meta-val">Quezon City</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-key">Date</span>
+                <span class="meta-sep">—</span>
+                <span class="meta-val">03-21-26</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-key">Time</span>
+                <span class="meta-sep">—</span>
+                <span class="meta-val">8:00 – 9:00 AM</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-key">Guests</span>
+                <span class="meta-sep">—</span>
+                <span class="meta-val">2</span>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn btn-primary">Book Again</button>
+              <button class="btn btn-ghost">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Upcoming -->
+      <div class="card visible" data-status="upcoming">
+        <div class="apt-number">#APT-00045</div>
+        <div class="status-row">
+          <span class="status-label">Status:</span>
+          <span class="status-badge confirmed">Upcoming</span>
+        </div>
+        <div class="divider"></div>
+        <div class="content-row">
+          <div class="service-image" aria-label="Service image placeholder"></div>
+          <div class="service-info">
+            <p class="service-name">Deep Tissue Massage</p>
+            <div class="meta-list">
+              <div class="meta-item">
+                <span class="meta-key">Branch</span>
+                <span class="meta-sep">—</span>
+                <span class="meta-val">BGC, Taguig</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-key">Date</span>
+                <span class="meta-sep">—</span>
+                <span class="meta-val">04-05-26</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-key">Time</span>
+                <span class="meta-sep">—</span>
+                <span class="meta-val">2:00 – 3:30 PM</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-key">Guests</span>
+                <span class="meta-sep">—</span>
+                <span class="meta-val">1</span>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn btn-primary">Book Again</button>
+              <button class="btn btn-ghost">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Completed -->
+      <div class="card visible" data-status="completed">
+        <div class="apt-number">#APT-00038</div>
+        <div class="status-row">
+          <span class="status-label">Status:</span>
+          <span class="status-badge" style="background:rgba(89,160,120,0.08);color:#2e7d5e;border:1px solid rgba(89,160,120,0.25);">
+            <span style="width:6px;height:6px;border-radius:50%;background:#2e7d5e;display:inline-block;margin-right:0.3em;"></span>Completed
+          </span>
+        </div>
+        <div class="divider"></div>
+        <div class="content-row">
+          <div class="service-image" aria-label="Service image placeholder"></div>
+          <div class="service-info">
+            <p class="service-name">Balayage & Hair Gloss</p>
+            <div class="meta-list">
+              <div class="meta-item">
+                <span class="meta-key">Branch</span>
+                <span class="meta-sep">—</span>
+                <span class="meta-val">Quezon City</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-key">Date</span>
+                <span class="meta-sep">—</span>
+                <span class="meta-val">02-14-26</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-key">Time</span>
+                <span class="meta-sep">—</span>
+                <span class="meta-val">10:00 AM – 1:00 PM</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-key">Guests</span>
+                <span class="meta-sep">—</span>
+                <span class="meta-val">1</span>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn btn-primary">Book Again</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Cancelled -->
+      <div class="card visible" data-status="cancelled">
+        <div class="apt-number">#APT-00031</div>
+        <div class="status-row">
+          <span class="status-label">Status:</span>
+          <span class="status-badge" style="background:rgba(180,60,60,0.07);color:#a03030;border:1px solid rgba(180,60,60,0.2);">
+            <span style="width:6px;height:6px;border-radius:50%;background:#a03030;display:inline-block;margin-right:0.3em;opacity:0.7;"></span>Cancelled
+          </span>
+        </div>
+        <div class="divider"></div>
+        <div class="content-row">
+          <div class="service-image" aria-label="Service image placeholder"></div>
+          <div class="service-info">
+            <p class="service-name">Manicure & Pedicure Ritual</p>
+            <div class="meta-list">
+              <div class="meta-item">
+                <span class="meta-key">Branch</span>
+                <span class="meta-sep">—</span>
+                <span class="meta-val">Makati City</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-key">Date</span>
+                <span class="meta-sep">—</span>
+                <span class="meta-val">01-10-26</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-key">Time</span>
+                <span class="meta-sep">—</span>
+                <span class="meta-val">3:00 – 4:30 PM</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-key">Guests</span>
+                <span class="meta-sep">—</span>
+                <span class="meta-val">3</span>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn btn-primary">Book Again</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /cards-container -->
+
+    <div class="empty-state" id="emptyState">
+      <div class="empty-state-icon">✦</div>
+      <p>No appointments in this category.</p>
+    </div>
+
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll('.tab');
+    const cards = document.querySelectorAll('.card');
+    const emptyState = document.getElementById('emptyState');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Update tab active state
+        tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+
+        const filter = tab.dataset.filter;
+        let visibleCount = 0;
+
+        cards.forEach((card, i) => {
+          const status = card.dataset.status;
+          const show = filter === 'all' || status === filter;
+          card.classList.remove('visible', 'hidden');
+          if (show) {
+            card.classList.remove('hidden');
+            card.classList.add('visible');
+            card.style.animationDelay = `${i * 0.07}s`;
+            visibleCount++;
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+
+        emptyState.classList.toggle('show', visibleCount === 0);
+      });
+    });
+  </script>
+</body>
+</html>

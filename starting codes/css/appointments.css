@@ -154,7 +154,8 @@
 .appt-body {
   display: grid;
   grid-template-columns: 200px 1fr;
-  gap: 0
+  gap: 0;
+  padding: 1rem;
 }
 
 .appt-img {

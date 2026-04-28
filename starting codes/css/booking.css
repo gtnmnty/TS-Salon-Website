@@ -44,6 +44,11 @@
   border-radius: 8px;
 }
 
+.address-form{
+  margin: 1rem 0;
+}
+
+/* SUBMIT BTNS */
 .btn-row {
   display: flex;
   gap: 1rem;

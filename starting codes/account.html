@@ -547,15 +547,14 @@
   </style>
 </head>
 <body>
-
-  <nav>
+  <!-- <nav>
     <a href="index.html">Home</a>
     <a href="services.html">Services</a>
     <a href="products.html">Products</a>
     <a href="booking.html">Book Now</a>
     <a href="cart.html">Cart</a>
     <a href="account.html" class="active">Account</a>
-  </nav>
+  </nav> -->
 
   <div id="page-account" class="page active">
     <div class="account-card">
@@ -603,9 +602,6 @@
           </div>
           <div class="sidebar-group">
             <span class="sidebar-label" onclick="showPanel('orders')">Orders</span>
-          </div>
-          <div class="sidebar-group">
-            <span class="sidebar-label" onclick="showPanel('coupons')">Coupon / Discounts</span>
           </div>
           <div class="sidebar-group">
             <span class="sidebar-label" onclick="showPanel('help')">Help &amp; Support</span>
@@ -836,33 +832,9 @@
 
           <!-- ORDERS -->
           <div class="content-panel" id="panel-orders">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Order #</th>
-                  <th>Items</th>
-                  <th>Total</th>
-                  <th>Status</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>#00412</td>
-                  <td>Serum, Toner</td>
-                  <td>₱1,250</td>
-                  <td><span class="badge badge-green">Delivered</span></td>
-                  <td><a href="checkout.html" style="color:var(--mauve);font-size:12px;text-decoration:none;letter-spacing:0.04em;">Reorder</a></td>
-                </tr>
-                <tr>
-                  <td>#00398</td>
-                  <td>Moisturizer</td>
-                  <td>₱680</td>
-                  <td><span class="badge badge-yellow">Shipped</span></td>
-                  <td><a href="tracking.html" style="color:var(--mauve);font-size:12px;text-decoration:none;letter-spacing:0.04em;">Track</a></td>
-                </tr>
-              </tbody>
-            </table>
+            <div id="account-orders-wrap">
+              <p style="color:var(--text-light);font-size:13px;">Loading orders…</p>
+            </div>
           </div>
 
           <!-- COUPONS -->
@@ -1065,6 +1037,56 @@
       t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 3000);
     }
+
+    // ── ORDERS (from localStorage) ──
+    function renderAccountOrders() {
+      const wrap = document.getElementById('account-orders-wrap');
+      if (!wrap) return;
+      let orders = [];
+      try { orders = JSON.parse(localStorage.getItem('orders')) || []; } catch {}
+
+      if (!orders.length) {
+        wrap.innerHTML = `<p class="placeholder-msg">No orders yet. <a href="products.html" style="color:var(--mauve);text-decoration:none;">Shop now →</a></p>`;
+        return;
+      }
+
+      function fmtPrice(n) {
+        const safe = Number.isFinite(Number(n)) ? Number(n) : 0;
+        return '₱ ' + safe.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      wrap.innerHTML = `
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Order #</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th>Est. Arrival</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            ${orders.map(o => {
+              const itemNames = (o.items || []).map(i => i.name).join(', ');
+              const statusClass = o.status === 'Delivered' ? 'badge-green' : o.status === 'Shipped' ? 'badge-yellow' : 'badge-gray';
+              return `
+                <tr>
+                  <td>${o.orderId}</td>
+                  <td style="max-width:180px;white-space:normal;">${itemNames}</td>
+                  <td>${fmtPrice(o.grandTotal)}</td>
+                  <td>${o.estimatedArrival || '—'}</td>
+                  <td><span class="badge ${statusClass}">${o.status || 'Processing'}</span></td>
+                  <td><a href="orders.html" style="color:var(--mauve);font-size:12px;text-decoration:none;letter-spacing:0.04em;">View</a></td>
+                </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    document.addEventListener('DOMContentLoaded', renderAccountOrders);
   </script>
 </body>
 </html>

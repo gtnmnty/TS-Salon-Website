@@ -16,6 +16,7 @@ const services = [
       'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800&auto=format&fit=crop'
     ],
     info: ['Style Consultation', 'Luxury Scalp Wash', 'Precision Cut', 'Blowout & Finish'],
+    reviewCount: 1024,
     reviews: [
       { name: 'Sofia R.', stars: 5, date: 'Mar 2025', text: 'Absolutely stunning result. My hair has never felt this healthy and the cut is perfection.' },
       { name: 'Andrea M.', stars: 5, date: 'Feb 2025', text: 'The stylist truly listened to what I wanted. I left feeling like a completely new person.' },
@@ -37,6 +38,7 @@ const services = [
       'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&auto=format&fit=crop'
     ],
     info: ['Skin Analysis', 'Enzyme Exfoliation', 'Seaweed Mask', 'Oxygen Infusion', 'SPF Finish'],
+    reviewCount: 708,
     reviews: [
       { name: 'Elena V.', stars: 5, date: 'Mar 2025', text: 'The most relaxing hour of my week. My skin was literally glowing for days after.' },
       { name: 'Jasmine L.', stars: 5, date: 'Feb 2025', text: "I've tried facials at many places but this one is truly world-class. Worth every peso." }
@@ -57,6 +59,7 @@ const services = [
       'https://images.unsplash.com/photo-1604655840975-f9c2f8e1d3c1?w=800&auto=format&fit=crop'
     ],
     info: ['Nail Shaping & File', 'Cuticle Care', 'Hydrating Hand Soak', 'Long-Wear Gel Polish', 'Hand Massage'],
+    reviewCount: 1018,
     reviews: [
       { name: 'Marie T.', stars: 5, date: 'Mar 2025', text: 'Perfect application, no chips after two weeks! The hand massage alone is worth it.' },
       { name: 'Trisha A.', stars: 5, date: 'Mar 2025', text: 'Lovely technicians, so gentle and precise. My nails look absolutely immaculate.' },
@@ -78,6 +81,7 @@ const services = [
       'https://images.unsplash.com/photo-1487412840181-f51793da6090?w=800&auto=format&fit=crop'
     ],
     info: ['Pre-Bridal Consultation', 'Skin Prep & Primer', 'Airbrush Foundation', 'Lash Application', 'Setting Spray', 'Touch-Up Kit'],
+    reviewCount: 708,
     reviews: [
       { name: 'Hannah G.', stars: 5, date: 'Feb 2025', text: 'I cried happy tears when I saw myself. The team understood my vision perfectly.' },
       { name: 'Nicole B.', stars: 5, date: 'Jan 2025', text: 'Flawless, long-lasting, and absolutely stunning. My photos are breathtaking.' }
@@ -98,6 +102,7 @@ const services = [
       'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=800&auto=format&fit=crop'
     ],
     info: ['Hair Consultation', 'Balayage Painting', 'Toning Gloss', 'Deep Conditioning', 'Style Finish'],
+    reviewCount: 708,
     reviews: [
       { name: 'Luna P.', stars: 5, date: 'Mar 2025', text: "Best balayage I've ever had. The color looks so natural and the toning is spot on." },
       { name: 'Claire S.', stars: 5, date: 'Feb 2025', text: "I've been getting balayage for years and this is by far the best result." }
@@ -118,6 +123,7 @@ const services = [
       'https://images.unsplash.com/photo-1601740936369-2e6f7b8f5e3c?w=800&auto=format&fit=crop'
     ],
     info: ['Aromatic Foot Soak', 'Callus Removal', 'Sugar Scrub', 'Hydrating Mask', 'Foot Massage', 'Polish Finish'],
+    reviewCount: 708,
     reviews: [
       { name: 'Bianca R.', stars: 5, date: 'Mar 2025', text: 'My feet have never felt softer. The massage at the end is absolutely divine.' },
       { name: 'Katrina M.', stars: 5, date: 'Feb 2025', text: 'A true ritual, not just a pedicure. I leave feeling completely renewed every time.' }
@@ -127,42 +133,6 @@ const services = [
 
 let activeCategory = 'all';
 let overlay;
-const SAVED_SERVICES_KEY = 'savedServices';
-
-function getSavedServices() {
-  try {
-    return JSON.parse(localStorage.getItem(SAVED_SERVICES_KEY)) || [];
-  } catch {
-    return [];
-  }
-}
-
-function saveSavedServices(items) {
-  localStorage.setItem(SAVED_SERVICES_KEY, JSON.stringify(items));
-}
-
-function saveService(service, qty = 1) {
-  if (!service) return;
-
-  const saved = getSavedServices();
-  const id = String(service.id);
-  const match = saved.find((item) => item.id === id);
-
-  if (match) {
-    match.qty += qty;
-  } else {
-    saved.push({
-      id,
-      name: service.name,
-      category: service.category,
-      price: service.price,
-      image: service.imgs?.[0] || '',
-      qty
-    });
-  }
-
-  saveSavedServices(saved);
-}
 
 function renderServices(list) {
   const grid = document.getElementById('services-grid');
@@ -176,14 +146,13 @@ function renderServices(list) {
         <div class="card-name">${service.name}</div>
         <div class="card-rating">
           <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-          <span class="rating-count">${service.reviews.length * 310 + 88} reviews</span>
+          <span class="rating-count" id="card-rating-${service.id}">${service.reviewCount} reviews</span>
         </div>
-        <p class="card-desc">${service.desc}</p>
         <div class="card-footer">
           <span class="card-price">${service.price}</span>
           <div class="card-actions">
-            <button class="btn-cart" data-action="save" type="button">Save</button>
-            <button class="btn-buy" data-action="book" type="button">Book</button>
+            <button class="book-btn" data-action="book" type="button">Book</button>
+            <button class="cart-btn" type="button">View More</button>
           </div>
         </div>
       </div>
@@ -233,7 +202,7 @@ function goToBooking(service) {
 
   sessionStorage.setItem('selectedService', service.name);
   sessionStorage.setItem('selectedServiceCategory', service.category);
-  window.location.href = 'booking.html';
+  window.location.href = 'booking2.html';
 }
 
 function initEvents() {
@@ -243,8 +212,8 @@ function initEvents() {
   const sortSelect = document.getElementById('sortSelect');
   const searchInput = document.getElementById('searchInput');
   const backBtn = document.getElementById('backBtn');
-  const saveServiceBtn = document.getElementById('addToCartBtn');
-  const bookNowBtn = document.getElementById('buyNowBtn');
+  const saveBtn = document.querySelector('.save-btn');
+  const bookNowBtn = document.getElementById('bookNowBtn');
   const submitReviewBtn = document.getElementById('submitReviewBtn');
   const starPicker = document.getElementById('starPicker');
   const thumbBar = document.getElementById('thumbBar');
@@ -266,13 +235,6 @@ function initEvents() {
     const service = services.find((item) => item.id === id);
     if (!service) return;
 
-    if (actionButton?.dataset.action === 'save') {
-      event.stopPropagation();
-      saveService(service, 1);
-      showToast('Service saved.');
-      return;
-    }
-
     if (actionButton?.dataset.action === 'book') {
       event.stopPropagation();
       overlay.open(id);
@@ -284,11 +246,19 @@ function initEvents() {
 
   backBtn?.addEventListener('click', () => overlay.close());
 
-  saveServiceBtn?.addEventListener('click', () => {
+  saveBtn?.addEventListener('click', () => {
     if (!overlay?.currentItem) return;
-    const qty = Math.max(1, parseInt(overlay.qtyInput.value || '1', 10));
-    saveService(overlay.currentItem, qty);
-    showToast('Service saved.');
+
+    let qty = Math.max(1, parseInt(overlay.qtyInput.value || '1', 10));
+    
+    overlay.qtyInput.value = qty;
+
+    overlay.qtryInput.classList.add('invalid');
+    setTimeout(() => {
+      overlay.qtryInput.classList.remove('invalid');
+    }, 320);
+
+    showToast(`Quantity updated to ${qty}`);
   });
 
   bookNowBtn?.addEventListener('click', () => {
@@ -326,7 +296,12 @@ function initEvents() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  overlay = new ServiceOverlay(services);
+  overlay = new ServiceOverlay(services, (id, count) => {
+    const cardRating = document.getElementById(`card-rating-${id}`);
+    if (cardRating) {
+      cardRating.textContent = `${count} reviews`;
+    }
+  });
   initEvents();
   renderServices(services);
 });

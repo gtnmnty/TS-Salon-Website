@@ -3,15 +3,15 @@
   --rose: #FFA5AB;
   --mauve: #DA627D;
   --wine: #A53860;
-  --deep: #450920;
+  --deep: rgb(127, 25, 64);
   --white: #fff;
   --off: #FDF7F2;
 
-  --navy: #001f3f;
-  --teal: #004d4d;
   --gold: #C5A059;
   --ivory: #F8F9FA;
   --dark: #121212;
+  --muted: #6b7a8d;
+  --card-shadow: 0 8px 40px rgba(69, 9, 32, 0.12);
 }
 
 *,

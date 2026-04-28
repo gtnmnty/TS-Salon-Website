@@ -1,9 +1,12 @@
 import { deliveryOpts } from '../data/deliveryOption.js';
 import { products } from '../data/products.js';
+import dayjs from 'https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js';
 
 const CART_KEY = 'cart';
+const ORDERS_KEY = 'orders';
 const DEFAULT_DELIVERY_ID = deliveryOpts?.[0]?.id ?? 1;
 
+/* ── Helpers ── */
 function normalizePrice(value) {
   if (typeof value === 'number' && Number.isFinite(value)) return value;
   if (typeof value === 'string') {
@@ -28,32 +31,15 @@ function normalizeCart(cart) {
     next.id = String(rawId);
     const product = products.find(p => String(p.id) === next.id);
     if (product) {
-      if (!next.name || next.name === 'Unknown') {
-        next.name = product.name;
-        changed = true;
-      }
-      if (!next.desc) {
-        next.desc = product.desc;
-        changed = true;
-      }
-      if (!next.image) {
-        next.image = product.imgs?.[0] || '';
-        changed = true;
-      }
-      if (!next.price || !Number.isFinite(Number(next.price))) {
-        next.price = Number(product.priceNum);
-        changed = true;
-      }
+      if (!next.name || next.name === 'Unknown') { next.name = product.name; changed = true; }
+      if (!next.desc) { next.desc = product.desc; changed = true; }
+      if (!next.image) { next.image = product.imgs?.[0] || ''; changed = true; }
+      if (!next.price || !Number.isFinite(Number(next.price))) { next.price = Number(product.priceNum); changed = true; }
     }
     next.price = normalizePrice(next.price);
     next.qty = normalizeQty(next.qty);
-    if (!next.deliveryOptionId) {
-      next.deliveryOptionId = DEFAULT_DELIVERY_ID;
-      changed = true;
-    }
-    if (next.price !== item.price || next.qty !== item.qty || next.id !== item.id) {
-      changed = true;
-    }
+    if (!next.deliveryOptionId) { next.deliveryOptionId = DEFAULT_DELIVERY_ID; changed = true; }
+    if (next.price !== item.price || next.qty !== item.qty || next.id !== item.id) changed = true;
     return next;
   });
   if (changed) saveCart(normalized);
@@ -64,31 +50,39 @@ function getCart() {
   try {
     const raw = JSON.parse(localStorage.getItem(CART_KEY)) || [];
     return normalizeCart(raw);
-  } catch {
-    return [];
-  }
+  } catch { return []; }
 }
 
 function saveCart(cart) {
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
 }
 
-function formatPrice(n) {
-  const safe = Number.isFinite(n) ? n : 0;
-  return '₱ ' + safe.toLocaleString('en-PH', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
+function getOrders() {
+  try { return JSON.parse(localStorage.getItem(ORDERS_KEY)) || []; }
+  catch { return []; }
 }
 
-function updateSummary(items, shipping, total) {
-  const itemsEl = document.querySelector('.summary-item .summary-val');
-  const shippingEl = document.querySelectorAll('.summary-item .summary-val')[1];
-  const totalEl = document.querySelectorAll('.summary-item .summary-val')[2];
+function saveOrders(orders) {
+  localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
+}
 
-  if (itemsEl) itemsEl.textContent = items;
-  if (shippingEl) shippingEl.textContent = formatPrice(shipping);
-  if (totalEl) totalEl.textContent = formatPrice(total);
+function formatPrice(n) {
+  const safe = Number.isFinite(n) ? n : 0;
+  return '₱ ' + safe.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+/* ── Delivery date using dayjs ── */
+function getEstimatedDelivery(deliveryDays) {
+  if (deliveryDays === 0) return 'Today';
+  return dayjs().add(deliveryDays, 'day').format('MMM D, YYYY');
+}
+
+/* ── Summary ── */
+function updateSummary(itemsCount, shipping, total) {
+  const vals = document.querySelectorAll('.summary-item .summary-val');
+  if (vals[0]) vals[0].textContent = itemsCount;
+  if (vals[1]) vals[1].textContent = formatPrice(shipping);
+  if (vals[2]) vals[2].textContent = formatPrice(total);
 }
 
 function updateHeader(items) {
@@ -96,9 +90,11 @@ function updateHeader(items) {
   if (subtitle) subtitle.textContent = `${items} item${items === 1 ? '' : 's'} selected`;
 }
 
+/* ── Render ── */
 function renderCart() {
   const cart = getCart();
   const cartList = document.getElementById('cartList');
+  if (!cartList) return;
 
   if (!cart.length) {
     cartList.innerHTML = '<p class="cart-empty">Your cart is empty.</p>';
@@ -111,33 +107,32 @@ function renderCart() {
     const delivery = deliveryOpts.find(d => d.id === item.deliveryOptionId) || deliveryOpts[0];
     const shippingFee = delivery?.deliveryPrice || 0;
     const itemSubtotal = (item.price * item.qty) + shippingFee;
-    const displayName = item.name || 'Unknown Product';
-    const displayDesc = item.desc || '';
-    const displayImg = item.image || '';
+    const estimatedDate = getEstimatedDelivery(delivery?.deliveryDays ?? 5);
 
     return `
       <div class="cart-card" data-id="${item.id}">
         <div class="cart-img">
           <div class="cart-img-placeholder">
-            ${displayImg ? `<img src="${displayImg}" alt="${displayName}" />` : ''}
+            ${item.image ? `<img src="${item.image}" alt="${item.name || ''}" />` : ''}
           </div>
         </div>
         <div class="cart-details">
-          <p class="cart-name">${displayName}</p>
-          <p class="cart-desc">${displayDesc}</p>
+          <p class="cart-name">${item.name || 'Unknown Product'}</p>
+          <p class="cart-desc">${item.desc || ''}</p>
           <p class="cart-price">${formatPrice(item.price)}</p>
           <div class="qty-row">
             <span class="qty-label">Qty</span>
             <div class="qty-ctrl">
               <button class="qty-btn" data-dir="-1">−</button>
-              <input class="qty-val" type="number" value="${item.qty}" min="1" />
+              <input class="qty-val" type="number" value="${item.qty}" min="1" max="10" />
               <button class="qty-btn" data-dir="1">+</button>
             </div>
             <button class="btn-link btn-update" data-action="update">Update</button>
             <button class="btn-link btn-delete" data-action="delete">Delete</button>
           </div>
           <div class="cart-meta">
-            <span>Shipping Cost: <b>${formatPrice(shippingFee)}</b></span>
+            <span>Shipping: <b>${formatPrice(shippingFee)}</b></span>
+            <span>Estimated Arrival: <b>${estimatedDate}</b></span>
             <span>Subtotal: <b>${formatPrice(itemSubtotal)}</b></span>
           </div>
         </div>
@@ -145,11 +140,11 @@ function renderCart() {
           <select class="delivery-select">
             ${deliveryOpts.map(opt => `
               <option value="${opt.id}" ${opt.id === item.deliveryOptionId ? 'selected' : ''}>
-                ${opt.name} (${opt.deliveryDays} days)
+                ${opt.name} (${opt.deliveryDays === 0 ? 'Today' : opt.deliveryDays + ' days'}) — ${opt.deliveryPrice === 0 ? 'Free' : formatPrice(opt.deliveryPrice)}
               </option>
             `).join('')}
           </select>
-          <button class="btn-checkout">Checkout Item</button>
+          <button class="btn-checkout" data-action="checkout">Checkout Item</button>
         </div>
       </div>
     `;
@@ -157,21 +152,21 @@ function renderCart() {
 
   const itemsCount = cart.reduce((sum, i) => sum + i.qty, 0);
   const shippingTotal = cart.reduce((sum, i) => {
-    const delivery = deliveryOpts.find(d => d.id === i.deliveryOptionId) || deliveryOpts[0];
-    return sum + (delivery?.deliveryPrice || 0);
+    const d = deliveryOpts.find(d => d.id === i.deliveryOptionId) || deliveryOpts[0];
+    return sum + (d?.deliveryPrice || 0);
   }, 0);
   const itemsTotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
 
   updateSummary(itemsCount, shippingTotal, itemsTotal + shippingTotal);
-
   updateHeader(itemsCount);
 }
 
+/* ── Cart mutations ── */
 function updateQty(id, dir) {
   const cart = getCart();
   const item = cart.find(i => String(i.id) === String(id));
   if (!item) return;
-  item.qty = Math.max(1, item.qty + dir);
+  item.qty = Math.min(10, Math.max(1, item.qty + dir));
   saveCart(cart);
   renderCart();
 }
@@ -180,40 +175,75 @@ function applyQty(id, newQty) {
   const cart = getCart();
   const item = cart.find(i => String(i.id) === String(id));
   if (!item) return;
-  item.qty = Math.max(1, newQty);
+  item.qty = Math.min(10, Math.max(1, newQty));
   saveCart(cart);
   renderCart();
 }
 
 function removeItem(id) {
-  const cart = getCart().filter(i => String(i.id) !== String(id));
-  saveCart(cart);
+  saveCart(getCart().filter(i => String(i.id) !== String(id)));
   renderCart();
 }
 
+/* ── Checkout single item ── */
+function checkoutItem(id) {
+  const cart = getCart();
+  const item = cart.find(i => String(i.id) === String(id));
+  if (!item) return;
+
+  const delivery = deliveryOpts.find(d => d.id === item.deliveryOptionId) || deliveryOpts[0];
+  const order = {
+    orderId: '#' + String(Date.now()).slice(-5),
+    placedAt: dayjs().format('MMM D, YYYY h:mm A'),
+    items: [{ ...item }],
+    delivery: delivery.name,
+    estimatedArrival: getEstimatedDelivery(delivery.deliveryDays),
+    shippingFee: delivery.deliveryPrice,
+    itemsTotal: item.price * item.qty,
+    grandTotal: (item.price * item.qty) + delivery.deliveryPrice,
+    status: 'Processing'
+  };
+
+  const orders = getOrders();
+  orders.unshift(order);
+  saveOrders(orders);
+
+  // Remove from cart
+  saveCart(cart.filter(i => String(i.id) !== String(id)));
+  renderCart();
+
+  showToast(`Order ${order.orderId} placed! Redirecting…`);
+  setTimeout(() => { window.location.href = 'orders.html'; }, 1800);
+}
+
+/* ── Toast ── */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ── Events ── */
 document.addEventListener('click', (e) => {
   const card = e.target.closest('.cart-card');
   if (!card) return;
   const id = card.dataset.id;
 
   const qtyBtn = e.target.closest('.qty-btn');
-  if (qtyBtn) {
-    const dir = Number(qtyBtn.dataset.dir || 0);
-    updateQty(id, dir);
-    return;
-  }
+  if (qtyBtn) { updateQty(id, Number(qtyBtn.dataset.dir || 0)); return; }
 
   const actionBtn = e.target.closest('button[data-action]');
-  if (actionBtn?.dataset.action === 'update') {
+  if (!actionBtn) return;
+
+  if (actionBtn.dataset.action === 'update') {
     const input = card.querySelector('.qty-val');
-    const newQty = parseInt(input?.value || '1', 10);
-    applyQty(id, newQty);
+    applyQty(id, parseInt(input?.value || '1', 10));
     return;
   }
-
-  if (actionBtn?.dataset.action === 'delete') {
-    removeItem(id);
-  }
+  if (actionBtn.dataset.action === 'delete') { removeItem(id); return; }
+  if (actionBtn.dataset.action === 'checkout') { checkoutItem(id); return; }
 });
 
 document.addEventListener('change', (e) => {

@@ -1,3 +1,8 @@
+export interface AccordionItem{
+  item: string;
+  html: string;
+}
+
 export const accordions = [
   {
     title: 'Who We Are',

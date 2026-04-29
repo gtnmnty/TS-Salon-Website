@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router'
 import { HomePage } from './pages/homepage/HomePage'
 import { Services } from './pages/services/Service'
 import { Account } from './pages/account/Account'
+import { AboutUs } from './pages/utilities/AboutUs'
 
 import './App.css'
 
@@ -12,6 +13,7 @@ function App() {
       <Route path="/home" element={<HomePage />} />
       <Route path="/services" element={<Services />} />
       <Route path="/account" element={<Account />} />
+      <Route path="/about-us" element={<AboutUs/>}/>
     </Routes>
   )
 }

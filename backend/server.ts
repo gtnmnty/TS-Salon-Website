@@ -23,9 +23,9 @@ app.get('/', (req, res) => {
     res.send('GILDED Backend is officially running! ✨');
 });
 
+// About Us Page
 app.get('/api/about/accordion', (req, res) => {
     res.json(accordions);
-    console.log('hello');
 });
 
 app.get('/api/about/reviews', (req, res) => {

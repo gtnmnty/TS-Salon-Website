@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 
-import { accordions } from './data/about-us/accordion.js';
-import { reviews } from './data/about-us/reviews.js';
+import { accordions } from './data/about-us/accordion.ts';
+import { reviews } from './data/about-us/reviews.ts';
 
 import mongoose from 'mongoose';
 
@@ -23,8 +23,13 @@ app.get('/', (req, res) => {
     res.send('GILDED Backend is officially running! ✨');
 });
 
-app.get('api/about/accordion', (req, res) => {
+app.get('/api/about/accordion', (req, res) => {
+    res.json(accordions);
+    console.log('hello');
+});
 
+app.get('/api/about/reviews', (req, res) => {
+    res.json(reviews);
 });
 
 app.listen(PORT, () => {

@@ -1,3 +1,10 @@
+export interface ReviewItem{
+  initial: string;
+  name: string;
+  stars: Int16Array;
+  text: string;
+}
+
 export const reviews = [
   {
     initial: 'A',

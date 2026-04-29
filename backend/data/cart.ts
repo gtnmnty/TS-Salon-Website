@@ -1,2 +1,1 @@
-export let cart;
-
+export const cart: unknown[] = [];

@@ -1,19 +1,17 @@
-import { useState } from 'react'
 import { Routes, Route } from 'react-router'
 import { HomePage } from './pages/homepage/HomePage'
+import { Services } from './pages/services/Service'
+import { Account } from './pages/account/Account'
+
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <Routes>
-      <Route index element={<HomePage />}/>
-      {/* <Route index element={<ServicesPage />}/>
-      <Route index element={<ProductsPage />}/>
-      <Route index element={<BookPage />}/>
-      <Route index element={<CartPage />}/>
-      <Route index element={<AccountPage />}/> */}
+      <Route path="/" element={<HomePage />} />
+      <Route path="/home" element={<HomePage />} />
+      <Route path="/services" element={<Services />} />
+      <Route path="/account" element={<Account />} />
     </Routes>
   )
 }

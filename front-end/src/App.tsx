@@ -3,6 +3,7 @@ import { HomePage } from './pages/homepage/HomePage'
 import { Services } from './pages/services/Service'
 import { Account } from './pages/account/Account'
 import { AboutUs } from './pages/utilities/AboutUs'
+import { Faqs } from './pages/utilities/Faqs'
 
 import './App.css'
 
@@ -14,6 +15,7 @@ function App() {
       <Route path="/services" element={<Services />} />
       <Route path="/account" element={<Account />} />
       <Route path="/about-us" element={<AboutUs/>}/>
+      <Route path="/faqs" element={<Faqs/>}/>
     </Routes>
   )
 }

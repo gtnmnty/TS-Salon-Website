@@ -4,13 +4,22 @@ import cors from 'cors';
 import { accordions } from './data/about-us/accordion.ts';
 import { reviews } from './data/about-us/reviews.ts';
 
+import { accountPayments } from './data/faqs/account-payments.ts';
+import { appointmentsBooking } from './data/faqs/appointments-booking.ts';
+import { ordersDelivery } from './data/faqs/orders-delivery.ts';
+import { productsAftercare } from './data/faqs/products-aftercare.ts';
+import { servicesPricing } from './data/faqs/services-pricing.ts';
+import { shippingReturns } from './data/faqs/shipping-returns.ts';
+
+
+
 import mongoose from 'mongoose';
 
 const mongoURI = 'mongodb+srv://Monty:Dbnip777@cluster0.wcj1q1o.mongodb.net/?appName=Cluster0';
 
 mongoose.connect(mongoURI)
-  .then(() => console.log('✅ Connected to Gilded Vault (MongoDB)'))
-  .catch((err) => console.error('❌ Connection error:', err));
+    .then(() => console.log('✅ Connected to Gilded Vault (MongoDB)'))
+    .catch((err) => console.error('❌ Connection error:', err));
 
 const app = express();
 const PORT = 5000;
@@ -27,6 +36,18 @@ app.get('/', (req, res) => {
 app.get('/api/about/accordion', (req, res) => {
     res.json(accordions);
 });
+
+// Faqs Page
+app.get('/api/faqs', (req, res) => {
+    res.json({
+        accountPayments,
+        appointmentsBooking,
+        ordersDelivery,
+        productsAftercare,
+        servicesPricing,
+        shippingReturns,
+    })
+})
 
 app.get('/api/about/reviews', (req, res) => {
     res.json(reviews);

@@ -1,0 +1,91 @@
+footer {
+  background: var(--dark);
+  padding: 5rem 7% 3rem;
+  color: rgba(255, 255, 255, 0.7);
+  justify-content: space-around;
+}
+
+.footer-brand {
+  text-align: center;
+  margin-bottom: 4rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-brand h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  color: var(--white);
+  text-transform: uppercase;
+}
+
+.footer-brand p {
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-weight: 300;
+  color: var(--gold);
+  margin-top: 0.3rem;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem;
+  margin-bottom: 3.5rem;
+}
+
+.footer-col h5 {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--white);
+  margin-bottom: 1.4rem;
+}
+
+.footer-col ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.footer-col ul li a,
+.footer-col ul li {
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
+  line-height: 1.6;
+  transition: color 0.3s;
+}
+
+.footer-col ul li a:hover {
+  color: var(--gold);
+}
+
+.footer-col .contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 0.5rem;
+}
+
+.footer-col .contact-icon {
+  font-size: 0.85rem;
+  margin-top: 1px;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.3);
+}

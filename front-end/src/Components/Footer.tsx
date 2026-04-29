@@ -17,7 +17,7 @@ export function Footer() {
               <li><Link to="/services">Services</Link></li>
               <li><Link to="/about-us#au-contact-section">Contact Us</Link></li>
               <li><Link to="/about-us">About Us</Link></li>
-              <li><Link to="/reviews">Reviews</Link></li>
+              <li><Link to="/about-us#testimonials">Reviews</Link></li>
               <li><Link to="/login">Log in / Sign Up</Link></li>
             </ul>
           </div>

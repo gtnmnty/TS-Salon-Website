@@ -30,7 +30,7 @@ export function Footer() {
               <li><Link to="/orders">Orders</Link></li>
               <li><Link to="/cart">Cart</Link></li>
               <li><Link to="/shipping">Shipping</Link></li>
-              <li><Link to="/help#warranty">Warranty and Return Policy</Link></li>
+              <li><a href="/help#warranty" target='_blank'>Warranty and Return Policy</a></li>
               <li><Link to="/faqs">FAQs</Link></li>
               <li><Link to="/privacy">Privacy Policy</Link></li>
             </ul>

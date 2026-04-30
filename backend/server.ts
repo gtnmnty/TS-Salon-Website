@@ -11,6 +11,9 @@ import { productsAftercare } from './data/faqs/products-aftercare.ts';
 import { servicesPricing } from './data/faqs/services-pricing.ts';
 import { shippingReturns } from './data/faqs/shipping-returns.ts';
 
+import { services } from './data/services.ts';
+import { products } from './data/products.ts';
+import { deliveryOpts } from './data/deliveryOption.ts';
 
 
 import mongoose from 'mongoose';
@@ -47,6 +50,22 @@ app.get('/api/faqs', (req, res) => {
         servicesPricing,
         shippingReturns,
     })
+})
+
+// Services
+app.get('/api/services', (req, res) => {
+    res.json(services);
+})
+
+
+// Products
+app.get('/api/products', (req, res) => {
+    res.json(products);
+})
+
+// Delviery Options
+app.get('/api/services', (req, res) => {
+    res.json(deliveryOpts);
 })
 
 app.get('/api/about/reviews', (req, res) => {

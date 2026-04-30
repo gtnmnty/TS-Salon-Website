@@ -1,4 +1,6 @@
-export const products = [
+import type { ProductItem } from "../types/products.ts";
+
+export const products: ProductItem[] = [
   {
     id: 1,
     name: "Repair & Restore Shampoo",
@@ -15,6 +17,7 @@ export const products = [
       "https://images.unsplash.com/photo-1599305090598-fe179d501227?w=800&auto=format&fit=crop"
     ],
     info: ["Keratin-Infused", "Sulfate-Free", "Color Safe", "300ml"],
+    reviewCount: 1024,
     reviews: [
       { name: "Anika R.", stars: 5, date: "Mar 2025", text: "My hair is noticeably softer after just one wash. This is now a staple in my routine." },
       { name: "Diane L.", stars: 5, date: "Feb 2025", text: "Finally a shampoo that actually delivers on its promises. My split ends are much better." },
@@ -27,7 +30,7 @@ export const products = [
     brand: "Lumière Skin",
     category: "Skin Care",
     price: "₱1,450",
-    priceNum: 1499.99,
+    priceNum: 1450,
     badge: "New Arrival",
     desc: "A featherlight serum with 24k gold micro-particles and rose hip oil for a luminous, plumped complexion.",
     imgs: [
@@ -37,6 +40,7 @@ export const products = [
       "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&auto=format&fit=crop"
     ],
     info: ["24K Gold Particles", "Rosehip Oil", "Hyaluronic Acid", "30ml", "All Skin Types"],
+    reviewCount: 1024,
     reviews: [
       { name: "Trisha V.", stars: 5, date: "Mar 2025", text: "My skin literally glows after using this. The texture is so luxurious and non-greasy." },
       { name: "Sophie A.", stars: 5, date: "Feb 2025", text: "Worth every peso. I've received so many compliments on my skin since I started using it." }
@@ -58,6 +62,7 @@ export const products = [
       "https://images.unsplash.com/photo-1590156646043-7bda0b813cdb?w=800&auto=format&fit=crop"
     ],
     info: ["10-Hour Wear", "18 Shades", "Vitamin E", "Cruelty-Free", "3.5g"],
+    reviewCount: 1024,
     reviews: [
       { name: "Lia S.", stars: 5, date: "Mar 2025", text: "The pigmentation is incredible and it doesn't dry out my lips at all. My go-to!" },
       { name: "Kim P.", stars: 5, date: "Feb 2025", text: "So many beautiful shades. This stays put all day without any touch-ups needed." },
@@ -79,6 +84,7 @@ export const products = [
       "https://images.unsplash.com/photo-1604655840975-f9c2f8e1d3c1?w=800&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=800&auto=format&fit=crop"
     ],
+    reviewCount: 1024,
     info: ["Jojoba Oil", "Vitamin E", "Lavender Extract", "15ml Pen", "Fast-Absorbing"],
     reviews: [
       { name: "Rosa G.", stars: 5, date: "Mar 2025", text: "My cuticles have never looked better. The lavender scent is so calming." },
@@ -101,6 +107,7 @@ export const products = [
       "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=800&auto=format&fit=crop"
     ],
     info: ["Argan Oil", "Shea Butter", "Leave-In Formula", "200ml", "All Hair Types"],
+    reviewCount: 1024,
     reviews: [
       { name: "Carla N.", stars: 5, date: "Mar 2025", text: "I woke up with the softest, most manageable hair I've ever had. Absolutely magical." },
       { name: "Frances B.", stars: 5, date: "Feb 2025", text: "This is my holy grail. My frizzy hair is completely tamed after one night of use." }
@@ -122,6 +129,7 @@ export const products = [
       "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=800&auto=format&fit=crop"
     ],
     info: ["Caffeine Complex", "Peptide Blend", "Ceramides", "15ml", "Dermatologist-Tested"],
+    reviewCount: 1024,
     reviews: [
       { name: "Ingrid V.", stars: 5, date: "Mar 2025", text: "My under-eye circles are visibly lighter after two weeks. I'm absolutely amazed." },
       { name: "Bea S.", stars: 5, date: "Feb 2025", text: "The cooling applicator tip feels amazing in the morning. My eyes look so much more awake." },

@@ -26,18 +26,10 @@ function ServiceCard({ service, onOpen }: { service: ServiceItem; onOpen: (s: Se
         <div className="card-footer">
           <span className="card-price">{service.price}</span>
           <div className="card-actions">
-            <button
-              className="book-btn"
-              type="button"
-              onClick={e => { e.stopPropagation(); onOpen(service); }}
-            >
+            <button className="book-btn" type="button" onClick={e => { e.stopPropagation(); onOpen(service); }}>
               Book
             </button>
-            <button
-              className="cart-btn"
-              type="button"
-              onClick={e => { e.stopPropagation(); onOpen(service); }}
-            >
+            <button className="cart-btn" type="button" onClick={e => { e.stopPropagation(); onOpen(service); }}>
               View More
             </button>
           </div>

@@ -14,15 +14,3 @@ export interface CartItem {
   qty: number
   deliveryOptionId: number
 }
-
-export interface Order {
-  orderId: string
-  placedAt: string
-  items: CartItem[]
-  delivery: string
-  estimatedArrival: string
-  shippingFee: number
-  itemsTotal: number
-  grandTotal: number
-  status: string
-}

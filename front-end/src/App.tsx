@@ -4,6 +4,7 @@ import { Services } from './pages/services/Service'
 import { Products } from './pages/products/Products'
 import { Account } from './pages/account/Account'
 import { AboutUs } from './pages/utilities/AboutUs'
+import { Auth } from './pages/form/Auth'
 import { Faqs } from './pages/utilities/Faqs'
 import { HelpSupport } from './pages/utilities/HelpSupport'
 
@@ -20,6 +21,7 @@ function App() {
       <Route path="/about-us" element={<AboutUs/>}/>
       <Route path="/faqs" element={<Faqs/>}/>
       <Route path="/help" element={<HelpSupport/>}/>
+      <Route path="/auth" element={<Auth />} />
     </Routes>
   )
 }

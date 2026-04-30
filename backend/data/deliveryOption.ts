@@ -1,4 +1,6 @@
-export const deliveryOpts = [
+import type { DeliveryOption } from '../types/cart.ts';
+
+export const deliveryOpts: DeliveryOption[]  = [
     {
         id: 1,
         name: "Standard Delivery",

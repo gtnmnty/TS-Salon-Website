@@ -1,7 +1,9 @@
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 import './Footer.css'
 
 export function Footer() {
+  const location = useLocation();
+
   return (
     <>
       <footer>
@@ -18,7 +20,7 @@ export function Footer() {
               <li><Link to="/about-us#au-contact-section">Contact Us</Link></li>
               <li><Link to="/about-us">About Us</Link></li>
               <li><Link to="/about-us#testimonials">Reviews</Link></li>
-              <li><Link to="/login">Log in / Sign Up</Link></li>
+              <li><Link to="/auth" state={{from: location.pathname}} target="_blank">Log in / Sign Up</Link></li>
             </ul>
           </div>
 
@@ -32,7 +34,7 @@ export function Footer() {
               <li><Link to="/shipping">Shipping</Link></li>
               <li><a href="/help#warranty" target='_blank'>Warranty and Return Policy</a></li>
               <li><Link to="/faqs">FAQs</Link></li>
-              <li><Link to="/privacy">Privacy Policy</Link></li>
+              <li><Link to="/help#privacy">Privacy Policy</Link></li>
             </ul>
           </div>
 

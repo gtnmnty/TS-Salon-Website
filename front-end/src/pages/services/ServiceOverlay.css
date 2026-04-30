@@ -663,3 +663,259 @@
     transform: translateX(-50%) translateY(0);
     opacity: 1;
 }
+
+/* Scoped service overlay rules. Keep these last so product styles cannot bleed in. */
+.service-overlay.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(69, 9, 32, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: none;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: clamp(0.75rem, 3vw, 2rem);
+    animation: fadeIn 0.3s ease;
+}
+
+.service-overlay .overlay-box {
+    background: var(--white);
+    width: min(100%, 72rem);
+    margin: 0 auto;
+    border-radius: clamp(0.75rem, 1.5vw, 1.25rem);
+    overflow: hidden;
+    animation: slideUp 0.35s ease;
+}
+
+.service-overlay .overlay-top-bar {
+    background: var(--white);
+    padding: clamp(0.85rem, 1.8vw, 1.35rem) clamp(1rem, 2.4vw, 1.8rem);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: clamp(0.5rem, 1vw, 0.75rem);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.service-overlay .overlay-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+}
+
+.service-overlay .image-viewer {
+    padding: clamp(1rem, 2.4vw, 2rem);
+    background: var(--off, #faf5f2);
+}
+
+.service-overlay .big-img {
+    width: 100%;
+    height: clamp(16rem, calc(8rem + 22vw), 26rem);
+    background-size: cover;
+    background-position: center;
+    border-radius: clamp(0.6rem, 1vw, 0.9rem);
+    position: relative;
+    overflow: hidden;
+}
+
+.service-overlay .thumbnail-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(clamp(3.5rem, 10vw, 5rem), 1fr));
+    gap: clamp(0.45rem, 1vw, 0.75rem);
+    margin-top: clamp(0.75rem, 1vw, 0.95rem);
+}
+
+.service-overlay .thumb {
+    height: clamp(3.5rem, 8vw, 5rem);
+    background-size: cover;
+    background-position: center;
+    border-radius: clamp(0.4rem, 0.7vw, 0.6rem);
+    cursor: pointer;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.service-overlay .info-pane {
+    padding: clamp(1.2rem, 2.6vw, 2.25rem);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: left;
+    overflow-y: auto;
+    max-height: clamp(32rem, calc(20rem + 30vw), 50rem);
+}
+
+.service-overlay .overlay-rating {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 3px;
+    margin-bottom: clamp(0.85rem, 1.5vw, 1.2rem);
+    padding-bottom: clamp(0.85rem, 1.5vw, 1.2rem);
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+.service-overlay .overlay-rating .stars {
+    font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+    color: var(--gold);
+    letter-spacing: 2px;
+}
+
+.service-overlay .info-section,
+.service-overlay .info-section h4,
+.service-overlay .info-bullets {
+    text-align: left;
+}
+
+.service-overlay .info-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: clamp(0.35rem, 0.7vw, 0.5rem);
+}
+
+.service-overlay .info-bullets li {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.service-overlay .qty-row,
+.service-overlay .action-btns {
+    justify-content: flex-start;
+}
+
+.service-overlay .action-btns {
+    width: 50%;
+}
+
+.service-overlay .review-area {
+    grid-column: 1 / -1;
+}
+
+.service-toast.toast {
+    z-index: 10000;
+}
+
+@media (max-width: 860px) {
+    .service-overlay .overlay-body {
+        grid-template-columns: 1fr;
+    }
+
+    .service-overlay .info-pane {
+        max-height: none;
+        overflow-y: visible;
+    }
+
+    .service-overlay .big-img {
+        height: clamp(14rem, 52vw, 22rem);
+    }
+}
+
+@media (max-width: 640px) {
+    .service-overlay.overlay {
+        padding: 0.4rem;
+    }
+
+    .service-overlay .overlay-box {
+        border-radius: clamp(0.5rem, 2vw, 0.85rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .service-overlay .action-btns {
+        display: grid;
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+
+    .service-overlay .overlay-top-bar {
+        gap: 0.4rem;
+    }
+}
+
+/* Final service guest-stepper lock: product quantity input styles can remain loaded after navigation. */
+.service-overlay .qty-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: clamp(0.6rem, 1vw, 0.9rem);
+}
+
+.service-overlay .qty-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--gold);
+    min-width: clamp(7rem, 18vw, 10rem);
+    min-height: clamp(2.2rem, 4vw, 2.6rem);
+    padding: 0.35rem 0;
+    border-radius: 0;
+    background: transparent;
+}
+
+.service-overlay .qty-input {
+    width: clamp(2.5rem, 5vw, 3.5rem);
+    min-height: clamp(1.8rem, 3.5vw, 2.2rem);
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    font-family: inherit;
+    font-size: clamp(0.88rem, 1.5vw, 1rem);
+    text-align: center;
+    outline: none;
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+.service-overlay .qty-input:focus {
+    border: none;
+    box-shadow: none;
+}
+
+.service-overlay .qty-input::-webkit-outer-spin-button,
+.service-overlay .qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.service-overlay .qty-update {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: clamp(2rem, 4vw, 2.6rem);
+    min-height: clamp(1.8rem, 3.5vw, 2.2rem);
+    padding: 0 clamp(0.6rem, 1.2vw, 1rem);
+    border: none;
+    background: transparent;
+    color: var(--wine);
+    cursor: pointer;
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    line-height: 1;
+    opacity: 0.65;
+}
+
+.service-overlay .qty-update:first-of-type {
+    padding-bottom: 3px;
+}
+
+.service-overlay .qty-update:hover {
+    opacity: 1;
+}
+
+.service-overlay .update-btn {
+    border: none;
+    background: transparent;
+    color: var(--gold);
+    font-size: clamp(0.72rem, calc(0.68rem + 0.1vw), 0.82rem);
+}

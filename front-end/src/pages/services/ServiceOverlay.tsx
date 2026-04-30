@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 import type { ServiceItem, Review } from '../../../../backend/types/services.ts'
-import './Service.css'
-import './ServiceOverlay.css'
 
 interface Props {
   service: ServiceItem | null
@@ -168,7 +166,7 @@ export function ServiceOverlay({ service, onClose, onBook }: Props) {
 
   return (
     <>
-      <div className="overlay" style={{ display: 'block' }}>
+      <div className="overlay service-overlay" style={{ display: 'block' }}>
         <div className="overlay-box">
 
           {/* TOP BAR */}
@@ -301,7 +299,7 @@ export function ServiceOverlay({ service, onClose, onBook }: Props) {
       </div>
 
       {/* TOAST */}
-      <div className={`toast${toastVisible ? ' show' : ''}`}>{toast}</div>
+      <div className={`toast service-toast${toastVisible ? ' show' : ''}`}>{toast}</div>
     </>
   )
 }

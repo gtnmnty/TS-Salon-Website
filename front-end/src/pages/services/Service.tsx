@@ -6,6 +6,7 @@ import { Footer } from '../../components/Footer'
 import { ServiceOverlay } from './ServiceOverlay'
 import { services } from '../../../../backend/data/services'
 import './Service.css'
+import './ServiceOverlay.css'
 
 const CATEGORIES = ['All', 'Hair Care', 'Skin Care', 'Nail Care', 'Make Up']
 
@@ -121,12 +122,7 @@ export function Services() {
         <div className="section-heading">Our Services</div>
         <div className="section-sub">Reserve your next appointment with ease</div>
 
-        <select
-          className="sort-select"
-          id="sortSelect"
-          value={sort}
-          onChange={e => setSort(e.target.value)}
-        >
+        <select className="sort-select" id="sortSelect" value={sort} onChange={e => setSort(e.target.value)}>
           <option value="default">Sort By</option>
           <option value="price-asc">Price: Low to High</option>
           <option value="price-desc">Price: High to Low</option>

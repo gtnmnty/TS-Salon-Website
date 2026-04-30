@@ -4,403 +4,522 @@
 
 /* ─── Page Hero ──────────────────────────────────────────── */
 .page-hero {
-    background: linear-gradient(160deg, var(--deep) 0%, var(--wine) 55%, var(--mauve) 100%);
-    padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1rem, 4vw, 3rem);
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+  background: linear-gradient(160deg, var(--deep) 0%, var(--wine) 55%, var(--mauve) 100%);
+  padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1rem, 4vw, 3rem);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
 .page-hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 30% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 60%);
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 60%);
 }
 
 .page-hero h1 {
-    position: relative;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2.5rem, calc(1.65rem + 2.8vw), 4.4rem);
-    font-weight: 300;
-    color: var(--white);
-    letter-spacing: 0.1em;
+  position: relative;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.5rem, calc(1.65rem + 2.8vw), 4.4rem);
+  font-weight: 300;
+  color: var(--white);
+  letter-spacing: 0.1em;
 }
 
 .page-hero h1 span {
-    color: var(--blush);
-    font-style: italic;
+  color: var(--blush);
+  font-style: italic;
 }
 
 .page-hero p {
-    position: relative;
-    margin-top: 0.5rem;
-    color: rgba(255, 255, 255, 0.62);
-    font-size: clamp(0.78rem, calc(0.72rem + 0.18vw), 0.92rem);
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
+  position: relative;
+  margin-top: 0.5rem;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: clamp(0.78rem, calc(0.72rem + 0.18vw), 0.92rem);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
 }
 
 .hero-line {
-    width: clamp(3rem, 7vw, 4.2rem);
-    height: 1px;
-    background: var(--blush);
-    margin: 1.2rem auto 0;
+  width: clamp(3rem, 7vw, 4.2rem);
+  height: 1px;
+  background: var(--blush);
+  margin: 1.2rem auto 0;
 }
 
 /* ─── Search ─────────────────────────────────────────────── */
 .search-wrap {
-    width: min(calc(100% - 2 * clamp(1rem, 4vw, 2.5rem)), 75rem);
-    margin: clamp(1.4rem, 3vw, 2rem) auto clamp(0.9rem, 2vw, 1.2rem);
+  width: min(calc(100% - 2 * clamp(1rem, 4vw, 2.5rem)), 75rem);
+  margin: clamp(1.4rem, 3vw, 2rem) auto clamp(0.9rem, 2vw, 1.2rem);
 }
 
 .search-box {
-    display: flex;
-    align-items: center;
-    background: var(--white);
-    border: 1px solid rgba(165, 56, 96, 0.2);
-    border-radius: clamp(0.45rem, 0.8vw, 0.7rem);
-    overflow: hidden;
-    box-shadow: 0 8px 40px rgba(69, 9, 32, 0.12);
-    margin: clamp(1.25rem, 2.2vw, 2rem) auto;
+  display: flex;
+  align-items: center;
+  background: var(--white);
+  border: 1px solid rgba(165, 56, 96, 0.2);
+  border-radius: clamp(0.45rem, 0.8vw, 0.7rem);
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(69, 9, 32, 0.12);
+  margin: clamp(1.25rem, 2.2vw, 2rem) auto;
 }
 
 .search-input {
-    flex: 1;
-    border: none;
-    outline: none;
-    font-family: 'Jost', sans-serif;
-    font-size: clamp(0.94rem, calc(0.84rem + 0.2vw), 1.05rem);
-    padding: clamp(1rem, 1.4vw, 1.2rem) clamp(1rem, 1.8vw, 1.35rem);
-    color: var(--deep);
-    background: transparent;
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: 'Jost', sans-serif;
+  font-size: clamp(0.94rem, calc(0.84rem + 0.2vw), 1.05rem);
+  padding: clamp(1rem, 1.4vw, 1.2rem) clamp(1rem, 1.8vw, 1.35rem);
+  color: var(--deep);
+  background: transparent;
 }
 
 .search-input::placeholder {
-    color: rgba(69, 9, 32, 0.35);
-    letter-spacing: 0.05em;
+  color: rgba(69, 9, 32, 0.35);
+  letter-spacing: 0.05em;
 }
 
 .search-btn {
-    width: clamp(3.75rem, 8vw, 5rem);
-    flex: 0 0 clamp(3.75rem, 8vw, 5rem);
-    background: var(--wine);
-    border: none;
-    cursor: pointer;
-    display: flex;
-    padding: clamp(1rem, 1.8vw, 1.4rem);
-    align-items: center;
-    justify-content: center;
-    transition: background 0.25s;
+  width: clamp(3.75rem, 8vw, 5rem);
+  flex: 0 0 clamp(3.75rem, 8vw, 5rem);
+  background: var(--wine);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  padding: clamp(1rem, 1.8vw, 1.4rem);
+  align-items: center;
+  justify-content: center;
+  transition: background 0.25s;
 }
 
 .search-btn:hover {
-    background: var(--deep);
+  background: var(--deep);
 }
 
 .search-btn svg {
-    width: clamp(1.2rem, 2.5vw, 1.5rem);
-    height: clamp(1.2rem, 2.5vw, 1.5rem);
-    stroke: var(--white);
+  width: clamp(1.2rem, 2.5vw, 1.5rem);
+  height: clamp(1.2rem, 2.5vw, 1.5rem);
+  stroke: var(--white);
 }
 
 /* ─── Filter Pills ───────────────────────────────────────── */
 .filter-pills {
-    width: min(calc(100% - 2 * clamp(1rem, 4vw, 2.5rem)), 75rem);
-    margin: 0 auto clamp(0.9rem, 2vw, 1rem);
-    display: flex;
-    justify-content: center;
-    gap: clamp(0.55rem, 1vw, 0.75rem);
-    flex-wrap: wrap;
+  width: min(calc(100% - 2 * clamp(1rem, 4vw, 2.5rem)), 75rem);
+  margin: 0 auto clamp(0.9rem, 2vw, 1rem);
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.55rem, 1vw, 0.75rem);
+  flex-wrap: wrap;
 }
 
 .pill {
-    font-family: 'Jost', sans-serif;
-    font-size: clamp(0.75rem, calc(0.66rem + 0.22vw), 0.95rem);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    padding: clamp(0.7rem, 1.3vw, 0.82rem) clamp(1rem, 2vw, 1.45rem);
-    border: 1px solid rgba(165, 56, 96, 0.25);
-    border-radius: 999px;
-    cursor: pointer;
-    background: transparent;
-    color: var(--wine);
-    transition: background 0.25s, color 0.25s, border-color 0.25s;
+  font-family: 'Jost', sans-serif;
+  font-size: clamp(0.75rem, calc(0.66rem + 0.22vw), 0.95rem);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: clamp(0.7rem, 1.3vw, 0.82rem) clamp(1rem, 2vw, 1.45rem);
+  border: 1px solid rgba(165, 56, 96, 0.25);
+  border-radius: 999px;
+  cursor: pointer;
+  background: transparent;
+  color: var(--wine);
+  transition: background 0.25s, color 0.25s, border-color 0.25s;
 }
 
 .pill:hover,
 .pill.active {
-    background: var(--wine);
-    color: var(--white);
-    border-color: var(--wine);
+  background: var(--wine);
+  color: var(--white);
+  border-color: var(--wine);
 }
 
 /* ─── Sort ───────────────────────────────────────────────── */
 .sort-wrap {
-    width: min(calc(100% - 2 * clamp(1rem, 4vw, 2.5rem)), 75rem);
-    margin: 0 auto clamp(1.2rem, 2.4vw, 1.75rem);
-    display: flex;
-    justify-content: flex-end;
+  width: min(calc(100% - 2 * clamp(1rem, 4vw, 2.5rem)), 75rem);
+  margin: 0 auto clamp(1.2rem, 2.4vw, 1.75rem);
+  display: flex;
+  justify-content: flex-end;
 }
 
 .sort-select {
-    border: 1px solid rgba(165, 56, 96, 0.25);
-    border-radius: 6px;
-    padding: clamp(0.7rem, 1vw, 0.85rem) clamp(0.95rem, 1.5vw, 1.15rem);
-    font-family: 'Jost', sans-serif;
-    font-size: clamp(0.78rem, calc(0.72rem + 0.14vw), 0.88rem);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--wine);
-    background: var(--white);
-    cursor: pointer;
-    outline: none;
-    margin: 0 0 1.25rem 0;
+  border: 1px solid rgba(165, 56, 96, 0.25);
+  border-radius: 6px;
+  padding: clamp(0.7rem, 1vw, 0.85rem) clamp(0.95rem, 1.5vw, 1.15rem);
+  font-family: 'Jost', sans-serif;
+  font-size: clamp(0.78rem, calc(0.72rem + 0.14vw), 0.88rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--wine);
+  background: var(--white);
+  cursor: pointer;
+  outline: none;
+  margin: 0 0 1.25rem 0;
 }
 
 /* ─── Container / Grid ───────────────────────────────────── */
 .container {
-    width: min(calc(100% - 2 * clamp(1rem, 4vw, 2.5rem)), 80rem);
-    margin: 0 auto;
-    padding: clamp(1.8rem, 4vw, 3rem) 0 clamp(3rem, 6vw, 5rem);
+  width: min(calc(100% - 2 * clamp(1rem, 4vw, 2.5rem)), 80rem);
+  margin: 0 auto;
+  padding: clamp(1.8rem, 4vw, 3rem) 0 clamp(3rem, 6vw, 5rem);
 }
 
 .section-heading {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2rem, calc(1.35rem + 1.5vw), 3rem);
-    font-weight: 300;
-    color: var(--navy);
-    letter-spacing: 0.08em;
-    margin-bottom: 0.3rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, calc(1.35rem + 1.5vw), 3rem);
+  font-weight: 300;
+  color: var(--navy);
+  letter-spacing: 0.08em;
+  margin-bottom: 0.3rem;
 }
 
 .section-sub {
-    font-size: clamp(0.76rem, calc(0.7rem + 0.14vw), 0.88rem);
-    color: var(--muted);
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    margin-bottom: clamp(0.8rem, 3vw, 1rem);
+  font-size: clamp(0.76rem, calc(0.7rem + 0.14vw), 0.88rem);
+  color: var(--muted);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: clamp(0.8rem, 3vw, 1rem);
 }
 
 .item-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(clamp(16rem, 30vw, 18.75rem), 1fr));
-    gap: clamp(1rem, 2.5vw, 1.75rem);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(16rem, 30vw, 18.75rem), 1fr));
+  gap: clamp(1rem, 2.5vw, 1.75rem);
 }
 
 /* ─── Cards ──────────────────────────────────────────────── */
 .card {
-    background: var(--white);
-    border-radius: clamp(0.8rem, 1vw, 1rem);
-    overflow: hidden;
-    box-shadow: var(--card-shadow);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-    border: 1px solid rgba(0, 0, 0, 0.04);
+  background: var(--white);
+  border-radius: clamp(0.8rem, 1vw, 1rem);
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 .card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 60px rgba(10, 22, 40, 0.15);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(10, 22, 40, 0.15);
 }
 
 .card-img {
-    height: clamp(13rem, 28vw, 15.5rem);
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    overflow: hidden;
+  height: clamp(13rem, 28vw, 15.5rem);
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
 }
 
 .card-img::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    background: linear-gradient(transparent, rgba(10, 22, 40, 0.25));
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(transparent, rgba(10, 22, 40, 0.25));
 }
 
 .card-badge {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    background: rgba(10, 10, 10, 0.667);
-    color: var(--gold);
-    font-size: 0.65rem;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 2px;
-    font-family: 'Jost', sans-serif;
-    font-weight: 600;
-    z-index: 1;
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(10, 10, 10, 0.667);
+  color: var(--gold);
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 2px;
+  font-family: 'Jost', sans-serif;
+  font-weight: 600;
+  z-index: 1;
 }
 
 .card-content {
-    padding: clamp(1rem, 2vw, 1.4rem);
+  padding: clamp(1rem, 2vw, 1.4rem);
 }
 
 .card-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.25rem, calc(1rem + 0.55vw), 1.65rem);
-    font-weight: 600;
-    color: var(--navy);
-    margin-bottom: 4px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.25rem, calc(1rem + 0.55vw), 1.65rem);
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 4px;
 }
 
 .card-brand {
-    font-size: 0.75rem;
-    color: var(--gold);
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    margin-bottom: 8px;
+  font-size: 0.75rem;
+  color: var(--gold);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
 }
 
 .card-rating {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: clamp(0.35rem, 0.8vw, 0.55rem);
-    margin-bottom: clamp(0.55rem, 1vw, 0.8rem);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: clamp(0.35rem, 0.8vw, 0.55rem);
+  margin-bottom: clamp(0.55rem, 1vw, 0.8rem);
 }
 
 .stars {
-    color: var(--gold);
-    font-size: 0.85rem;
-    letter-spacing: 1px;
+  color: var(--gold);
+  font-size: 0.85rem;
+  letter-spacing: 1px;
 }
 
 .rating-count {
-    font-size: 0.75rem;
-    color: var(--muted);
+  font-size: 0.75rem;
+  color: var(--muted);
 }
 
 .card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: clamp(0.75rem, 1vw, 1rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: clamp(0.75rem, 1vw, 1rem);
 }
 
 .card-price {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.35rem, calc(1.05rem + 0.7vw), 1.7rem);
-    font-weight: 600;
-    color: var(--teal);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.35rem, calc(1.05rem + 0.7vw), 1.7rem);
+  font-weight: 600;
+  color: var(--teal);
 }
 
 .card-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: clamp(0.45rem, 0.8vw, 0.65rem);
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(0.45rem, 0.8vw, 0.65rem);
 }
 
 .cart-btn {
-    background: transparent;
-    border: 1.5px solid var(--wine);
-    color: var(--navy);
-    padding: clamp(0.6rem, 0.8vw, 0.75rem) clamp(0.85rem, 1.2vw, 1rem);
-    font-family: 'Jost', sans-serif;
-    font-size: clamp(0.68rem, calc(0.64rem + 0.12vw), 0.76rem);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    cursor: pointer;
-    border-radius: 3px;
-    transition: all 0.3s;
+  background: transparent;
+  border: 1.5px solid var(--wine);
+  color: var(--navy);
+  padding: clamp(0.6rem, 0.8vw, 0.75rem) clamp(0.85rem, 1.2vw, 1rem);
+  font-family: 'Jost', sans-serif;
+  font-size: clamp(0.68rem, calc(0.64rem + 0.12vw), 0.76rem);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.3s;
 }
 
 .cart-btn:hover {
-    background: var(--wine);
-    color: var(--blush);
+  background: var(--wine);
+  color: var(--blush);
 }
 
 .book-btn {
-    background: var(--wine);
-    border: 1.5px solid var(--wine);
-    color: var(--white);
-    padding: clamp(0.6rem, 0.8vw, 0.75rem) clamp(0.85rem, 1.2vw, 1rem);
-    font-family: 'Jost', sans-serif;
-    font-size: clamp(0.68rem, calc(0.64rem + 0.12vw), 0.76rem);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    cursor: pointer;
-    border-radius: 3px;
-    transition: all 0.3s;
+  background: var(--wine);
+  border: 1.5px solid var(--wine);
+  color: var(--white);
+  padding: clamp(0.6rem, 0.8vw, 0.75rem) clamp(0.85rem, 1.2vw, 1rem);
+  font-family: 'Jost', sans-serif;
+  font-size: clamp(0.68rem, calc(0.64rem + 0.12vw), 0.76rem);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.3s;
 }
 
 .book-btn:hover {
-    background: var(--deep);
-    color: var(--white);
+  background: var(--deep);
+  color: var(--white);
 }
 
 /* ─── Responsive: Tablet ─────────────────────────────────── */
 @media (max-width: 860px) {
-    .overlay-body {
-        grid-template-columns: 1fr;
-    }
+  .overlay-body {
+    grid-template-columns: 1fr;
+  }
 
-    .info-pane {
-        max-height: none;
-        overflow-y: visible;
-    }
+  .info-pane {
+    max-height: none;
+    overflow-y: visible;
+  }
 
-    .big-img {
-        height: clamp(14rem, 52vw, 22rem);
-    }
+  .big-img {
+    height: clamp(14rem, 52vw, 22rem);
+  }
 }
 
 /* ─── Responsive: Mobile ─────────────────────────────────── */
 @media (max-width: 640px) {
-    .page-hero {
-        padding: clamp(2.5rem, 12vw, 3.5rem) 1.2rem clamp(2rem, 8vw, 2.4rem);
-    }
+  .page-hero {
+    padding: clamp(2.5rem, 12vw, 3.5rem) 1.2rem clamp(2rem, 8vw, 2.4rem);
+  }
 
-    .card-footer {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+  .card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-    .review-form-grid {
-        grid-template-columns: 1fr;
-    }
+  .review-form-grid {
+    grid-template-columns: 1fr;
+  }
 
-    .overlay {
-        padding: 0.4rem;
-    }
+  .overlay {
+    padding: 0.4rem;
+  }
 
-    .overlay-box {
-        border-radius: clamp(0.5rem, 2vw, 0.85rem);
-    }
+  .overlay-box {
+    border-radius: clamp(0.5rem, 2vw, 0.85rem);
+  }
 
-    .review-card {
-        flex: 0 0 clamp(13rem, 80vw, 17rem);
-    }
+  .review-card {
+    flex: 0 0 clamp(13rem, 80vw, 17rem);
+  }
 }
 
 @media (max-width: 480px) {
-    .search-btn {
-        width: clamp(3.5rem, 16vw, 4.2rem);
-        flex-basis: clamp(3.5rem, 16vw, 4.2rem);
-    }
+  .search-btn {
+    width: clamp(3.5rem, 16vw, 4.2rem);
+    flex-basis: clamp(3.5rem, 16vw, 4.2rem);
+  }
 
-    .qty-row {
-        flex-wrap: wrap;
-        align-items: flex-start;
-    }
+  .qty-row {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
 
-    .action-btns {
-        display: grid;
-        grid-template-columns: 1fr;
-    }
+  .action-btns {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
 
-    .overlay-top-bar {
-        gap: 0.4rem;
-    }
+  .overlay-top-bar {
+    gap: 0.4rem;
+  }
 
-    .img-arrow {
-        width: clamp(1.75rem, 8vw, 2.2rem);
-        height: clamp(1.75rem, 8vw, 2.2rem);
-    }
+  .img-arrow {
+    width: clamp(1.75rem, 8vw, 2.2rem);
+    height: clamp(1.75rem, 8vw, 2.2rem);
+  }
+}
+
+/* Scoped service page rules. Keep shared page/card class names from affecting products. */
+.services-page .container {
+  width: min(calc(100% - 2 * clamp(1rem, 4vw, 2.5rem)), 80rem);
+  margin: 0 auto;
+  padding: clamp(1.8rem, 4vw, 3rem) 0 clamp(3rem, 6vw, 5rem);
+}
+
+.services-page .item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(16rem, 30vw, 18.75rem), 1fr));
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+}
+
+.services-page .card {
+  background: var(--white);
+  border-radius: clamp(0.8rem, 1vw, 1rem);
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  display: block;
+}
+
+.services-page .card-content {
+  padding: clamp(1rem, 2vw, 1.4rem);
+  display: block;
+}
+
+.services-page .card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: clamp(0.75rem, 1vw, 1rem);
+}
+
+.services-page .card-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.35rem, calc(1.05rem + 0.7vw), 1.7rem);
+  font-weight: 600;
+  color: var(--teal);
+  margin-bottom: 0;
+}
+
+.services-page .card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(0.45rem, 0.8vw, 0.65rem);
+  margin-top: 0;
+}
+
+.services-page .book-btn {
+  background: var(--wine);
+  border: 1.5px solid var(--wine);
+  color: var(--white);
+}
+
+.services-page .cart-btn {
+  background: transparent;
+  border: 1.5px solid var(--wine);
+  color: var(--navy);
+}
+
+/* Final service-card lock: product card styles can remain loaded after navigation. */
+.services-page .card-content {
+  display: block;
+  text-align: left;
+}
+
+.services-page .card-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  width: 100%;
+}
+
+.services-page .card-price {
+  display: block;
+  flex: 0 0 auto;
+  text-align: left;
+}
+
+.services-page .card-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  text-align: left;
+  margin-left: auto;
+}
+
+.services-page .book-btn,
+.services-page .cart-btn {
+  display: inline-block;
+  width: auto;
+  text-align: center;
+  padding: clamp(0.6rem, 0.8vw, 0.75rem) clamp(0.85rem, 1.2vw, 1rem);
+  font-family: 'Jost', sans-serif;
+  font-size: clamp(0.68rem, calc(0.64rem + 0.12vw), 0.76rem);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border-radius: 3px;
+}
+
+@media (max-width: 640px) {
+  .services-page .card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .services-page .card-actions {
+    justify-content: flex-start;
+    margin-left: 0;
+  }
 }

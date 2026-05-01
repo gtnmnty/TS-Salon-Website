@@ -1,30 +1,38 @@
 import { useRef, useState, useEffect } from 'react'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { Header } from '../../components/Header'
 import './Account.css'
 
 type Panel = 'profile' | 'address' | 'payment' | 'preferences' | 'appointments' | 'orders' | 'help'
 
 export function Account() {
-  const [activePanel,         setActivePanel] =       useState<Panel>('profile')
-  const [isEditing,           setIsEditing] =         useState(false)
-  const [isSignedIn,          setIsSignedIn] =        useState(false)
-  const [showDeleteModal,     setShowDeleteModal] =   useState(false)
-  const [showAddressForm,     setShowAddressForm] =   useState(false)
-  const [showPaymentForm,     setShowPaymentForm] =   useState(false)
-  const [toast,               setToast] =             useState('')
-  const [avatarSrc,           setAvatarSrc] =         useState('')
-  const [accountGroupOpen,    setAccountGroupOpen] =  useState(true)
-  const [orders,              setOrders] =            useState<any[]>([])
-  const [savedAddresses,      setSavedAddresses] =    useState<string[]>([])
-  const [addressForm,         setAddressForm] =       useState({ street: '', barangay: '', city: '', zip: '', country: 'Philippines' })
+  const [activePanel, setActivePanel] = useState<Panel>('profile')
+  const [isEditing, setIsEditing] = useState(false)
+  const [isSignedIn, setIsSignedIn] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [showAddressForm, setShowAddressForm] = useState(false)
+  const [showPaymentForm, setShowPaymentForm] = useState(false)
+  const [toast, setToast] = useState('')
+  const [avatarSrc, setAvatarSrc] = useState('')
+  const [accountGroupOpen, setAccountGroupOpen] = useState(true)
+  const [orders, setOrders] = useState<any[]>([])
+  const [savedAddresses, setSavedAddresses] = useState<string[]>(() => {
+    try { return JSON.parse(localStorage.getItem('savedAddresses') ?? '[]') } catch { return [] }
+  })
+  const [addressForm, setAddressForm] = useState<{ street: string; barangay: string; city: string; zip: string; country: string }>(() => {
+    try { return JSON.parse(localStorage.getItem('addressForm') ?? 'null') ?? { street: '', barangay: '', city: '', zip: '', country: 'Philippines' } } catch { return { street: '', barangay: '', city: '', zip: '', country: 'Philippines' } }
+  })
 
-  const [payType,             setPayType] =           useState<'Visa' | 'MasterCard' | 'Amex' | 'Maya' | 'GCash' | 'Paypal' | ''>('')
+  const [payType, setPayType] = useState<'Visa' | 'MasterCard' | 'Amex' | 'Maya' | 'GCash' | 'Paypal' | ''>('')
   const cardTypes = ['Visa', 'MasterCard', 'Amex'] as const
   const ewalletTypes = ['Maya', 'GCash', 'Paypal'] as const
-  const [savedPayments,       setSavedPayments] =     useState<string[]>([])
-  const [cardForm,            setCardForm] =          useState({ name: '', address: '', number: '', expiry: '', cvv: '' })
-  const [ewalletForm,         setEwalletForm] =       useState({ number: '', accountName: '' })
+  const [savedPayments, setSavedPayments] = useState<{ label: string; type: string }[]>(() => {
+    try { return JSON.parse(localStorage.getItem('savedPayments') ?? '[]') } catch { return [] }
+  })
+  const [cardForm, setCardForm] = useState({ name: '', address: '', number: '', expiry: '', cvv: '' })
+  const [ewalletForm, setEwalletForm] = useState({ number: '', accountName: '' })
+
+  const navigate = useNavigate();
 
   const [profile, setProfile] = useState({
     name: 'Jon Snow',
@@ -46,18 +54,28 @@ export function Account() {
 
 
   function saveAddress() {
-    setShowAddressForm(true)
+    const label = `${addressForm.street}, ${addressForm.barangay}, ${addressForm.city}, ${addressForm.zip}`
+    const next = [...savedAddresses.filter(a => a !== label), label]
+    setSavedAddresses(next)
+    localStorage.setItem('savedAddresses', JSON.stringify(next))
+    localStorage.setItem('addressForm', JSON.stringify(addressForm))
+    setShowAddressForm(false)
     showToast('Address saved.')
   }
 
   function savePayment() {
-    const label = cardTypes.includes(payType as any)
+    if (!payType) { showToast('Please select a payment type.'); return; }
+    const isCard = cardTypes.includes(payType as any)
+    const label = isCard
       ? `${payType} •••• ${cardForm.number.slice(-4)}`
-      : `${payType} — ${ewalletForm.number}`
-    setSavedPayments(p => [...p, label])
+      : `${payType} — ${ewalletForm.accountName}`
+    const next = [...savedPayments, { label, type: payType }]
+    setSavedPayments(next)
+    localStorage.setItem('savedPayments', JSON.stringify(next))
     setCardForm({ name: '', address: '', number: '', expiry: '', cvv: '' })
     setEwalletForm({ number: '', accountName: '' })
-    setShowPaymentForm(true)
+    setPayType('')
+    setShowPaymentForm(false)
     showToast('Payment method saved.')
   }
 
@@ -67,6 +85,7 @@ export function Account() {
     setAvatarSrc('')
     setProfile({ name: '', email: '', phone: '', bday: '', password: '' })
     setSavedAddresses([])
+    setSavedPayments([])
     setAddressForm({ street: '', barangay: '', city: '', zip: '', country: 'Philippines' })
     setShowDeleteModal(false)
     showToast('Account deleted.')
@@ -83,6 +102,11 @@ export function Account() {
     const file = e.target.files?.[0]
     if (file) setAvatarSrc(URL.createObjectURL(file))
   }
+
+  const [currentUser, setCurrentUser] = useState(() => {
+    try { return JSON.parse(sessionStorage.getItem('currentUser') ?? 'null'); }
+    catch { return null; }
+  });
 
   return (
     <>
@@ -122,10 +146,17 @@ export function Account() {
                 </button>
                 <button
                   className="btn btn-sm"
-                  id="auth-btn"
-                  onClick={() => setIsSignedIn(s => !s)}
+                  onClick={() => {
+                    if (currentUser) {
+                      sessionStorage.removeItem('currentUser');
+                      setCurrentUser(null);
+                      showToast('Signed out.');
+                    } else {
+                      navigate('/auth');
+                    }
+                  }}
                 >
-                  {isSignedIn ? 'Sign Out' : 'Sign In'}
+                  {currentUser ? 'Sign Out' : 'Sign In'}
                 </button>
                 <button className="btn btn-sm btn-danger" onClick={() => setShowDeleteModal(true)}>
                   Delete Account
@@ -241,52 +272,67 @@ export function Account() {
               </div>
 
               {/* Address Panel */}
+              {/* Address Panel */}
               <div className={`content-panel ${activePanel === 'address' ? 'active' : ''}`} id="panel-address">
                 <div className="panel-header">
                   <button className="btn btn-sm btn-accent" onClick={() => setShowAddressForm(f => !f)}>
-                    + Add Address
+                    {savedAddresses.length > 0 ? 'Edit' : '+ Add Address'}
                   </button>
                 </div>
 
-                {savedAddresses.length === 0 && !showAddressForm && (
+                {!showAddressForm && savedAddresses.length === 0 && (
                   <div className="placeholder-msg">No saved addresses yet.</div>
                 )}
 
-                {showAddressForm && (
+                {(showAddressForm || savedAddresses.length > 0) && (
                   <div id="address-form-wrap">
                     <div className="form-grid-2">
                       <div className="form-group">
                         <label>Street Address / House No.</label>
                         <input className="form-input" type="text" placeholder="e.g. 123 Rizal St."
-                          value={addressForm.street} onChange={e => setAddressForm(a => ({ ...a, street: e.target.value }))}/>
+                          value={addressForm.street}
+                          readOnly={!showAddressForm} // 👈 read-only when not editing
+                          onChange={e => setAddressForm(a => ({ ...a, street: e.target.value }))} />
                       </div>
                       <div className="form-group">
                         <label>Barangay</label>
-                        <input className="form-input" type="text" placeholder="Barangay" 
-                          value={addressForm.barangay} onChange={e => setAddressForm(a => ({ ...a, barangay: e.target.value }))}/>
+                        <input className="form-input" type="text" placeholder="Barangay"
+                          value={addressForm.barangay}
+                          readOnly={!showAddressForm}
+                          onChange={e => setAddressForm(a => ({ ...a, barangay: e.target.value }))} />
                       </div>
                     </div>
                     <div className="form-grid-2">
                       <div className="form-group">
                         <label>City / Municipality</label>
-                        <input className="form-input" type="text" placeholder="City" 
-                          value={addressForm.city} onChange={e => setAddressForm(a => ({ ...a, city: e.target.value }))}/>
+                        <input className="form-input" type="text" placeholder="City"
+                          value={addressForm.city}
+                          readOnly={!showAddressForm}
+                          onChange={e => setAddressForm(a => ({ ...a, city: e.target.value }))} />
                       </div>
                       <div className="form-group">
                         <label>Zip Code</label>
-                        <input className="form-input form-zip" type="text" placeholder="0000" 
-                          value={addressForm.zip} onChange={e => setAddressForm(a => ({ ...a, zip: e.target.value }))}/>
+                        <input className="form-input form-zip" type="text" placeholder="0000"
+                          value={addressForm.zip}
+                          readOnly={!showAddressForm}
+                          onChange={e => setAddressForm(a => ({ ...a, zip: e.target.value }))} />
                       </div>
                     </div>
                     <div className="form-grid-1 form-group">
                       <label>Country</label>
-                      <input className="form-input" type="text" placeholder="Philippines" style={{ maxWidth: '280px' }} 
-                        value={addressForm.country} onChange={e => setAddressForm(a => ({ ...a, country: e.target.value }))}/>
+                      <input className="form-input" type="text" placeholder="Philippines" style={{ maxWidth: '280px' }}
+                        value={addressForm.country}
+                        readOnly={!showAddressForm}
+                        onChange={e => setAddressForm(a => ({ ...a, country: e.target.value }))} />
                     </div>
-                    <div className="submit-row" style={{ marginTop: '8px' }}>
-                      <button className="btn btn-accent btn-sm" onClick={saveAddress}>Save</button>
-                      <button className="btn btn-sm" onClick={() => setShowAddressForm(false)}>Cancel</button>
-                    </div>
+
+                    {/* Only show Save/Cancel when editing */}
+                    {showAddressForm && (
+                      <div className="submit-row" style={{ marginTop: '8px' }}>
+                        <button className="btn btn-accent btn-sm" onClick={saveAddress}>Save</button>
+                        <button className="btn btn-sm" onClick={() => setShowAddressForm(false)}>Cancel</button>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -295,10 +341,36 @@ export function Account() {
               <div className={`content-panel ${activePanel === 'payment' ? 'active' : ''}`} id="panel-payment">
                 <div className="panel-header">
                   <button className="btn btn-sm btn-accent" onClick={() => setShowPaymentForm(f => !f)}>
-                    + Add Payment Method
+                    {showPaymentForm ? 'Cancel' : savedPayments.length > 0 ? '+ Add Another' : '+ Add Payment Method'}
                   </button>
                 </div>
 
+                {!showPaymentForm && savedPayments.length > 0 && (
+                  <div id="saved-payments-list">
+                    {savedPayments.map((p, i) => (
+                      <div key={i} className="info-field" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div>
+                          <div className="field-label">{p.type}</div>
+                          <div className="field-value">{p.label}</div>
+                        </div>
+                        <button
+                          className="btn btn-sm"
+                          style={{ fontSize: '11px' }}
+                          onClick={() => {
+                            const next = savedPayments.filter((_, idx) => idx !== i)
+                            setSavedPayments(next)
+                            localStorage.setItem('savedPayments', JSON.stringify(next))
+                            showToast('Payment method removed.')
+                          }}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Add form — only shown when showPaymentForm is true */}
                 {showPaymentForm && (
                   <div id="payment-form-wrap">
                     <div className="pay-type-row">
@@ -310,7 +382,6 @@ export function Account() {
                           {name}
                         </button>
                       ))}
-
                       {ewalletTypes.map(name => (
                         <button
                           key={name}
@@ -326,29 +397,29 @@ export function Account() {
                       <div id="pay-card-form">
                         <div className="form-group form-grid-1" style={{ marginBottom: '14px' }}>
                           <label>Billing Full Name</label>
-                          <input className="form-input" type="text" placeholder="Name on card" 
-                            value={cardForm.name} onChange={e => setCardForm(c => ({ ...c, name: e.target.value }))}/>
+                          <input className="form-input" type="text" placeholder="Name on card"
+                            value={cardForm.name} onChange={e => setCardForm(c => ({ ...c, name: e.target.value }))} />
                         </div>
                         <div className="form-group form-grid-1" style={{ marginBottom: '14px' }}>
                           <label>Billing Address</label>
-                          <input className="form-input" type="text" placeholder="Billing address" 
+                          <input className="form-input" type="text" placeholder="Billing address"
                             value={cardForm.address} onChange={e => setCardForm(c => ({ ...c, address: e.target.value }))} />
                         </div>
                         <div className="card-form-grid">
                           <div className="form-group">
                             <label>Card Number</label>
-                            <input className="form-input" type="text" placeholder="•••• •••• •••• ••••" maxLength={19} 
+                            <input className="form-input" type="text" placeholder="•••• •••• •••• ••••" maxLength={19}
                               value={cardForm.number} onChange={e => setCardForm(c => ({ ...c, number: e.target.value }))} />
                           </div>
                           <div className="form-group">
                             <label>Expiration Date</label>
-                            <input className="form-input" type="text" placeholder="MM / YY" maxLength={8} 
-                              value={cardForm.expiry} onChange={e => setCardForm(c => ({ ...c, expiry: e.target.value }))}/>
+                            <input className="form-input" type="text" placeholder="MM / YY" maxLength={8}
+                              value={cardForm.expiry} onChange={e => setCardForm(c => ({ ...c, expiry: e.target.value }))} />
                           </div>
                           <div className="form-group">
                             <label>CVV</label>
-                            <input className="form-input" type="text" placeholder="•••" maxLength={4} 
-                              value={cardForm.cvv} onChange={e => setCardForm(c => ({ ...c, cvv: e.target.value }))}/>
+                            <input className="form-input" type="text" placeholder="•••" maxLength={4}
+                              value={cardForm.cvv} onChange={e => setCardForm(c => ({ ...c, cvv: e.target.value }))} />
                           </div>
                         </div>
                       </div>
@@ -358,27 +429,21 @@ export function Account() {
                       <div id="pay-ewallet-form">
                         <div className="form-group" style={{ marginBottom: '14px' }}>
                           <label>Account / Mobile Number</label>
-                          <input className="form-input" type="tel" placeholder="09XX XXX XXXX" style={{ maxWidth: '280px' }} 
+                          <input className="form-input" type="tel" placeholder="09XX XXX XXXX" style={{ maxWidth: '280px' }}
                             value={ewalletForm.accountName} onChange={e => setEwalletForm(w => ({ ...w, accountName: e.target.value }))} />
                         </div>
                         <div className="form-group" style={{ marginBottom: '14px' }}>
                           <label>Account Name</label>
-                          <input className="form-input" type="text" placeholder="Full name on e-wallet" style={{ maxWidth: '320px' }} 
-                            value={ewalletForm.number} onChange={e => setEwalletForm(w => ({ ...w, number: e.target.value }))}/>
+                          <input className="form-input" type="text" placeholder="Full name on e-wallet" style={{ maxWidth: '320px' }}
+                            value={ewalletForm.number} onChange={e => setEwalletForm(w => ({ ...w, number: e.target.value }))} />
                         </div>
                       </div>
                     )}
 
-                    <div className="payment-save-row">
-                      <button className="btn btn-accent btn-sm" onClick={savePayment}> Save</button>
-                      <button className="btn btn-sm" onClick={() => setShowPaymentForm(false)}>Cancel</button>
+                    <div className="submit-row" style={{ marginTop: '8px' }}>
+                      <button className="btn btn-accent btn-sm" onClick={savePayment}>Save</button>
+                      <button className="btn btn-sm" onClick={() => { setShowPaymentForm(false); setPayType('') }}>Cancel</button>
                     </div>
-                  </div>
-                )}
-
-                {!showPaymentForm && (
-                  <div id="payment-placeholder" className="placeholder-msg" style={{ marginTop: '12px' }}>
-                    No saved payment methods yet.
                   </div>
                 )}
               </div>
@@ -408,36 +473,80 @@ export function Account() {
 
               {/* Appointments Panel */}
               <div className={`content-panel ${activePanel === 'appointments' ? 'active' : ''}`} id="panel-appointments">
-                <table className="data-table">
-                  <thead>
-                    <tr>
-                      <th>Service</th>
-                      <th>Date</th>
-                      <th>Time</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Hair Treatment</td>
-                      <td>Apr 10, 2026</td>
-                      <td>10:00 AM</td>
-                      <td><span className="badge badge-green">Confirmed</span></td>
-                    </tr>
-                    <tr>
-                      <td>Facial</td>
-                      <td>Apr 15, 2026</td>
-                      <td>2:00 PM</td>
-                      <td><span className="badge badge-yellow">Pending</span></td>
-                    </tr>
-                    <tr>
-                      <td>Manicure</td>
-                      <td>Mar 22, 2026</td>
-                      <td>11:30 AM</td>
-                      <td><span className="badge badge-gray">Completed</span></td>
-                    </tr>
-                  </tbody>
-                </table>
+                {(() => {
+                  try {
+                    const user = JSON.parse(sessionStorage.getItem('currentUser') ?? 'null');
+                    const appointments = user?.appointments ?? [];
+
+                    if (appointments.length === 0) {
+                      return (
+                        <p className="placeholder-msg">
+                          No appointments yet.{' '}
+                          <Link to="/booking" style={{ color: 'var(--mauve)', textDecoration: 'none' }}>
+                            Book now →
+                          </Link>
+                        </p>
+                      );
+                    }
+
+                    return (
+                      <>
+                        <table className="data-table">
+                          <thead>
+                            <tr>
+                              <th>ID</th>
+                              <th>Branch</th>
+                              <th>Date</th>
+                              <th>Time</th>
+                              <th>Status</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {appointments.map((apt: any) => {
+                              const statusClass =
+                                apt.status === 'upcoming' ? 'badge-green' :
+                                  apt.status === 'completed' ? 'badge-gray' : 'badge-yellow';
+                              return (
+                                <tr key={apt.id}>
+                                  <td>{apt.id}</td>
+                                  <td>{apt.branch || '—'}</td>
+                                  <td>{apt.date}</td>
+                                  <td>{apt.time}</td>
+                                  <td>
+                                    <span className={`badge ${statusClass}`}>
+                                      {apt.status.charAt(0).toUpperCase() + apt.status.slice(1)}
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <Link
+                                      to="/appointments"
+                                      style={{ color: 'var(--mauve)', fontSize: '12px', textDecoration: 'none', letterSpacing: '0.04em' }}
+                                    >
+                                      View
+                                    </Link>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+
+                        {/* View All button */}
+                        <div style={{ marginTop: '1rem', textAlign: 'right' }}>
+                          <Link
+                            to="/appointments"
+                            style={{ color: 'var(--mauve)', fontSize: '12px', textDecoration: 'none', letterSpacing: '0.08em', textTransform: 'uppercase' }}
+                          >
+                            View All Appointments →
+                          </Link>
+                        </div>
+                      </>
+                    );
+                  } catch {
+                    return <p className="placeholder-msg">Unable to load appointments.</p>;
+                  }
+                })()}
               </div>
 
               {/* Orders Panel */}
@@ -487,9 +596,9 @@ export function Account() {
               {/* Help Panel */}
               <div className={`content-panel ${activePanel === 'help' ? 'active' : ''}`} id="panel-help">
                 <ul className="help-list">
-                  <li>FAQs <span className="help-arrow">›</span></li>
-                  <li>Contact Support <span className="help-arrow">›</span></li>
-                  <li>Return &amp; Refund Policy <span className="help-arrow">›</span></li>
+                  <li><Link to="/faqs">FAQs</Link> <span className="help-arrow">›</span></li>
+                  <li><Link to="/about-us#contacts">Contact Support</Link><span className="help-arrow">›</span></li>
+                  <li><Link to="/help#warranty">Return &amp; Refund Policy</Link><span className="help-arrow">›</span></li>
                   <li>Privacy Policy <span className="help-arrow">›</span></li>
                   <li>Terms &amp; Conditions <span className="help-arrow">›</span></li>
                 </ul>

@@ -140,7 +140,7 @@ export function Appointments() {
     setAppointments(updated);
   };
 
-  const filtered = appointments.filter(apt =>
+  const filtered = [...appointments].reverse().filter(apt =>
     activeFilter === 'all' ? true : deriveStatus(apt) === activeFilter,
   );
 

@@ -12,6 +12,7 @@ import { Faqs } from './pages/utilities/Faqs'
 import { HelpSupport } from './pages/utilities/HelpSupport'
 import { Appointments } from './pages/appointments/Appointments'
 import { Orders } from './pages/order/Orders'
+import { Tracking } from './pages/routes/Track'
 
 import './App.css'
 
@@ -32,6 +33,7 @@ function App() {
       <Route path="/auth" element={<Auth />} />
       <Route path="/appointments" element={<Appointments/>}/>
       <Route path="/orders" element={<Orders />}/>
+      <Route path="/track" element={<Tracking />}/>
     </Routes>
   )
 }

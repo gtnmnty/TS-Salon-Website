@@ -68,9 +68,20 @@ export function Auth() {
       return;
     }
 
-    // store logged in user (mock session)
     sessionStorage.setItem('currentUser', JSON.stringify(found));
-    navigate(from, { replace: true });
+
+    // check for pending booking redirect
+    const redirect = (() => {
+      try { return JSON.parse(sessionStorage.getItem('redirectAfterLogin') ?? 'null'); }
+      catch { return null; }
+    })();
+
+    if (redirect) {
+      sessionStorage.removeItem('redirectAfterLogin');
+      navigate(redirect.path, { state: redirect.state, replace: true });
+    } else {
+      navigate(from, { replace: true });
+    }
   };
 
   // ── SIGNUP ──
@@ -155,7 +166,7 @@ export function Auth() {
           <div className="input-group">
             <label className="labels">Email or Phone Number</label>
             <input type="text" placeholder="your@email.com" value={loginForm.identifier}
-              onChange={e => setLoginForm({ ...loginForm, identifier: e.target.value })}/>
+              onChange={e => setLoginForm({ ...loginForm, identifier: e.target.value })} />
             {errors.identifier && <span className="error-msg">{errors.identifier}</span>}
           </div>
 

@@ -100,7 +100,8 @@ function OrderCard({ order, onToast }: { order: Order; onToast: (msg: string) =>
           <div className="ord-date">
             Ordered on: <em>{order.date}</em>
           </div>
-          <button className="ord-track-btn" onClick={() => onToast('Tracking feature coming soon.')}>
+          <button className="ord-track-btn" onClick={() => {
+            navigate('/track', { state: { orderId: order.id } })}}>
             <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
               <circle cx="7" cy="7" r="5.5" stroke="currentColor" strokeWidth="1.3" />
               <path d="M7 4.5V7.5L9 9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />

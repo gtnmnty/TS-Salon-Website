@@ -25,7 +25,6 @@ const Cart: React.FC = () => {
   // Load cart from localStorage on mount
   useEffect(() => {
     const savedCart = localStorage.getItem('cart');
-    console.log('Cart loaded from localStorage:', savedCart);
     if (savedCart) {
       try {
         const parsed = JSON.parse(savedCart);
@@ -70,6 +69,11 @@ const Cart: React.FC = () => {
     ));
   };
 
+  const updateItem = (item: CartItem) => {
+    setCart(prev => prev.map(i => i.id === item.id ? { ...item } : i));
+    showToast('Cart updated!');
+  };
+
   const totals = {
     items: cart.reduce((sum, i) => sum + i.qty, 0),
     subtotal: cart.reduce((sum, i) => sum + (i.price * i.qty), 0),
@@ -87,10 +91,10 @@ const Cart: React.FC = () => {
         {toast && <div className="toast show">{toast}</div>}
 
         <header className="page-header">
-          <h1 className="page-title">My <span>Cart</span></h1>
-          <p className="page-subtitle">
-            {totals.items} {totals.items === 1 ? 'item' : 'items'} selected
-          </p>
+          <div className="page-header-row">
+            <h1 className="page-title">My <span>Cart</span></h1>
+            <p className="page-subtitle">{totals.items} {totals.items === 1 ? 'item' : 'items'} selected</p>
+          </div>
         </header>
 
         <section className="cart-list">
@@ -105,6 +109,7 @@ const Cart: React.FC = () => {
                 item={item}
                 onUpdateQty={updateQty}
                 onRemove={removeItem}
+                onUpdate={updateItem}
                 onUpdateDelivery={updateDelivery}
               />
             ))
@@ -113,13 +118,12 @@ const Cart: React.FC = () => {
 
         {cart.length > 0 && (
           <div className="cart-summary">
-            <SummaryItem label="Items" value={totals.items.toString()} />
-            <SummaryItem label="Shipping" value={formatCurrency(totals.shipping)} />
-            <SummaryItem label="Order Total" value={formatCurrency(totals.subtotal + totals.shipping)} />
-            <button
-              className="btn-checkout-main"
-              onClick={() => navigate('/checkout')}
-            >
+            <div className="summary-items-group">
+              <SummaryItem label="Items" value={totals.items.toString()} />
+              <SummaryItem label="Shipping" value={formatCurrency(totals.shipping)} />
+              <SummaryItem label="Order Total" value={formatCurrency(totals.subtotal + totals.shipping)} />
+            </div>
+            <button className="btn-checkout-main" onClick={() => navigate('/checkout')}>
               Checkout All
             </button>
           </div>
@@ -133,10 +137,11 @@ interface CartItemRowProps {
   item: CartItem;
   onUpdateQty: (id: string, delta: number) => void;
   onRemove: (id: string) => void;
+  onUpdate: (item: CartItem) => void;
   onUpdateDelivery: (id: string, optionId: number) => void;
 }
 
-const CartItemRow = ({ item, onUpdateQty, onRemove, onUpdateDelivery }: CartItemRowProps) => {
+const CartItemRow = ({ item, onUpdateQty, onRemove, onUpdate, onUpdateDelivery }: CartItemRowProps) => {
   const delivery = deliveryOpts.find(o => o.id === item.deliveryOptionId) || deliveryOpts[0];
   const navigate = useNavigate();
 
@@ -151,7 +156,7 @@ const CartItemRow = ({ item, onUpdateQty, onRemove, onUpdateDelivery }: CartItem
       <div className="cart-item-info">
         <h2 className="cart-item-name">{item.name}</h2>
         <p className="cart-item-desc">{item.desc}</p>
-        <div className="cart-item-price">{formatCurrency(item.price)}</div>
+        <p className="cart-item-price">{formatCurrency(item.price)}</p>
 
         <div className="qty-row">
           <span className="qty-label">Qty</span>
@@ -160,12 +165,26 @@ const CartItemRow = ({ item, onUpdateQty, onRemove, onUpdateDelivery }: CartItem
             <span className="qty-num">{item.qty}</span>
             <button className="qty-btn" onClick={() => onUpdateQty(item.id, 1)}>+</button>
           </div>
+          <button className="text-action" onClick={() => onUpdate(item)}>Update</button>
           <button className="text-action" onClick={() => onRemove(item.id)}>Remove</button>
         </div>
 
         <div className="cart-meta">
-          <span>Shipping: <strong>{formatCurrency(delivery?.deliveryPrice ?? 0)}</strong></span>
-          <span>Subtotal: <strong>{formatCurrency(item.price * item.qty)}</strong></span>
+          <div className="cart-meta-span">
+            <span>Shipping: <strong>{formatCurrency(delivery?.deliveryPrice ?? 0)}</strong></span>
+            <span>Subtotal: <strong>{formatCurrency(item.price * item.qty)}</strong></span>
+          </div>
+          <div className="cart-meta-button">
+            <button className="btn-checkout-item" onClick={() => {
+              sessionStorage.setItem('checkoutItems', JSON.stringify([item]));
+              const current = JSON.parse(localStorage.getItem('cart') ?? '[]');
+              const updated = current.filter((c: CartItem) => c.id !== item.id);
+              localStorage.setItem('cart', JSON.stringify(updated));
+              navigate('/checkout');
+            }}>
+              Checkout
+            </button>
+          </div>
         </div>
       </div>
 
@@ -177,9 +196,6 @@ const CartItemRow = ({ item, onUpdateQty, onRemove, onUpdateDelivery }: CartItem
             </option>
           ))}
         </select>
-        <button className="btn-checkout-item" onClick={() => navigate(`/checkout?item=${item.id}`)}>
-          Checkout
-        </button>
       </div>
     </article>
   );

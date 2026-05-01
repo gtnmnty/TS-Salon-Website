@@ -10,8 +10,8 @@ import { Auth } from './pages/form/Auth'
 import { Checkout } from './pages/form/Checkout'
 import { Faqs } from './pages/utilities/Faqs'
 import { HelpSupport } from './pages/utilities/HelpSupport'
-
-import { Suspense } from 'react';
+import { Appointments } from './pages/appointments/Appointments'
+import { Orders } from './pages/order/Orders'
 
 import './App.css'
 
@@ -30,6 +30,8 @@ function App() {
       <Route path="/faqs" element={<Faqs/>}/>
       <Route path="/help" element={<HelpSupport/>}/>
       <Route path="/auth" element={<Auth />} />
+      <Route path="/appointments" element={<Appointments/>}/>
+      <Route path="/orders" element={<Orders />}/>
     </Routes>
   )
 }

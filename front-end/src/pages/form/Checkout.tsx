@@ -1,8 +1,10 @@
+import { deliveryOpts } from '../../../../backend/data/deliveryOption';
+import type { CartItem } from '../../../../backend/types/cart';
+import type { UserAccount } from '../../../../backend/types/users';
+import type { Order } from '../../../../backend/types/orders';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import './Checkout.css';
-import { deliveryOpts } from '../../../../backend/data/deliveryOption';
-import type { CartItem } from '../../../../backend/types/cart';
 
 interface Profile {
   name: string;
@@ -54,7 +56,7 @@ export const Checkout: React.FC = () => {
       }
       return [];
     };
-    
+
     // Normalize items
     const rawItems = getCheckoutItems();
     const normalized = rawItems.map((item: any) => ({
@@ -64,7 +66,7 @@ export const Checkout: React.FC = () => {
       qty: Number(item.qty) || 1,
       deliveryOptionId: Number(item.deliveryOptionId) || deliveryOpts[0]?.id || 1
     }));
-    
+
     setItems(normalized);
   }, []);
 
@@ -138,53 +140,47 @@ export const Checkout: React.FC = () => {
   };
 
   const placeOrder = () => {
-    if (!items.length) {
-      showToastMsg('No items to place.');
+    if (!items.length) { showToastMsg('No items to place.'); return; }
+
+    // get current user from sessionStorage
+    const currentUser: UserAccount | null = (() => {
+      try { return JSON.parse(sessionStorage.getItem('currentUser') ?? 'null'); }
+      catch { return null; }
+    })();
+
+    if (!currentUser) {
+      showToastMsg('Please log in to place an order.');
+      navigate('/auth');
       return;
     }
 
-    const COUNTER_KEY = 'gilded_order_counter';
-    const current = parseInt(localStorage.getItem(COUNTER_KEY) || '0', 10);
-    const next = current + 1;
-    localStorage.setItem(COUNTER_KEY, String(next));
-    const orderId = '#GLD-' + String(next).padStart(5, '0');
-
-    const days = [7, 8, 9, 10, 11, 12, 13, 14];
-    const d = new Date();
-    d.setDate(d.getDate() + (days[Math.floor(Math.random() * days.length)] || 7));
-    const estimatedArrival = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-
-    const order = {
-      orderId,
-      status: 'Processing',
-      estimatedArrival,
-      delivery: getDeliveryOption(items[0]?.deliveryOptionId || 1).name,
-      shippingFee: totals.shipping,
-      tax: totals.tax,
-      grandTotal: totals.grandTotal,
-      placedAt: new Date().toISOString(),
+    const newOrder: Order = {
+      id: `ORD-${String(currentUser.orders.length + 1).padStart(5, '0')}`,
+      status: 'pending',
+      date: new Date().toISOString().split('T')[0] ?? '',
+      total: totals.grandTotal,
       items: items.map(item => ({
-        id: item.id,
+        productId: item.id,
         name: item.name,
-        image: item.image || null,
+        quantity: item.qty,
         price: item.price,
-        qty: item.qty,
-        deliveryName: getDeliveryOption(item.deliveryOptionId).name
+        image: item.image ?? '',
       }))
     };
 
-    const ORDERS_KEY = 'gilded_orders';
-    const existing = JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]');
-    existing.push(order);
-    localStorage.setItem(ORDERS_KEY, JSON.stringify(existing));
+    // push to user and save back to sessionStorage
+    currentUser.orders.push(newOrder);
+    sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+    localStorage.removeItem('cart');
+    sessionStorage.removeItem('checkoutItems');
 
+    // clear cart
     const fromSession = sessionStorage.getItem('checkoutItems');
     if (!fromSession) localStorage.removeItem('cart');
     sessionStorage.removeItem('checkoutItems');
 
-    sessionStorage.setItem('justOrdered', '1');
     showToastMsg('Order placed! Thank you. ✦');
-    setTimeout(() => { navigate('/account'); }, 1200);
+    setTimeout(() => navigate('/orders'), 1200);
   };
 
   return (

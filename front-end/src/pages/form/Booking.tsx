@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import type { BookingForm } from '../../../../backend/types/booking.ts';
 import type { UserAccount } from '../../../../backend/types/users.ts';
+import type { Appointment } from '../../../../backend/types/appointments.ts';
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
 import './Booking.css';
@@ -50,6 +51,36 @@ function Toast({ message }: { message: string }) {
   );
 }
 
+function saveAppointment(form: BookingForm, guests: number): void {
+  const existing = (() => {
+    try { return JSON.parse(localStorage.getItem('gilded_appointments') ?? '[]'); }
+    catch { return []; }
+  })();
+  const next = existing.length + 1;
+  const apt = {
+    id: `#APT-${String(next).padStart(5, '0')}`,
+    form,
+    guests,
+    submittedAt: new Date().toISOString(),
+  };
+  localStorage.setItem('gilded_appointments', JSON.stringify([...existing, apt]));
+}
+
+function formatTimeRange(time: string): string {
+  if (!time) return '';
+  const colon = time.indexOf(':');
+  const startHour = parseInt(time.slice(0, colon), 10);
+  const startMin  = parseInt(time.slice(colon + 1), 10);
+  const endHour   = (startHour + 1) % 24;
+  const fmt = (h: number, m: number) => {
+    const period   = h >= 12 ? 'PM' : 'AM';
+    const displayH = h % 12 === 0 ? 12 : h % 12;
+    const displayM = m === 0 ? '' : `:${String(m).padStart(2, '0')}`;
+    return `${displayH}${displayM} ${period}`;
+  };
+  return `${fmt(startHour, startMin)} – ${fmt(endHour, startMin)}`;
+}
+
 export function Booking() {
   const location = useLocation();
   const serviceFromNav = (location.state as { service?: string })?.service ?? '';
@@ -59,6 +90,7 @@ export function Booking() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [toast, setToast] = useState('');
   const [guests, setGuests] = useState(1);
+  const navigate = useNavigate();
 
   // get current user from session
   const currentUser: UserAccount | null = (() => {
@@ -125,11 +157,34 @@ export function Booking() {
       showToast('Please fill in all required fields.');
       return;
     }
+
+    if (currentUser) {
+      const newApt: Appointment = {
+        id: `APT-${String(Date.now()).slice(-5)}`,
+        status: 'upcoming',
+        service: form.service,
+        branch: form.serviceType === 'home'
+          ? [form.street, form.barangay, form.city].filter(Boolean).join(', ')
+          : form.branch ?? '',
+        date: form.date,
+        time: formatTimeRange(form.time),
+        guests,
+      }
+      const updatedUser = {
+        ...currentUser,
+        appointments: [...currentUser.appointments, newApt],
+      };
+      sessionStorage.setItem('currentUser', JSON.stringify(updatedUser));
+      console.log('saved appointments:', updatedUser.appointments);
+    }
+
+    saveAppointment(form, guests);
     showToast('Appointment booked!');
     setTimeout(() => {
       setForm({ ...EMPTY_FORM, service: serviceFromNav });
       setSameInfo(true);
       setErrors({});
+      navigate('/appointments');
     }, 1200);
   };
 

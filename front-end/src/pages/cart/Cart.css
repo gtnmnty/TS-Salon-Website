@@ -14,8 +14,14 @@
   margin-bottom: clamp(1.5rem, 4vw, 2.7rem);
 }
 
+.page-header-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1.2rem;
+}
+
 .page-title {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Jost', serif;
   font-size: clamp(3rem, calc(1.85rem + 2.6vw), 5rem);
   font-weight: 300;
   line-height: 0.95;
@@ -24,8 +30,8 @@
 }
 
 .page-title span {
-  color: var(--mauve);
   font-style: italic;
+  color: var(--wine)
 }
 
 .page-subtitle {
@@ -33,6 +39,7 @@
   font-size: clamp(0.82rem, calc(0.7rem + 0.3vw), 1rem);
   letter-spacing: 0.34em;
   text-transform: uppercase;
+  margin-top: 0;           /* remove any top spacing */
 }
 
 .cart-list {
@@ -112,10 +119,10 @@
 
 .cart-item-price {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.8rem, calc(1.2rem + 1vw), 2.35rem);
-  font-weight: 600;
+  font-size: clamp(1rem, calc(1.2rem + 1vw), 1.5rem);
+  font-weight: 500;
   color: var(--wine);
-  margin-bottom: clamp(1rem, 1.6vw, 1.35rem);
+  margin-bottom: clamp(0.4rem, 1.6vw, 0.75rem);
 }
 
 .qty-row {
@@ -135,30 +142,23 @@
 
 .qty-controls {
   display: inline-grid;
-  grid-template-columns: repeat(3, minmax(2.9rem, auto));
+  grid-template-columns: repeat(3, minmax(1rem, auto));
   align-items: center;
-  min-height: clamp(3rem, 6vw, 3.35rem);
-  border: 1px solid rgba(165, 56, 96, 0.22);
-  background: var(--white);
+  min-height: unset !important;
+  border: 1px solid rgba(165, 56, 96, 0.3);
+  border-radius: 4px;
+  background: transparent;
   overflow: hidden;
 }
 
-.qty-btn,
-.qty-num {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100%;
-  padding-inline: clamp(0.85rem, 1.2vw, 1.05rem);
-  border: 0;
-  background: transparent;
-}
-
 .qty-btn {
-  cursor: pointer;
+  padding-block: 0.3rem !important;
+  padding-inline: 0.65rem !important;
+  font-size: 0.85rem !important;
+  background: transparent;
   color: var(--wine);
-  font-size: clamp(1rem, 1.7vw, 1.1rem);
-  transition: background 0.2s ease, color 0.2s ease;
+  border: none;
+  cursor: pointer;
 }
 
 .qty-btn:hover {
@@ -167,9 +167,12 @@
 }
 
 .qty-num {
-  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  font-size: 0.9rem !important;
+  min-width: 1.8rem !important;
+  padding-block: 0.3rem !important;
+  padding-inline: 0.4rem !important;
+  text-align: center;
   color: var(--deep);
-  min-width: clamp(3rem, 5vw, 3.6rem);
 }
 
 .text-action {
@@ -189,11 +192,16 @@
 }
 
 .cart-meta {
-  display: grid;
+  display: flex;
   gap: clamp(0.45rem, 0.8vw, 0.6rem);
   color: var(--deep);
   font-size: clamp(0.75rem, calc(0.7rem + 0.13vw), 0.875rem);
 }
+
+.cart-meta span{
+  display: block;
+}
+
 
 .cart-meta strong {
   font-weight: 600;
@@ -201,9 +209,14 @@
 
 .cart-item-side {
   display: grid;
+  grid-template-rows: auto 1fr auto;
   align-content: start;
-  gap: clamp(1rem, 1.5vw, 1.3rem);
+  gap: clamp(0.6rem, 1vw, 0.9rem);
   padding-top: clamp(0.4rem, 0.9vw, 0.8rem);
+}
+
+.cart-item-side-spacer {
+  flex: 1;
 }
 
 .delivery-field {
@@ -254,7 +267,7 @@
 }
 
 .btn-checkout-main {
-  width: 100%;
+  width: auto;
   border: 0;
   border-radius: 0.3rem;
   background: linear-gradient(135deg, var(--wine) 0%, var(--deep) 100%);
@@ -264,8 +277,7 @@
   letter-spacing: 0.28em;
   font-family: 'Jost', sans-serif;
   font-size: clamp(0.82rem, calc(0.74rem + 0.18vw), 0.95rem);
-  padding:
-    clamp(0.95rem, 1vw, 1.05rem) clamp(1rem, 2vw, 1.4rem);
+  padding: clamp(0.95rem, 1vw, 1.05rem) clamp(2rem, 3vw, 3rem);
   box-shadow: 0 1rem 2rem rgba(69, 9, 32, 0.15);
   transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
@@ -278,16 +290,20 @@
 }
 
 .cart-summary {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-template-rows: auto auto;
-  gap: clamp(1rem, 2vw, 1.5rem);
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: clamp(1.35rem, 2.4vw, 2rem);
   background: var(--surface);
   border: 1px solid rgba(165, 56, 96, 0.1);
   border-radius: clamp(0.9rem, 1.2vw, 1.2rem);
   box-shadow: var(--shadow-sm);
+}
+
+.summary-items-group {
+  display: flex;
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: flex-end;
 }
 
 .summary-item {
@@ -305,7 +321,7 @@
 
 .summary-val {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2rem, calc(1.2rem + 1.2vw), 2.6rem);
+  font-size: clamp(2rem, calc(1.2rem + 1.2vw), 1.5rem);
   line-height: 1;
   color: var(--deep);
 }

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import type { ServiceItem, Review } from '../../../../backend/types/services.ts'
+import { useNavigate } from 'react-router'
 
 interface Props {
   service: ServiceItem | null
@@ -11,12 +12,7 @@ function StarPicker({ selected, onSelect }: { selected: number; onSelect: (n: nu
   return (
     <div className="star-picker">
       {[1, 2, 3, 4, 5].map(n => (
-        <span
-          key={n}
-          data-stars={n}
-          className={n <= selected ? 'lit' : ''}
-          onClick={() => onSelect(n)}
-        >
+        <span key={n} data-stars={n} className={n <= selected ? 'lit' : ''} onClick={() => onSelect(n)}>
           ★
         </span>
       ))}
@@ -55,6 +51,7 @@ export function ServiceOverlay({ service, onClose, onBook }: Props) {
 
   const reviewsListRef = useRef<HTMLDivElement>(null)
   const autoTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const navigate = useNavigate();
 
   // Reset state when service changes
   useEffect(() => {
@@ -74,6 +71,7 @@ export function ServiceOverlay({ service, onClose, onBook }: Props) {
     return () => { document.body.style.overflow = 'auto' }
   }, [service])
 
+
   // Auto-slide
   useEffect(() => {
     if (!service) return
@@ -82,6 +80,7 @@ export function ServiceOverlay({ service, onClose, onBook }: Props) {
     }, 2000)
     return () => { if (autoTimerRef.current) clearInterval(autoTimerRef.current) }
   }, [service, imgIdx])
+
 
   // Reviews swipe — mouse drag
   useEffect(() => {
@@ -248,7 +247,9 @@ export function ServiceOverlay({ service, onClose, onBook }: Props) {
               </div>
 
               <div className="action-btns">
-                <button className="overlay-book-btn" onClick={() => onBook(service)}>Book Now</button>
+                <button className="overlay-book-btn" onClick={() => navigate('/booking', { state: { service: service.name } })}>
+                  Book Now
+                </button>
               </div>
             </div>
 

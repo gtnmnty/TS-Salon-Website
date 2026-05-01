@@ -11,6 +11,8 @@ import './ServiceOverlay.css'
 const CATEGORIES = ['All', 'Hair Care', 'Skin Care', 'Nail Care', 'Make Up']
 
 function ServiceCard({ service, onOpen }: { service: ServiceItem; onOpen: (s: ServiceItem) => void }) {
+  const navigate = useNavigate()
+  
   return (
     <div className="card" onClick={() => onOpen(service)}>
       <div className="card-img" style={{ backgroundImage: `url('${service.imgs[0]}')` }}>
@@ -26,7 +28,7 @@ function ServiceCard({ service, onOpen }: { service: ServiceItem; onOpen: (s: Se
         <div className="card-footer">
           <span className="card-price">{service.price}</span>
           <div className="card-actions">
-            <button className="book-btn" type="button" onClick={e => { e.stopPropagation(); onOpen(service); }}>
+            <button className="book-btn" type="button" onClick={() => navigate('/booking', { state: { service: service.name } })}>
               Book
             </button>
             <button className="cart-btn" type="button" onClick={e => { e.stopPropagation(); onOpen(service); }}>

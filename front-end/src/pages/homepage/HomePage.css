@@ -134,6 +134,11 @@
   box-shadow: none;
 }
 
+.hp-page .hero-circle img{
+  width: 100%;
+  border-radius: 50%;
+}
+
 .hp-page .hero-circle::after {
   content: '';
   position: absolute;
@@ -187,7 +192,7 @@
 
 /* ── WHAT WE OFFER ── */
 .hp-page .section-offer {
-  padding: 6rem 7%;
+  padding: 6rem var(--page-gutter);
   background: var(--off);
 }
 
@@ -234,7 +239,7 @@
 
 .hp-page .offer-img {
   width: 100%;
-  aspect-ratio: 4/3;
+  aspect-ratio: 3/2;
   background: var(--warm-grey);
   overflow: hidden;
   position: relative;
@@ -309,7 +314,7 @@
 
 /* ── FEATURED PRODUCTS ── */
 .hp-page .section-products {
-  padding: 6rem 7%;
+  padding: 6rem var(--page-gutter);
   background: var(--warm-grey);
 }
 
@@ -352,7 +357,7 @@
 
 .hp-page .product-img {
   width: 100%;
-  aspect-ratio: 4/3;
+  aspect-ratio: 3/2;
   background: var(--warm-grey);
   overflow: hidden;
   position: relative;
@@ -469,7 +474,7 @@
 
 /* ── ART OF BEAUTY ── */
 .hp-page .section-story {
-  padding: 6rem 7%;
+  padding: 6rem var(--page-gutter);
   background: var(--off);
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -490,71 +495,69 @@
   height: 100%;
   object-fit: cover;
   border-radius: 6px;
+  display: block;
 }
 
-.hp-page .gallery-placeholder {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, var(--warm-grey), var(--sand));
+/* Left / right arrow buttons */
+.hp-page .gallery-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
-  font-family: 'Jost', sans-serif;
-  font-weight: 300;
-  letter-spacing: 0.15em;
-  color: var(--text-light);
-  border-radius: 6px;
-  position: relative;
-  overflow: hidden;
+  transition: background 0.25s, border-color 0.25s;
+  z-index: 2;
 }
 
-.hp-page .gallery-placeholder::before {
-  content: '';
-  position: absolute;
-  top: 15%;
-  left: 15%;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 1px solid rgba(197, 160, 89, 0.3);
-}
-
-.hp-page .gallery-placeholder::after {
-  content: '';
-  position: absolute;
-  bottom: 18%;
-  right: 15%;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid rgba(197, 160, 89, 0.3);
-}
-
-.hp-page .gallery-nav {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 1rem;
-  display: flex;
-  justify-content: space-between;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.2), transparent);
-}
-
-.hp-page .gallery-dot {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(255, 255, 255, 0.7);
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(4px);
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.hp-page .gallery-dot:hover {
+.hp-page .gallery-btn:hover {
   background: rgba(255, 255, 255, 0.35);
+  border-color: rgba(255, 255, 255, 1);
+}
+
+.hp-page .gallery-btn--prev {
+  left: 0.85rem;
+}
+
+.hp-page .gallery-btn--next {
+  right: 0.85rem;
+}
+
+/* Dot indicators */
+.hp-page .gallery-dots {
+  position: absolute;
+  bottom: 0.85rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.4rem;
+  z-index: 2;
+}
+
+.hp-page .gallery-pip {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.25s, transform 0.25s;
+}
+
+.hp-page .gallery-pip.active {
+  background: #fff;
+  transform: scale(1.3);
 }
 
 .hp-page .story-content {}

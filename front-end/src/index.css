@@ -30,7 +30,7 @@
   --accent-hover: var(--wine);
 
   /* Homepage-specific tokens */
-  --page-gutter: clamp(1.25rem, 6vw, 7rem);
+  --page-gutter: clamp(1.25rem, 6vw, 9rem);
   --header-bg: #fdf5ee;
   --text-dark: #1a1410;
   --text-mid: #5a4e46;

@@ -14,7 +14,7 @@ h1 {
 .hs-page .sub-title {
   font-size: clamp(1.2rem, 4vw, 2.5rem);
   font-weight: 300;
-  color: var(--wine);
+  color: var(--white);
 }
 
 .hs-page .section-title {
@@ -28,7 +28,7 @@ h1 {
 .hs-page .hero {
   padding: 96px 0;
   text-align: center;
-  background: linear-gradient(135deg, var(--white) 0%, var(--blush) 100%);
+  background: linear-gradient(160deg, var(--deep) 0%, var(--wine) 55%, var(--mauve) 100%);
 }
 
 /* NIM Section */

@@ -53,7 +53,7 @@ export const products: ProductItem[] = [
     category: "Make Up",
     price: "₱520",
     priceNum: 519.99,
-    badge: null,
+    badge: "On Sale",
     desc: "Richly pigmented matte lip color that wears for 10 hours without drying or fading.",
     imgs: [
       "https://images.unsplash.com/photo-1586495777744-4e6232bf5040?w=800&auto=format&fit=crop",

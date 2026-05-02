@@ -70,10 +70,10 @@ function formatTimeRange(time: string): string {
   if (!time) return '';
   const colon = time.indexOf(':');
   const startHour = parseInt(time.slice(0, colon), 10);
-  const startMin  = parseInt(time.slice(colon + 1), 10);
-  const endHour   = (startHour + 1) % 24;
+  const startMin = parseInt(time.slice(colon + 1), 10);
+  const endHour = (startHour + 1) % 24;
   const fmt = (h: number, m: number) => {
-    const period   = h >= 12 ? 'PM' : 'AM';
+    const period = h >= 12 ? 'PM' : 'AM';
     const displayH = h % 12 === 0 ? 12 : h % 12;
     const displayM = m === 0 ? '' : `:${String(m).padStart(2, '0')}`;
     return `${displayH}${displayM} ${period}`;
@@ -83,14 +83,20 @@ function formatTimeRange(time: string): string {
 
 export function Booking() {
   const location = useLocation();
-  const serviceFromNav = (location.state as { service?: string })?.service ?? '';
+  const serviceFromNav = (location.state as { service?: string; guests?: number })?.service ?? '';
+  const guestsFromNav = (location.state as { service?: string; guests?: number })?.guests ?? 1;
 
-  const [form, setForm] = useState<BookingForm>({ ...EMPTY_FORM, service: serviceFromNav });
   const [sameInfo, setSameInfo] = useState(true);
   const [errors, setErrors] = useState<FormErrors>({});
   const [toast, setToast] = useState('');
   const [guests, setGuests] = useState(1);
   const navigate = useNavigate();
+
+  const [form, setForm] = useState<BookingForm>({
+    ...EMPTY_FORM,
+    service: serviceFromNav,
+    guests: guestsFromNav,
+  });
 
   // get current user from session
   const currentUser: UserAccount | null = (() => {

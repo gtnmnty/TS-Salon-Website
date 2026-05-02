@@ -165,7 +165,21 @@ function OrderCard({ order, onToast }: { order: Order; onToast: (msg: string) =>
                 }}>
                   Add to Cart
                 </button>
-                <button className="ord-btn-buy" onClick={() => navigate('/checkout')}>
+                <button className="ord-btn-buy" onClick={() => {
+                  const checkoutItem = [{
+                    id: item.productId,
+                    name: item.name,
+                    desc: '',
+                    image: item.image ?? '',
+                    price: item.price,
+                    qty: item.quantity,
+                    deliveryOptionId: 1,
+                    deliveryType: item.deliveryType ?? 'Standard Delivery',
+                    deliveryDays: item.deliveryDays ?? 5,
+                  }];
+                  sessionStorage.setItem('checkoutItems', JSON.stringify(checkoutItem));
+                  navigate('/checkout');
+                }}>
                   Buy Again
                 </button>
               </div>

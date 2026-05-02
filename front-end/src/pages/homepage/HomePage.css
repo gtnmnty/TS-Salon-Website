@@ -1,10 +1,14 @@
+.hp-page {
+  --home-gutter: 10vw;
+}
+
 /* ── HERO ── */
 .hp-page .hero {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(18rem, 0.95fr);
   min-height: 78vh;
   align-items: center;
-  padding: clamp(3.5rem, 7vw, 6rem) var(--page-gutter) clamp(4rem, 7vw, 6rem);
+  padding: clamp(3.5rem, 7vw, 6rem) var(--home-gutter) clamp(4rem, 7vw, 6rem);
   gap: clamp(2.5rem, 6vw, 5.5rem);
   background: var(--header-bg);
   position: relative;
@@ -192,7 +196,7 @@
 
 /* ── WHAT WE OFFER ── */
 .hp-page .section-offer {
-  padding: 6rem var(--page-gutter);
+  padding: 6rem var(--home-gutter);
   background: var(--off);
 }
 
@@ -314,7 +318,7 @@
 
 /* ── FEATURED PRODUCTS ── */
 .hp-page .section-products {
-  padding: 6rem var(--page-gutter);
+  padding: 6rem var(--home-gutter);
   background: var(--warm-grey);
 }
 
@@ -343,8 +347,8 @@
   position: absolute;
   top: 14px;
   left: 14px;
-  background: rgba(197, 160, 89, 0.15);
-  border: 1px solid var(--gold);
+  background: rgb(23, 22, 22, 0.9);
+  border: 1px solid var(--dark);
   color: var(--gold);
   font-size: 0.6rem;
   font-weight: 600;
@@ -388,21 +392,31 @@
   background: var(--dark);
   padding: 0.85rem 1rem;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
   gap: 0.5rem;
 }
 
 .hp-page .product-name {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1rem;
+  font-size: 1.5rem;
   color: var(--white);
   font-weight: 500;
-  flex: 1;
+  margin-bottom: 0.15rem;
+}
+
+.hp-page .product-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 2rem;
 }
 
 .hp-page .product-price {
-  font-size: 0.78rem;
+  font-size: 1.2rem;
   color: var(--gold);
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -411,6 +425,9 @@
 .hp-page .product-actions {
   display: flex;
   gap: 0.4rem;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
 }
 
 .hp-page .btn-cart {
@@ -474,7 +491,7 @@
 
 /* ── ART OF BEAUTY ── */
 .hp-page .section-story {
-  padding: 6rem var(--page-gutter);
+  padding: 6rem var(--home-gutter);
   background: var(--off);
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -693,109 +710,83 @@
 }
 
 @media (max-width: 900px) {
-  nav {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem var(--page-gutter) 1.25rem;
+  .hp-page {
+    --home-gutter: clamp(1rem, 5vw, 2rem);
   }
 
-  .nav-links {
-    justify-content: flex-start;
-    gap: 0.85rem 1.35rem;
-  }
-
-  .hero {
+  .hp-page .hero {
     grid-template-columns: 1fr;
     min-height: auto;
-    padding: 3rem var(--page-gutter) 4rem;
+    padding: 3rem var(--home-gutter) 4rem;
     gap: 2.5rem;
   }
 
-  .hero-left {
+  .hp-page .hero-left {
     max-width: 100%;
   }
 
-  .hero-tagline {
+  .hp-page .hero-tagline {
     margin: 1.5rem 0 2rem;
   }
 
-  .hero-right {
+  .hp-page .hero-right {
     min-height: 20rem;
   }
 
-  .offer-grid {
+  .hp-page .offer-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .product-grid {
+  .hp-page .product-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .section-story {
+  .hp-page .section-story {
     grid-template-columns: 1fr;
     gap: 3rem;
-  }
-
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
   }
 }
 
 @media (max-width: 560px) {
-  .nav-brand {
-    font-size: 1.5rem;
-  }
-
-  .nav-links {
-    width: 100%;
-    gap: 0.7rem 1.15rem;
-  }
-
-  .nav-links a {
-    font-size: 0.94rem;
-  }
-
-  .hero {
+  .hp-page .hero {
     padding-top: 2.5rem;
     gap: 2rem;
   }
 
-  .hero-logo {
+  .hp-page .hero-logo {
     font-size: clamp(3rem, 18vw, 4.2rem);
   }
 
-  .hero-logo span {
+  .hp-page .hero-logo span {
     font-size: clamp(1.1rem, 6vw, 1.55rem);
   }
 
-  .hero-tagline {
+  .hp-page .hero-tagline {
     font-size: 1rem;
     line-height: 1.75;
   }
 
-  .hero-btns {
+  .hp-page .hero-btns {
     grid-template-columns: 1fr;
   }
 
-  .btn {
+  .hp-page .btn {
     width: 100%;
     min-height: 3.1rem;
   }
 
-  .hero-right {
+  .hp-page .hero-right {
     display: flex;
     flex-direction: column;
     align-items: center;
     min-height: auto;
   }
 
-  .hero-circle {
+  .hp-page .hero-circle {
     width: min(82vw, 22rem);
   }
 
-  .rating-badge {
+  .hp-page .rating-badge {
     position: relative;
     left: auto;
     bottom: auto;
@@ -803,15 +794,28 @@
     align-self: flex-start;
   }
 
-  .offer-grid {
+  .hp-page .offer-grid {
     grid-template-columns: 1fr;
   }
 
-  .product-grid {
+  .hp-page .product-grid {
     grid-template-columns: 1fr;
   }
 
-  nav {
-    padding-inline: 1rem;
+  .hp-page .product-meta {
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
+
+  .hp-page .product-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .hp-page .btn-cart,
+  .hp-page .btn-buy {
+    flex: 1 1 0;
+    text-align: center;
+  }
+
 }

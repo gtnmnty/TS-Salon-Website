@@ -139,13 +139,13 @@ export function HomePage() {
                 <img src={product.imgs[0]} alt={product.name} />
               </div>
               <div className="product-footer">
-                <div>
-                  <div className="product-name">{product.name}</div>
+                <div className="product-name">{product.name}</div>
+                <div className="product-meta">
                   <div className="product-price">{product.price}</div>
-                </div>
-                <div className="product-actions">
-                  <button className="btn-cart">Add to Cart</button>
-                  <button className="btn-buy">Buy</button>
+                  <div className="product-actions">
+                    <button className="btn-cart">Add to Cart</button>
+                    <button className="btn-buy">Buy</button>
+                  </div>
                 </div>
               </div>
             </div>

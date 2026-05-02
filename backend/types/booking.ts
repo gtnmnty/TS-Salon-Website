@@ -11,5 +11,6 @@ export interface BookingForm {
   city?: string;
   zipcode?: string;
   service: string;
+  guests: number;
   notes?: string;
 }

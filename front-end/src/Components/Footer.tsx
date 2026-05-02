@@ -25,7 +25,7 @@ export function Footer() {
           </div>
 
           {/* Customer Area */}
-          <div className="footer-col">
+          <div className="footer-col customer-area">
             <h5>Customer Area</h5>
             <ul>
               <li><Link to="/account">My Account</Link></li>
@@ -73,6 +73,15 @@ export function Footer() {
                 </div>
               </li>
             </ul>
+          </div>
+
+          <div className="footer-col footer-subscribe">
+            <h5>Stay Updated</h5>
+            <p>Subscribe for beauty news and email promotions.</p>
+            <form className="subscribe-form" onSubmit={(e) => e.preventDefault()}>
+              <input type="email" placeholder="Enter your email" aria-label="Email address" />
+              <button type="submit">Subscribe</button>
+            </form>
           </div>
         </div>
 

@@ -205,19 +205,17 @@ export function Products() {
         ))}
       </div>
 
-      {/* SORT */}
-      <div className="sort-wrap">
-        <select className="sort-select" value={sort} onChange={e => setSort(e.target.value)}>
-          <option value="default">Sort by: Featured</option>
-          <option value="price-asc">Price: Low to High</option>
-          <option value="price-desc">Price: High to Low</option>
-        </select>
-      </div>
-
       {/* GRID */}
       <div className="container">
         <div className="section-heading">Our Products</div>
         <div className="section-sub">Premium beauty essentials, curated for you</div>
+        <div className="sort-wrap">
+          <select className="sort-select" value={sort} onChange={e => setSort(e.target.value)}>
+            <option value="default">Sort by: Featured</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+          </select>
+        </div>
 
 
         <div className="items-grid">

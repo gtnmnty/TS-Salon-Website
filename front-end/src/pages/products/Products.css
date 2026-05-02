@@ -136,10 +136,11 @@
   border-color: var(--wine);
 }
 
-.sort-select {
+.products-page .sort-select {
   border: 1px solid rgba(165, 56, 96, 0.25);
   border-radius: 6px;
   display: block;
+  margin-left: 0;
   margin-right: auto;
   margin-bottom: clamp(1.2rem, 2.4vw, 1.75rem);
   padding: clamp(0.7rem, 1vw, 0.85rem) clamp(0.95rem, 1.5vw, 1.15rem);
@@ -151,6 +152,13 @@
   background: var(--white);
   cursor: pointer;
   outline: none;
+}
+
+.products-page .sort-wrap {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 0;
 }
 
 /* ─── Products Grid Wrapper ──────────────── */

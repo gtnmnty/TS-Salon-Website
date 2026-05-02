@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, type MouseEvent as ReactMouseEvent, type WheelEvent as ReactWheelEvent } from 'react'
 import type { ProductItem, Review } from '../../../../backend/types/products.ts'
 import { addItemToCart } from './Products'
 
@@ -40,12 +40,18 @@ export function ProductOverlay({ product, onClose, onBuyNow, onToast }: Props) {
   const [imgIdx, setImgIdx] = useState(0)
   const [qty, setQty] = useState(1)
   const [reviews, setReviews] = useState<Review[]>([])
+  const [reviewIndex, setReviewIndex] = useState(0)
+  const [reviewPerPage, setReviewPerPage] = useState(3)
   const [selectedStars, setSelectedStars] = useState(5)
   const [reviewerName, setReviewerName] = useState('')
   const [reviewerDate, setReviewerDate] = useState('')
   const [reviewText, setReviewText] = useState('')
 
-  const reviewsListRef = useRef<HTMLDivElement>(null)
+  const reviewsWrapperRef = useRef<HTMLDivElement>(null)
+  const dragStartXRef = useRef(0)
+  const dragStartScrollLeftRef = useRef(0)
+  const isDraggingRef = useRef(false)
+  const justSubmittedRef = useRef(false)
   const autoTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   // Reset when product changes
@@ -73,46 +79,78 @@ export function ProductOverlay({ product, onClose, onBuyNow, onToast }: Props) {
     return () => { if (autoTimerRef.current) clearInterval(autoTimerRef.current) }
   }, [product, imgIdx])
 
-  // Reviews swipe
+  const calcReviewPerPage = () => {
+    const wrapper = reviewsWrapperRef.current
+    if (!wrapper) return 3
+    const w = wrapper.offsetWidth
+    if (w <= 580) return 1
+    if (w <= 900) return 2
+    return 3
+  }
+
   useEffect(() => {
-    const el = reviewsListRef.current
-    if (!el) return
+    const update = () => setReviewPerPage(calcReviewPerPage())
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
 
-    let isDown = false, startX = 0, scrollLeft = 0
+  const getReviewStep = () => {
+    const wrapper = reviewsWrapperRef.current
+    if (!wrapper) return 1
+    return wrapper.offsetWidth / Math.max(1, reviewPerPage)
+  }
 
-    const onMouseDown = (e: MouseEvent) => {
-      isDown = true
-      startX = e.pageX - el.offsetLeft
-      scrollLeft = el.scrollLeft
-      el.style.cursor = 'grabbing'
+  // Keep nav buttons in sync with native scrolling
+  useEffect(() => {
+    const wrapper = reviewsWrapperRef.current
+    if (!wrapper) return
+    const syncIndex = () => {
+      const step = getReviewStep()
+      const maxIndex = Math.max(0, reviews.length - reviewPerPage)
+      const nextIndex = Math.min(maxIndex, Math.max(0, Math.round(wrapper.scrollLeft / step)))
+      setReviewIndex(nextIndex)
     }
-    const onMouseLeave = () => { isDown = false; el.style.cursor = 'grab' }
-    const onMouseUp = () => { isDown = false; el.style.cursor = 'grab' }
-    const onMouseMove = (e: MouseEvent) => {
-      if (!isDown) return
-      e.preventDefault()
-      el.scrollLeft = scrollLeft - (e.pageX - el.offsetLeft - startX) * 1.4
-    }
-    const onWheel = (e: WheelEvent) => {
-      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return
-      e.preventDefault()
-      el.scrollLeft += e.deltaY * 1.2
+    syncIndex()
+    wrapper.addEventListener('scroll', syncIndex, { passive: true })
+    return () => wrapper.removeEventListener('scroll', syncIndex)
+  }, [reviews.length, reviewPerPage])
+
+  const stopReviewDrag = () => {
+    const wrapper = reviewsWrapperRef.current
+    isDraggingRef.current = false
+    wrapper?.classList.remove('dragging')
+  }
+
+  useEffect(() => {
+    const handleWindowMouseMove = (e: MouseEvent) => {
+      const wrapper = reviewsWrapperRef.current
+      if (!wrapper || !isDraggingRef.current) return
+      const delta = e.clientX - dragStartXRef.current
+      wrapper.scrollLeft = dragStartScrollLeftRef.current - delta
     }
 
-    el.addEventListener('mousedown', onMouseDown)
-    el.addEventListener('mouseleave', onMouseLeave)
-    el.addEventListener('mouseup', onMouseUp)
-    el.addEventListener('mousemove', onMouseMove)
-    el.addEventListener('wheel', onWheel, { passive: false })
+    const handleWindowMouseUp = () => {
+      stopReviewDrag()
+    }
 
+    window.addEventListener('mousemove', handleWindowMouseMove)
+    window.addEventListener('mouseup', handleWindowMouseUp)
     return () => {
-      el.removeEventListener('mousedown', onMouseDown)
-      el.removeEventListener('mouseleave', onMouseLeave)
-      el.removeEventListener('mouseup', onMouseUp)
-      el.removeEventListener('mousemove', onMouseMove)
-      el.removeEventListener('wheel', onWheel)
+      window.removeEventListener('mousemove', handleWindowMouseMove)
+      window.removeEventListener('mouseup', handleWindowMouseUp)
     }
-  }, [product])
+  }, [])
+
+  useEffect(() => {
+    if (!justSubmittedRef.current) return
+    justSubmittedRef.current = false
+    requestAnimationFrame(() => {
+      const wrapper = reviewsWrapperRef.current
+      if (!wrapper) return
+      wrapper.scrollTo({ left: wrapper.scrollWidth, behavior: 'smooth' })
+    })
+  }, [reviews, reviewPerPage])
 
   const stepImg = (dir: number) => {
     if (!product) return
@@ -143,15 +181,12 @@ export function ProductOverlay({ product, onClose, onBuyNow, onToast }: Props) {
       text: reviewText.trim(),
     }
 
-    setReviews(prev => [newReview, ...prev])
+    setReviews(prev => [...prev, newReview])
     setReviewerName('')
     setReviewerDate('')
     setReviewText('')
     setSelectedStars(5)
-
-    setTimeout(() => {
-      reviewsListRef.current?.scrollTo({ left: 0, behavior: 'smooth' })
-    }, 50)
+    justSubmittedRef.current = true
 
     onToast('Thank you for your review! ✨')
   }
@@ -159,6 +194,33 @@ export function ProductOverlay({ product, onClose, onBuyNow, onToast }: Props) {
   if (!product) return null
 
   const reviewCount = reviews.length
+  const canScrollLeft = reviewIndex > 0
+  const canScrollRight = reviewIndex < Math.max(0, reviews.length - reviewPerPage)
+
+  const scrollReviews = (dir: number) => {
+    const wrapper = reviewsWrapperRef.current
+    if (!wrapper) return
+    const step = getReviewStep()
+    wrapper.scrollBy({ left: dir * step, behavior: 'smooth' })
+  }
+
+  const handleReviewMouseDown = (e: ReactMouseEvent<HTMLDivElement>) => {
+    const wrapper = reviewsWrapperRef.current
+    if (!wrapper) return
+    isDraggingRef.current = true
+    dragStartXRef.current = e.clientX
+    dragStartScrollLeftRef.current = wrapper.scrollLeft
+    wrapper.classList.add('dragging')
+  }
+
+  const handleReviewWheel = (e: ReactWheelEvent<HTMLDivElement>) => {
+    const wrapper = reviewsWrapperRef.current
+    if (!wrapper) return
+    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
+    if (delta === 0) return
+    e.preventDefault()
+    wrapper.scrollLeft += delta * 1.1
+  }
 
   return (
     <div className="overlay product-overlay" style={{ display: 'block' }} onClick={e => { if (e.target === e.currentTarget) onClose() }}>
@@ -216,11 +278,9 @@ export function ProductOverlay({ product, onClose, onBuyNow, onToast }: Props) {
 
             <div className="info-section">
               <h4>Product Highlights</h4>
-              <div className="info-tags">
-                {product.info.map((tag, i) => (
-                  <span key={i} className="info-tag">{tag}</span>
-                ))}
-              </div>
+              <ul className="info-bullets">
+                {product.info.map((tag, i) => <li key={i}>{tag}</li>)}
+              </ul>
             </div>
 
             {/* QTY */}
@@ -257,9 +317,38 @@ export function ProductOverlay({ product, onClose, onBuyNow, onToast }: Props) {
               <span className="review-count-badge">{reviewCount} review{reviewCount !== 1 ? 's' : ''}</span>
             </div>
 
-            <div className="reviews-list" ref={reviewsListRef}>
-              {reviews.map((r, i) => <ReviewCard key={i} review={r} />)}
+            <div
+              className="reviews-list-wrapper"
+              ref={reviewsWrapperRef}
+              onMouseDown={handleReviewMouseDown}
+              onMouseUp={stopReviewDrag}
+              onMouseLeave={stopReviewDrag}
+              onWheel={handleReviewWheel}
+            >
+              <div className="reviews-list">
+                {reviews.map((r, i) => <ReviewCard key={`${i}-${r.name}-${r.date}`} review={r} />)}
+              </div>
             </div>
+
+            {reviews.length > 0 && (
+              <div className="review-nav">
+                <button
+                  className={`review-nav-btn${canScrollLeft ? '' : ' disabled'}`}
+                  onClick={() => scrollReviews(-1)}
+                  aria-label="Scroll left"
+                >
+                  ←
+                </button>
+                <span className="review-nav-hint">drag or scroll to browse</span>
+                <button
+                  className={`review-nav-btn${canScrollRight ? '' : ' disabled'}`}
+                  onClick={() => scrollReviews(1)}
+                  aria-label="Scroll right"
+                >
+                  →
+                </button>
+              </div>
+            )}
 
             <div className="add-review">
               <h4>Write a Review</h4>

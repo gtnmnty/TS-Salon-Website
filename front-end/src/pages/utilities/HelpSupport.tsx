@@ -37,11 +37,10 @@ export function HelpSupport() {
       <Header />
 
       {/* HERO */}
-      <section className="hero">
-        <div className="container">
-          <h1 className="reveal">Help & Support</h1>
-          <p className="sub-title reveal">We're here to help you with any questions or concerns</p>
-        </div>
+      <section className="page-hero">
+        <h1>Help <span>&amp; Support</span></h1>
+        <p>We're here to help you with any questions or concerns</p>
+        <div className="hero-line"></div>
       </section>
 
       {/* NEED IMMEDIATE ASSISTANCE */}

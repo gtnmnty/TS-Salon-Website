@@ -173,7 +173,7 @@ export function AboutUs() {
   }, [hash])
 
   return (
-    <>
+    <div className='ab-page'>
       <title>GILDED - About Us</title>
       <Header />
 
@@ -215,6 +215,6 @@ export function AboutUs() {
       </section>
 
       <Footer />
-    </>
+    </div>
   )
 }

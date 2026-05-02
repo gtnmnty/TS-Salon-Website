@@ -1,5 +1,5 @@
 /* ── HERO ── */
-.hero {
+.hp-page .hero {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(18rem, 0.95fr);
   min-height: 78vh;
@@ -11,7 +11,7 @@
   overflow: hidden;
 }
 
-.hero::before {
+.hp-page .hero::before {
   content: '';
   position: absolute;
   top: 12%;
@@ -23,12 +23,12 @@
   border-radius: 50%;
 }
 
-.hero-left {
+.hp-page .hero-left {
   animation: fadeUp 0.9s 0.2s ease both;
   z-index: 1;
 }
 
-.hero-logo {
+.hp-page .hero-logo {
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(3.75rem, 8vw, 5.8rem);
   font-weight: 600;
@@ -37,7 +37,7 @@
   color: var(--text-dark);
 }
 
-.hero-logo span {
+.hp-page .hero-logo span {
   display: block;
   font-size: clamp(1.35rem, 2.7vw, 2.15rem);
   font-family: 'Cormorant Garamond', serif;
@@ -48,7 +48,7 @@
   margin-top: 0.1rem;
 }
 
-.hero-tagline {
+.hp-page .hero-tagline {
   font-family: 'Jost', sans-serif;
   font-style: normal;
   font-size: clamp(1.08rem, 1.65vw, 1.45rem);
@@ -59,19 +59,19 @@
   max-width: 31rem;
 }
 
-.hero-actions {
+.hp-page .hero-actions {
   display: grid;
   gap: 1rem;
   max-width: 30.25rem;
 }
 
-.hero-btns {
+.hp-page .hero-btns {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
 }
 
-.btn {
+.hp-page .btn {
   font-family: 'Jost', sans-serif;
   font-size: clamp(1rem, 1.15vw, 1.15rem);
   font-weight: 400;
@@ -89,19 +89,19 @@
   min-height: 3.35rem;
 }
 
-.btn-outline-blush {
+.hp-page .btn-outline-blush {
   background: var(--hero-peach);
   border-color: var(--hero-peach);
   color: var(--white);
 }
 
-.btn-outline-blush:hover {
+.hp-page .btn-outline-blush:hover {
   background: var(--hero-peach-dark);
   border-color: var(--hero-peach-dark);
   color: var(--white);
 }
 
-.btn-dark {
+.hp-page .btn-dark {
   background: #353230;
   color: var(--white);
   border-color: #353230;
@@ -110,14 +110,14 @@
   text-align: center;
 }
 
-.btn-dark:hover {
+.hp-page .btn-dark:hover {
   background: #1f1d1c;
   border-color: #1f1d1c;
   color: var(--white);
 }
 
 /* Hero Right – decorative circle + rating */
-.hero-right {
+.hp-page .hero-right {
   display: grid;
   place-items: center;
   position: relative;
@@ -125,7 +125,7 @@
   min-height: clamp(22rem, 40vw, 34rem);
 }
 
-.hero-circle {
+.hp-page .hero-circle {
   width: clamp(19rem, 38vw, 31rem);
   aspect-ratio: 1;
   border-radius: 50%;
@@ -134,7 +134,7 @@
   box-shadow: none;
 }
 
-.hero-circle::after {
+.hp-page .hero-circle::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -142,7 +142,7 @@
   border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
-.rating-badge {
+.hp-page .rating-badge {
   position: absolute;
   left: max(0rem, 6%);
   bottom: 14%;
@@ -156,7 +156,7 @@
   animation: float 4s ease-in-out infinite;
 }
 
-.rating-badge .star {
+.hp-page .rating-badge .star {
   font-size: 0;
   width: 3rem;
   flex: 0 0 3rem;
@@ -164,13 +164,13 @@
   text-align: center;
 }
 
-.rating-badge .star::before {
+.hp-page .rating-badge .star::before {
   content: "\2605";
   font-size: 2.4rem;
   line-height: 1;
 }
 
-.rating-badge .rating-text strong {
+.hp-page .rating-badge .rating-text strong {
   display: block;
   font-size: clamp(1rem, 1.4vw, 1.15rem);
   font-weight: 500;
@@ -178,7 +178,7 @@
   font-family: 'Jost', sans-serif;
 }
 
-.rating-badge .rating-text small {
+.hp-page .rating-badge .rating-text small {
   font-size: 0.9rem;
   color: rgba(26, 20, 16, 0.7);
   letter-spacing: 0;
@@ -186,12 +186,12 @@
 }
 
 /* ── WHAT WE OFFER ── */
-.section-offer {
+.hp-page .section-offer {
   padding: 6rem 7%;
   background: var(--off);
 }
 
-.section-label {
+.hp-page .section-label {
   font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.3em;
@@ -201,7 +201,7 @@
   margin-bottom: 0.6rem;
 }
 
-.section-title {
+.hp-page .section-title {
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(1.8rem, 3vw, 2.6rem);
   font-weight: 400;
@@ -212,13 +212,13 @@
   color: var(--text-dark);
 }
 
-.offer-grid {
+.hp-page .offer-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
 }
 
-.offer-card {
+.hp-page .offer-card {
   background: var(--white);
   border-radius: 4px;
   overflow: hidden;
@@ -227,12 +227,12 @@
   cursor: pointer;
 }
 
-.offer-card:hover {
+.hp-page .offer-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 20px 50px rgba(197, 160, 89, 0.18);
 }
 
-.offer-img {
+.hp-page .offer-img {
   width: 100%;
   aspect-ratio: 4/3;
   background: var(--warm-grey);
@@ -240,7 +240,7 @@
   position: relative;
 }
 
-.offer-img .placeholder-icon {
+.hp-page .offer-img .placeholder-icon {
   position: absolute;
   inset: 0;
   display: flex;
@@ -250,49 +250,49 @@
   opacity: 0.3;
 }
 
-.offer-img img {
+.hp-page .offer-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
 }
 
-.offer-card:hover .offer-img img {
+.hp-page .offer-card:hover .offer-img img {
   transform: scale(1.06);
 }
 
-.offer-info {
+.hp-page .offer-info {
   padding: 1rem 1rem 0.8rem;
 }
 
-.offer-info h4 {
+.hp-page .offer-info h4 {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.05rem;
   font-weight: 600;
   margin-bottom: 0.3rem;
 }
 
-.offer-info p {
+.hp-page .offer-info p {
   font-size: 0.72rem;
   color: var(--text-light);
   line-height: 1.55;
   margin-bottom: 0.7rem;
 }
 
-.offer-footer {
+.hp-page .offer-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.offer-price {
+.hp-page .offer-price {
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--gold);
   letter-spacing: 0.04em;
 }
 
-.offer-more {
+.hp-page .offer-more {
   font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.1em;
@@ -302,24 +302,24 @@
   transition: color 0.3s, border-color 0.3s;
 }
 
-.offer-more:hover {
+.hp-page .offer-more:hover {
   color: var(--gold);
   border-color: var(--gold);
 }
 
 /* ── FEATURED PRODUCTS ── */
-.section-products {
+.hp-page .section-products {
   padding: 6rem 7%;
   background: var(--warm-grey);
 }
 
-.product-grid {
+.hp-page .product-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
 }
 
-.product-card {
+.hp-page .product-card {
   background: var(--white);
   border-radius: 6px;
   overflow: hidden;
@@ -329,12 +329,12 @@
   cursor: pointer;
 }
 
-.product-card:hover {
+.hp-page .product-card:hover {
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
   transform: translateY(-4px);
 }
 
-.bestseller-tag {
+.hp-page .bestseller-tag {
   position: absolute;
   top: 14px;
   left: 14px;
@@ -350,7 +350,7 @@
   z-index: 2;
 }
 
-.product-img {
+.hp-page .product-img {
   width: 100%;
   aspect-ratio: 4/3;
   background: var(--warm-grey);
@@ -358,7 +358,7 @@
   position: relative;
 }
 
-.product-img .placeholder-icon {
+.hp-page .product-img .placeholder-icon {
   position: absolute;
   inset: 0;
   display: flex;
@@ -368,18 +368,18 @@
   opacity: 0.25;
 }
 
-.product-img img {
+.hp-page .product-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
 }
 
-.product-card:hover .product-img img {
+.hp-page .product-card:hover .product-img img {
   transform: scale(1.05);
 }
 
-.product-footer {
+.hp-page .product-footer {
   background: var(--dark);
   padding: 0.85rem 1rem;
   display: flex;
@@ -388,7 +388,7 @@
   gap: 0.5rem;
 }
 
-.product-name {
+.hp-page .product-name {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1rem;
   color: var(--white);
@@ -396,19 +396,19 @@
   flex: 1;
 }
 
-.product-price {
+.hp-page .product-price {
   font-size: 0.78rem;
   color: var(--gold);
   font-weight: 600;
   letter-spacing: 0.04em;
 }
 
-.product-actions {
+.hp-page .product-actions {
   display: flex;
   gap: 0.4rem;
 }
 
-.btn-cart {
+.hp-page .btn-cart {
   font-size: 0.62rem;
   font-weight: 600;
   letter-spacing: 0.1em;
@@ -422,12 +422,12 @@
   transition: all 0.3s;
 }
 
-.btn-cart:hover {
+.hp-page .btn-cart:hover {
   background: var(--blush);
   color: var(--dark);
 }
 
-.btn-buy {
+.hp-page .btn-buy {
   font-size: 0.62rem;
   font-weight: 600;
   letter-spacing: 0.1em;
@@ -441,16 +441,16 @@
   transition: background 0.3s;
 }
 
-.btn-buy:hover {
+.hp-page .btn-buy:hover {
   background: var(--gold-light);
 }
 
-.view-all-wrap {
+.hp-page .view-all-wrap {
   text-align: center;
   margin-top: 3rem;
 }
 
-.btn-view-all {
+.hp-page .btn-view-all {
   font-family: 'Jost', sans-serif;
   font-size: 0.72rem;
   font-weight: 500;
@@ -463,12 +463,12 @@
   transition: color 0.3s;
 }
 
-.btn-view-all:hover {
+.hp-page .btn-view-all:hover {
   color: var(--gold);
 }
 
 /* ── ART OF BEAUTY ── */
-.section-story {
+.hp-page .section-story {
   padding: 6rem 7%;
   background: var(--off);
   display: grid;
@@ -477,7 +477,7 @@
   align-items: center;
 }
 
-.story-gallery {
+.hp-page .story-gallery {
   position: relative;
   aspect-ratio: 4/3.2;
   border-radius: 6px;
@@ -485,14 +485,14 @@
   background: var(--warm-grey);
 }
 
-.gallery-main {
+.hp-page .gallery-main {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 6px;
 }
 
-.gallery-placeholder {
+.hp-page .gallery-placeholder {
   width: 100%;
   height: 100%;
   background: linear-gradient(135deg, var(--warm-grey), var(--sand));
@@ -509,7 +509,7 @@
   overflow: hidden;
 }
 
-.gallery-placeholder::before {
+.hp-page .gallery-placeholder::before {
   content: '';
   position: absolute;
   top: 15%;
@@ -520,7 +520,7 @@
   border: 1px solid rgba(197, 160, 89, 0.3);
 }
 
-.gallery-placeholder::after {
+.hp-page .gallery-placeholder::after {
   content: '';
   position: absolute;
   bottom: 18%;
@@ -531,7 +531,7 @@
   border: 1px solid rgba(197, 160, 89, 0.3);
 }
 
-.gallery-nav {
+.hp-page .gallery-nav {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -542,7 +542,7 @@
   background: linear-gradient(to top, rgba(0, 0, 0, 0.2), transparent);
 }
 
-.gallery-dot {
+.hp-page .gallery-dot {
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -553,18 +553,18 @@
   transition: background 0.3s;
 }
 
-.gallery-dot:hover {
+.hp-page .gallery-dot:hover {
   background: rgba(255, 255, 255, 0.35);
 }
 
-.story-content {}
+.hp-page .story-content {}
 
-.story-content .section-label {
+.hp-page .story-content .section-label {
   text-align: left;
   margin-bottom: 1rem;
 }
 
-.story-title {
+.hp-page .story-title {
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(2rem, 3.5vw, 3rem);
   font-weight: 700;
@@ -574,7 +574,7 @@
   color: var(--text-dark);
 }
 
-.story-body {
+.hp-page .story-body {
   font-size: 0.88rem;
   line-height: 1.85;
   color: var(--text-mid);
@@ -582,15 +582,15 @@
   margin-bottom: 1.2rem;
 }
 
-.story-stats {
+.hp-page .story-stats {
   display: flex;
   gap: 2.5rem;
   margin-top: 2.5rem;
 }
 
-.stat-item {}
+.hp-page .stat-item {}
 
-.stat-num {
+.hp-page .stat-num {
   font-family: 'Cormorant Garamond', serif;
   font-size: 2rem;
   font-weight: 700;
@@ -598,12 +598,12 @@
   line-height: 1;
 }
 
-.stat-num sup {
+.hp-page .stat-num sup {
   font-size: 1rem;
   vertical-align: super;
 }
 
-.stat-label {
+.hp-page .stat-label {
   font-size: 0.68rem;
   font-weight: 400;
   letter-spacing: 0.08em;
@@ -650,30 +650,30 @@
 }
 
 /* Scroll reveal */
-.reveal {
+.hp-page .reveal {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.7s ease, transform 0.7s ease;
 }
 
-.reveal.visible {
+.hp-page .reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-.reveal-delay-1 {
+.hp-page .reveal-delay-1 {
   transition-delay: 0.1s;
 }
 
-.reveal-delay-2 {
+.hp-page .reveal-delay-2 {
   transition-delay: 0.2s;
 }
 
-.reveal-delay-3 {
+.hp-page .reveal-delay-3 {
   transition-delay: 0.3s;
 }
 
-.reveal-delay-4 {
+.hp-page .reveal-delay-4 {
   transition-delay: 0.4s;
 }
 

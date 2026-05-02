@@ -20,48 +20,88 @@ function fmt(n: number) {
   return '₱ ' + Number(n).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
-function getSteps(status: string): TimelineStep[] {
+function getSteps(status: string, deliveryType?: string, orderDate?: string, deliveryDays?: number): TimelineStep[] {
   const s = status.toLowerCase();
-  const steps: TimelineStep[] = [
+  const days = deliveryDays ?? 5;
+  const base = orderDate ? new Date(orderDate) : new Date();
+
+  const formatDateTime = (d: Date, timeStr: string) =>
+    d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' · ' + timeStr;
+
+  const addDays = (d: Date, n: number) => {
+    const copy = new Date(d);
+    copy.setDate(copy.getDate() + n);
+    return copy;
+  };
+
+  const isPickup = deliveryType?.toLowerCase().includes('pick up');
+  const isSameDay = deliveryType?.toLowerCase().includes('same day');
+
+  if (isPickup || isSameDay) {
+    return [
+      {
+        label: 'Placed', title: 'Order Placed',
+        time: formatDateTime(base, '10:42 AM'),
+        note: 'Your order has been received and confirmed. Payment verified.',
+        state: 'done'
+      },
+      {
+        label: 'Ready', title: 'Ready for Pickup',
+        time: formatDateTime(base, '11:30 AM'),
+        note: 'Waiting at Gilded branch counter. Bring order ID & valid ID.',
+        state: s === 'pending' ? 'pending' : 'active'
+      },
+      {
+        label: 'Picked Up', title: 'Picked Up',
+        time: formatDateTime(base, '—'),
+        note: 'Awaiting your visit. Reserved for 3 days.',
+        state: s === 'delivered' ? 'active' : 'pending'
+      },
+    ];
+  }
+
+  // calculate stage dates by dividing deliveryDays into intervals
+  const interval = days / 4;
+  const d0 = base;
+  const d1 = addDays(base, Math.round(interval * 0.5));
+  const d2 = addDays(base, Math.round(interval * 1.5));
+  const d3 = addDays(base, Math.round(interval * 2.5));
+  const d4 = addDays(base, days);
+
+  return [
     {
-      label: 'Placed',
-      title: 'Order Placed',
-      time: '—',
-      note: 'Order confirmed and payment verified.',
-      state: 'done',
+      label: 'Placed', title: 'Order Placed',
+      time: formatDateTime(d0, '10:42 AM'),
+      note: 'Your order has been received and confirmed. Payment verified.',
+      state: 'done'
     },
     {
-      label: 'Preparing',
-      title: 'Preparing',
-      time: '—',
-      note: 'Packed at Gilded branch.',
-      state: s === 'pending' ? 'pending' : 'done',
+      label: 'Preparing', title: 'Preparing',
+      time: formatDateTime(d1, '3:15 PM'),
+      note: 'Our team is carefully packing your items at the Cubao branch.',
+      state: s === 'pending' ? 'pending' : 'done'
     },
     {
-      label: 'Shipped',
-      title: 'Shipped',
-      time: '—',
-      note: 'Package handed to courier.',
+      label: 'Shipped', title: 'Shipped',
+      time: formatDateTime(d2, '8:30 AM'),
+      note: 'Package handed to J&T Express. Tracking no. JT-1238904561-PH',
       state: s === 'pending' || s === 'processing' ? 'pending'
         : s === 'shipped' ? 'active'
-          : 'done',
+          : 'done'
     },
     {
-      label: 'Out for Delivery',
-      title: 'Out for Delivery',
-      time: '—',
-      note: 'With local courier.',
-      state: s === 'delivered' ? 'done' : 'pending',
+      label: 'Out for Delivery', title: 'Out for Delivery',
+      time: `Estimated: ${d3.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`,
+      note: 'Your package will be with the local courier for delivery.',
+      state: s === 'delivered' ? 'done' : 'pending'
     },
     {
-      label: 'Delivered',
-      title: 'Delivered',
-      time: '—',
+      label: 'Delivered', title: 'Delivered',
+      time: `Estimated: ${d4.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`,
       note: 'Awaiting delivery to your address.',
-      state: s === 'delivered' ? 'active' : 'pending',
+      state: s === 'delivered' ? 'active' : 'pending'
     },
   ];
-  return steps;
 }
 
 function statusPill(status: string) {
@@ -128,8 +168,18 @@ function Timeline({ steps }: { steps: TimelineStep[] }) {
 }
 
 // ── ORDER ITEM GROUP ──
-function ItemGroup({ item, status }: { item: { name: string; quantity: number; price: number; deliveryType?: string }; status: string }) {
-  const steps = getSteps(status);
+function ItemGroup({ item, status, orderDate }: {
+  item: {
+    name: string;
+    quantity: number;
+    price: number;
+    deliveryType?: string;
+    deliveryDays?: number;
+  };
+  status: string;
+  orderDate: string;
+}) {
+  const steps = getSteps(status, item.deliveryType, orderDate, item.deliveryDays);
   const pill = statusPill(status);
 
   return (
@@ -145,9 +195,9 @@ function ItemGroup({ item, status }: { item: { name: string; quantity: number; p
         <div className="trk-item-info">
           <p className="trk-item-name">{item.name}</p>
           <p className="trk-item-sub">Qty: {item.quantity}</p>
-          <span className={`trk-item-delivery-badge ${item.deliveryType?.toLowerCase() === 'standard' ? 'trk-badge-standard' : 'trk-badge-express'
+          <span className={`trk-item-delivery-badge ${item.deliveryType?.toLowerCase().includes('standard') ? 'trk-badge-standard' : 'trk-badge-express'
             }`}>
-            {item.deliveryType ?? 'Standard'} Delivery
+            {item.deliveryType ?? 'Standard Delivery'}
           </span>
         </div>
         <span className="trk-item-price">{fmt(item.price * item.quantity)}</span>
@@ -178,7 +228,7 @@ export function Tracking() {
   const order: Order | undefined = currentUser?.orders.find(o => o.id === orderId);
 
   return (
-    <>
+    <div>
       <title>GILDED - Track Order</title>
       <Header />
 
@@ -218,7 +268,7 @@ export function Tracking() {
 
             {/* ITEMS */}
             {order.items.map((item, i) => (
-              <ItemGroup key={i} item={item} status={order.status} />
+              <ItemGroup key={i} item={item} status={order.status} orderDate={order.date} />
             ))}
 
             {/* ACTIONS */}
@@ -233,6 +283,6 @@ export function Tracking() {
           </>
         )}
       </div>
-    </>
+    </div>
   );
 }

@@ -159,13 +159,18 @@ export const Checkout: React.FC = () => {
       status: 'pending',
       date: new Date().toISOString().split('T')[0] ?? '',
       total: totals.grandTotal,
-      items: items.map(item => ({
-        productId: item.id,
-        name: item.name,
-        quantity: item.qty,
-        price: item.price,
-        image: item.image ?? '',
-      }))
+      items: items.map(item => {
+        const opt = deliveryOpts.find(o => o.id === item.deliveryOptionId) ?? deliveryOpts[0]!;
+        return {
+          productId: item.id,
+          name: item.name,
+          quantity: item.qty,
+          price: item.price,
+          image: item.image ?? '',
+          deliveryType: opt.name,
+          deliveryDays: opt.deliveryDays,
+        };
+      })
     };
 
     // push to user and save back to sessionStorage
@@ -263,13 +268,13 @@ export const Checkout: React.FC = () => {
         </aside>
 
         <div className="card card-forms">
+
+
           <div className="card-head">
-            <span className="card-title">Shipping &amp; Payment</span>
+            <span className="card-title">Shipping Information</span>
           </div>
 
           <div className="card-body">
-            <div className="section-divider"><span>Shipping Information</span></div>
-
             <label className="autofill-check">
               <input type="checkbox" onChange={(e) => fillShipping(e.target.checked)} />
               <span>Same info as account</span>
@@ -277,7 +282,7 @@ export const Checkout: React.FC = () => {
 
             <div className="form-grid">
               <div className="form-group">
-                <label className="form-label">Full Name</label>
+                <label className="form-label full">Full Name</label>
                 <input className="form-input" type="text" placeholder="Full Name" value={shName} onChange={e => setShName(e.target.value)} />
               </div>
               <div className="form-group">
@@ -293,127 +298,135 @@ export const Checkout: React.FC = () => {
                 <input className="form-input" type="text" placeholder="Street, Barangay, City, Province, ZIP" value={shAddr} onChange={e => setShAddr(e.target.value)} />
               </div>
             </div>
+          </div>
 
-            <div className="section-divider" style={{ marginTop: '32px' }}><span>Payment Method / Information</span></div>
+          <div className="card-head">
+            <span className="card-title">Payment Method / Information</span>
+          </div>
 
-            <div className="pay-tabs">
-              {['visa', 'gcash', 'maya', 'paypal', 'amex', 'cod'].map(method => (
-                <button
-                  key={method}
-                  className={`pay-tab ${payMethod === method ? 'active' : ''}`}
-                  type="button"
-                  onClick={() => setPayMethod(method)}
-                >
-                  {method === 'cod' ? 'COD' : method.charAt(0).toUpperCase() + method.slice(1)}
-                </button>
-              ))}
+          <div className="card-body">
+
+            <div className="pymnt-section">
+
+              <div className="pay-tabs">
+                {['visa', 'gcash', 'maya', 'paypal', 'amex', 'cod'].map(method => (
+                  <button
+                    key={method}
+                    className={`pay-tab ${payMethod === method ? 'active' : ''}`}
+                    type="button"
+                    onClick={() => setPayMethod(method)}
+                  >
+                    {method === 'cod' ? 'COD' : method.charAt(0).toUpperCase() + method.slice(1)}
+                  </button>
+                ))}
+              </div>
+
+              {payMethod === 'visa' && (
+                <div className="pay-panel active">
+                  <div className="form-grid">
+                    <label className="autofill-check full">
+                      <input type="checkbox" onChange={(e) => fillBilling(e.target.checked)} />
+                      <span>Same info as account and shipping</span>
+                    </label>
+                    <div className="form-group">
+                      <label className="form-label">Billing Full Name</label>
+                      <input className="form-input" type="text" placeholder="Name on card" value={billName} onChange={e => setBillName(e.target.value)} />
+                    </div>
+                    <div className="form-group full">
+                      <label className="form-label">Billing Address</label>
+                      <input className="form-input" type="text" placeholder="Billing address" value={billAddr} onChange={e => setBillAddr(e.target.value)} />
+                    </div>
+                    <div className="form-group full">
+                      <label className="form-label">Card Number</label>
+                      <input className="form-input" type="text" placeholder="**** **** **** ****" maxLength={19} value={cardNumber} onChange={handleCardNumber} />
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label">Expiration Date</label>
+                      <input className="form-input" type="text" placeholder="MM / YY" maxLength={7} value={cardExp} onChange={handleExp} />
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label">CVV</label>
+                      <input className="form-input" type="password" placeholder="***" maxLength={3} />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {payMethod === 'gcash' && (
+                <div className="pay-panel active">
+                  <div className="form-grid">
+                    <div className="form-group full">
+                      <label className="form-label">GCash Number</label>
+                      <input className="form-input" type="tel" placeholder="09XX XXX XXXX" maxLength={13} />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {payMethod === 'maya' && (
+                <div className="pay-panel active">
+                  <div className="form-grid">
+                    <div className="form-group full">
+                      <label className="form-label">Maya Number</label>
+                      <input className="form-input" type="tel" placeholder="09XX XXX XXXX" maxLength={13} />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {payMethod === 'paypal' && (
+                <div className="pay-panel active">
+                  <div className="form-grid">
+                    <div className="form-group full">
+                      <label className="form-label">PayPal Email</label>
+                      <input className="form-input" type="email" placeholder="paypal@example.com" />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {payMethod === 'amex' && (
+                <div className="pay-panel active">
+                  <div className="form-grid">
+                    <label className="autofill-check full">
+                      <input type="checkbox" onChange={(e) => fillBilling(e.target.checked)} />
+                      <span>Same info as account and shipping</span>
+                    </label>
+                    <div className="form-group">
+                      <label className="form-label">Billing Full Name</label>
+                      <input className="form-input" type="text" placeholder="Name on card" value={billName} onChange={e => setBillName(e.target.value)} />
+                    </div>
+                    <div className="form-group full">
+                      <label className="form-label">Billing Address</label>
+                      <input className="form-input" type="text" placeholder="Billing address" value={billAddr} onChange={e => setBillAddr(e.target.value)} />
+                    </div>
+                    <div className="form-group full">
+                      <label className="form-label">Card Number</label>
+                      <input className="form-input" type="text" placeholder="**** ****** *****" maxLength={17} value={cardNumber} onChange={handleAmex} />
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label">Expiration Date</label>
+                      <input className="form-input" type="text" placeholder="MM / YY" maxLength={7} value={cardExp} onChange={handleExp} />
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label">CID (4-digit)</label>
+                      <input className="form-input" type="password" placeholder="****" maxLength={4} />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {payMethod === 'cod' && (
+                <div className="pay-panel active">
+                  <div style={{ background: 'rgba(249,219,189,0.4)', border: '1px solid rgba(218,98,125,0.2)', borderRadius: '3px', padding: '16px 18px' }}>
+                    <p style={{ fontSize: '13.5px', color: 'var(--wine)', lineHeight: '1.7' }}>
+                      Pay in cash upon delivery.<br />
+                      <span style={{ color: 'var(--muted)', fontSize: '12.5px' }}>Please have the exact amount ready. Our courier will collect payment on delivery.</span>
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
-
-            {payMethod === 'visa' && (
-              <div className="pay-panel active">
-                <div className="form-grid">
-                  <label className="autofill-check full">
-                    <input type="checkbox" onChange={(e) => fillBilling(e.target.checked)} />
-                    <span>Same info as account and shipping</span>
-                  </label>
-                  <div className="form-group">
-                    <label className="form-label">Billing Full Name</label>
-                    <input className="form-input" type="text" placeholder="Name on card" value={billName} onChange={e => setBillName(e.target.value)} />
-                  </div>
-                  <div className="form-group full">
-                    <label className="form-label">Billing Address</label>
-                    <input className="form-input" type="text" placeholder="Billing address" value={billAddr} onChange={e => setBillAddr(e.target.value)} />
-                  </div>
-                  <div className="form-group full">
-                    <label className="form-label">Card Number</label>
-                    <input className="form-input" type="text" placeholder="**** **** **** ****" maxLength={19} value={cardNumber} onChange={handleCardNumber} />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">Expiration Date</label>
-                    <input className="form-input" type="text" placeholder="MM / YY" maxLength={7} value={cardExp} onChange={handleExp} />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">CVV</label>
-                    <input className="form-input" type="password" placeholder="***" maxLength={3} />
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {payMethod === 'gcash' && (
-              <div className="pay-panel active">
-                <div className="form-grid">
-                  <div className="form-group full">
-                    <label className="form-label">GCash Number</label>
-                    <input className="form-input" type="tel" placeholder="09XX XXX XXXX" maxLength={13} />
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {payMethod === 'maya' && (
-              <div className="pay-panel active">
-                <div className="form-grid">
-                  <div className="form-group full">
-                    <label className="form-label">Maya Number</label>
-                    <input className="form-input" type="tel" placeholder="09XX XXX XXXX" maxLength={13} />
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {payMethod === 'paypal' && (
-              <div className="pay-panel active">
-                <div className="form-grid">
-                  <div className="form-group full">
-                    <label className="form-label">PayPal Email</label>
-                    <input className="form-input" type="email" placeholder="paypal@example.com" />
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {payMethod === 'amex' && (
-              <div className="pay-panel active">
-                <div className="form-grid">
-                  <label className="autofill-check full">
-                    <input type="checkbox" onChange={(e) => fillBilling(e.target.checked)} />
-                    <span>Same info as account and shipping</span>
-                  </label>
-                  <div className="form-group">
-                    <label className="form-label">Billing Full Name</label>
-                    <input className="form-input" type="text" placeholder="Name on card" value={billName} onChange={e => setBillName(e.target.value)} />
-                  </div>
-                  <div className="form-group full">
-                    <label className="form-label">Billing Address</label>
-                    <input className="form-input" type="text" placeholder="Billing address" value={billAddr} onChange={e => setBillAddr(e.target.value)} />
-                  </div>
-                  <div className="form-group full">
-                    <label className="form-label">Card Number</label>
-                    <input className="form-input" type="text" placeholder="**** ****** *****" maxLength={17} value={cardNumber} onChange={handleAmex} />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">Expiration Date</label>
-                    <input className="form-input" type="text" placeholder="MM / YY" maxLength={7} value={cardExp} onChange={handleExp} />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">CID (4-digit)</label>
-                    <input className="form-input" type="password" placeholder="****" maxLength={4} />
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {payMethod === 'cod' && (
-              <div className="pay-panel active">
-                <div style={{ background: 'rgba(249,219,189,0.4)', border: '1px solid rgba(218,98,125,0.2)', borderRadius: '3px', padding: '16px 18px' }}>
-                  <p style={{ fontSize: '13.5px', color: 'var(--wine)', lineHeight: '1.7' }}>
-                    Pay in cash upon delivery.<br />
-                    <span style={{ color: 'var(--muted)', fontSize: '12.5px' }}>Please have the exact amount ready. Our courier will collect payment on delivery.</span>
-                  </p>
-                </div>
-              </div>
-            )}
 
             <div className="summary-footer">
               <div className="note-box">
@@ -426,9 +439,9 @@ export const Checkout: React.FC = () => {
             </div>
           </div>
         </div>
-      </main>
+      </main >
 
       <div className={`toast ${toast ? 'show' : ''}`}>{toast}</div>
-    </div>
+    </div >
   );
 };

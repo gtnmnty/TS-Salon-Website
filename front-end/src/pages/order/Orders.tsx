@@ -61,6 +61,19 @@ function Timeline({ status }: { status: string }) {
   );
 }
 
+function getEstDelivery(order: Order): string {
+  const maxDays = order.items.reduce((max, item) => {
+    const days = item.deliveryDays ?? 5;
+    return days > max ? days : max;
+  }, 0);
+
+  if (maxDays === 0) return 'Today';
+
+  const date = new Date(order.date);
+  date.setDate(date.getDate() + maxDays);
+  return date.toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
 // ── ORDER CARD ──
 function OrderCard({ order, onToast }: { order: Order; onToast: (msg: string) => void }) {
   const navigate = useNavigate();
@@ -98,10 +111,11 @@ function OrderCard({ order, onToast }: { order: Order; onToast: (msg: string) =>
         <div className="ord-header-left">
           <div className="ord-number">{order.id}</div>
           <div className="ord-date">
-            Ordered on: <em>{order.date}</em>
+            Est. Delivery: <em>{getEstDelivery(order)}</em>
           </div>
           <button className="ord-track-btn" onClick={() => {
-            navigate('/track', { state: { orderId: order.id } })}}>
+            navigate('/track', { state: { orderId: order.id } })
+          }}>
             <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
               <circle cx="7" cy="7" r="5.5" stroke="currentColor" strokeWidth="1.3" />
               <path d="M7 4.5V7.5L9 9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
@@ -141,6 +155,8 @@ function OrderCard({ order, onToast }: { order: Order; onToast: (msg: string) =>
                 <span className="ord-meta-qty">Qty: <strong>{item.quantity}</strong></span>
                 <span className="ord-meta-dot" />
                 <span className="ord-meta-total">Total: <strong>{fmt(item.price * item.quantity)}</strong></span>
+                <span className="ord-meta-dot" />
+                <span className="ord-meta-qty">{item.deliveryType ?? 'Standard Delivery'}</span>
               </div>
               <div className="ord-item-actions">
                 <button className="ord-btn-cart" onClick={() => {
@@ -201,7 +217,7 @@ export function Orders() {
           Back
         </button>
         <div className="ord-page-title">My Orders</div>
-        <div /> 
+        <div />
       </header>
 
       <div className="ord-page-wrap">

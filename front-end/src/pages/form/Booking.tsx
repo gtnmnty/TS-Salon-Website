@@ -199,7 +199,7 @@ export function Booking() {
     setForm(prev => ({ ...prev, [field]: value }));
 
   return (
-    <>
+    <div className="bk-page">
       <title>GILDED - Book an Appointment</title>
       <Header />
 
@@ -450,6 +450,6 @@ export function Booking() {
 
       <Footer />
       <Toast message={toast} />
-    </>
+    </div>
   );
 }

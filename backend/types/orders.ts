@@ -4,6 +4,8 @@ export interface OrderItem {
   quantity: number;
   price: number;
   image: string;
+  deliveryType?: string;
+  deliveryDays?: number;
 }
 
 export interface Order {
@@ -12,4 +14,12 @@ export interface Order {
   items: OrderItem[];
   total: number;
   date: string;
+}
+
+interface TimelineStep {
+  label: string;
+  title: string;
+  time: string;
+  note: string;
+  state: StepState;
 }

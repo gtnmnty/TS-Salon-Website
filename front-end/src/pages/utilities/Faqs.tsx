@@ -108,7 +108,7 @@ export function Faqs() {
     })).filter(cat => cat.items.length > 0)
 
   return (
-    <>
+    <div className="fq-page">
       <title>GILDED - FAQs</title>
       <Header />
 
@@ -165,6 +165,6 @@ export function Faqs() {
       </div>
 
       <Footer />
-    </>
+    </div>
   )
 }

@@ -194,7 +194,7 @@ body::before {
 
 .section-divider span {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 15px;
+  font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   color: var(--wine);
@@ -492,12 +492,11 @@ body::before {
   position: sticky;
   top: 76px;
   align-self: start;
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: none;
   border-radius: 4px;
-  box-shadow: var(--shadow-md);
   overflow: hidden;
   animation: fadeUp 0.4s ease 0.2s both;
+  opacity: 0;
 }
 
 .card-order-details {

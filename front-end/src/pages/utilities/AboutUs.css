@@ -1,4 +1,4 @@
-.hero {
+.ab-page .hero {
   min-height: 72vh;
   background: linear-gradient(160deg, var(--deep) 0%, var(--wine) 55%, var(--mauve) 100%);
   display: flex;
@@ -11,7 +11,7 @@
   overflow: hidden;
 }
 
-.hero::before {
+.ab-page .hero::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -20,7 +20,7 @@
     radial-gradient(ellipse at 80% 20%, rgba(255, 165, 171, .12) 0%, transparent 50%);
 }
 
-.hero-ornament {
+.ab-page .hero-ornament {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
   font-size: 1.1rem;
@@ -33,7 +33,7 @@
   animation: fadeUp .8s ease both;
 }
 
-.hero h1 {
+.ab-page .hero h1 {
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(3.5rem, 7vw, 6rem);
   font-weight: 300;
@@ -45,12 +45,12 @@
   animation: fadeUp .8s .2s ease both;
 }
 
-.hero h1 em {
+.ab-page .hero h1 em {
   font-style: italic;
   color: var(--rose);
 }
 
-.hero-divider {
+.ab-page .hero-divider {
   width: 80px;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--rose), transparent);
@@ -58,7 +58,7 @@
   animation: fadeUp .8s .3s ease both;
 }
 
-.hero-sub {
+.ab-page .hero-sub {
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(2rem, 3.5vw, 3.5rem);
   font-weight: 300;
@@ -69,13 +69,13 @@
 }
 
 /* ── ACCORDION ── */
-.accordion-section {
+.ab-page .accordion-section {
   max-width: 1100px;
   margin: 80px auto;
   padding: 0;
 }
 
-.accordion-section-label {
+.ab-page .accordion-section-label {
   font-size: .75rem;
   letter-spacing: .35em;
   text-transform: uppercase;
@@ -84,15 +84,15 @@
   text-align: center;
 }
 
-.accordion-item {
+.ab-page .accordion-item {
   border-top: 1px solid rgba(165, 56, 96, .18);
 }
 
-.accordion-item:last-child {
+.ab-page .accordion-item:last-child {
   border-bottom: 1px solid rgba(165, 56, 96, .18);
 }
 
-.accordion-header {
+.ab-page .accordion-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -106,18 +106,18 @@
   transition: color .3s;
 }
 
-.accordion-header:hover {
+.ab-page .accordion-header:hover {
   color: var(--wine);
 }
 
-.accordion-title {
+.ab-page .accordion-title {
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(1.6rem, 3vw, 3rem);
   font-weight: 400;
   letter-spacing: .04em;
 }
 
-.accordion-icon {
+.ab-page .accordion-icon {
   width: 36px;
   height: 36px;
   flex-shrink: 0;
@@ -130,38 +130,38 @@
   margin-left: 20px;
 }
 
-.accordion-icon svg {
+.ab-page .accordion-icon svg {
   width: 14px;
   height: 14px;
 }
 
-.accordion-icon svg line {
+.ab-page .accordion-icon svg line {
   stroke: var(--wine);
   stroke-width: 1.8;
   transition: stroke .3s;
 }
 
-.accordion-item.open .accordion-icon {
+.ab-page .accordion-item.open .accordion-icon {
   background: var(--wine);
   transform: rotate(45deg);
 }
 
-.accordion-item.open .accordion-icon svg line {
+.ab-page .accordion-item.open .accordion-icon svg line {
   stroke: var(--white);
 }
 
 /* height-based — smooth, no jump */
-.accordion-body {
+.ab-page .accordion-body {
   overflow: hidden;
   height: 0;
   transition: height .45s cubic-bezier(.4, 0, .2, 1);
 }
 
-.accordion-inner {
+.ab-page .accordion-inner {
   padding-bottom: 24px;
 }
 
-.accordion-inner p {
+.ab-page .accordion-inner p {
   font-size: 1.5rem;
   font-weight: 300;
   line-height: 1.8;
@@ -170,12 +170,12 @@
 }
 
 /* ── TESTIMONIALS ── */
-.testimonials {
+.ab-page .testimonials {
   padding: 80px 5vw;
   text-align: center;
 }
 
-.section-title {
+.ab-page .section-title {
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(2.5rem, 4vw, 3.75rem);
   font-weight: 300;
@@ -184,26 +184,26 @@
   margin-bottom: 12px;
 }
 
-.section-rule {
+.ab-page .section-rule {
   width: 60px;
   height: 1px;
   background: var(--wine);
   margin: 0 auto 52px;
 }
 
-.testimonials-carousel {
+.ab-page .testimonials-carousel {
   max-width: 1100px;
   margin: 0 auto;
   overflow: hidden;
 }
 
-.testimonials-track {
+.ab-page .testimonials-track {
   display: flex;
   gap: 24px;
   transition: transform .55s cubic-bezier(.4, 0, .2, 1);
 }
 
-.testimonial-card {
+.ab-page .testimonial-card {
   background: var(--white);
   border-radius: 2px;
   padding: 36px 28px;
@@ -215,12 +215,12 @@
   flex: 0 0 calc(33.333% - 16px);
 }
 
-.testimonial-card:hover {
+.ab-page .testimonial-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 48px rgba(69, 9, 32, .16);
 }
 
-.testimonial-card::before {
+.ab-page .testimonial-card::before {
   content: '\201C';
   font-family: 'Cormorant Garamond', serif;
   font-size: 6rem;
@@ -232,7 +232,7 @@
   line-height: 1;
 }
 
-.testimonial-avatar {
+.ab-page .testimonial-avatar {
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -246,7 +246,7 @@
   font-weight: 600;
 }
 
-.testimonial-name {
+.ab-page .testimonial-name {
   font-size: .85rem;
   font-weight: 500;
   letter-spacing: .18em;
@@ -255,39 +255,39 @@
   margin-bottom: 4px;
 }
 
-.testimonial-stars {
+.ab-page .testimonial-stars {
   color: var(--mauve);
   font-size: .85rem;
   margin-top: 4px;
 }
 
-.testimonial-text {
+.ab-page .testimonial-text {
   font-size: 1rem;
   font-weight: 300;
   line-height: 1.75;
   color: #5a2a40;
 }
 
-.testimonial-header {
+.ab-page .testimonial-header {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 16px;
 }
 
-.testimonial-meta {
+.ab-page .testimonial-meta {
   display: flex;
   flex-direction: column;
 }
 
-.testimonials-pagination {
+.ab-page .testimonials-pagination {
   display: flex;
   justify-content: center;
   gap: 10px;
   margin-top: 36px;
 }
 
-.dot {
+.ab-page .dot {
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -298,19 +298,19 @@
   transition: background .3s, transform .3s;
 }
 
-.dot.active {
+.ab-page .dot.active {
   background: var(--wine);
   transform: scale(1.35);
 }
 
 /* ── CONTACT ── */
-.contact-section {
+.ab-page .contact-section {
   padding: 80px 5vw;
   text-align: center;
   background: var(--white);
 }
 
-.contact-intro {
+.ab-page .contact-intro {
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(2rem, 5vw, .5rem);
   font-style: italic;
@@ -318,14 +318,14 @@
   margin-bottom: 3rem;
 }
 
-.contact-buttons {
+.ab-page .contact-buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
   justify-content: center;
 }
 
-.contact-btn {
+.ab-page .contact-btn {
   font-family: 'Jost', sans-serif;
   font-size: .8rem;
   letter-spacing: .25em;
@@ -339,7 +339,7 @@
   transition: background .3s, color .3s, transform .2s;
 }
 
-.contact-btn:hover {
+.ab-page .contact-btn:hover {
   background: var(--wine);
   color: var(--white);
   transform: translateY(-2px);
@@ -352,14 +352,14 @@ footer {
   color: rgba(255, 255, 255, 0.7);
 }
 
-.footer-brand {
+.ab-page .footer-brand {
   text-align: center;
   margin-bottom: 4rem;
   padding-bottom: 2.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.footer-brand h2 {
+.ab-page .footer-brand h2 {
   font-family: 'Cormorant Garamond', serif;
   font-size: 2rem;
   font-weight: 300;
@@ -368,7 +368,7 @@ footer {
   text-transform: uppercase;
 }
 
-.footer-brand p {
+.ab-page .footer-brand p {
   font-size: 0.7rem;
   letter-spacing: 0.28em;
   text-transform: uppercase;
@@ -377,14 +377,14 @@ footer {
   margin-top: 0.3rem;
 }
 
-.footer-grid {
+.ab-page .footer-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 3rem;
   margin-bottom: 3.5rem;
 }
 
-.footer-col h5 {
+.ab-page .footer-col h5 {
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.2em;
@@ -393,15 +393,15 @@ footer {
   margin-bottom: 1.4rem;
 }
 
-.footer-col ul {
+.ab-page .footer-col ul {
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
 }
 
-.footer-col ul li a,
-.footer-col ul li {
+.ab-page .footer-col ul li a,
+.ab-page .footer-col ul li {
   font-size: 0.8rem;
   font-weight: 300;
   color: rgba(255, 255, 255, 0.55);
@@ -410,11 +410,11 @@ footer {
   transition: color 0.3s;
 }
 
-.footer-col ul li a:hover {
+.ab-page .footer-col ul li a:hover {
   color: var(--gold);
 }
 
-.footer-col .contact-item {
+.ab-page .footer-col .contact-item {
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
@@ -423,12 +423,12 @@ footer {
   margin-bottom: 0.5rem;
 }
 
-.footer-col .contact-icon {
+.ab-page .footer-col .contact-icon {
   font-size: 0.85rem;
   margin-top: 1px;
 }
 
-.footer-bottom {
+.ab-page .footer-bottom {
   text-align: center;
   padding-top: 2rem;
   border-top: 1px solid rgba(255, 255, 255, 0.06);

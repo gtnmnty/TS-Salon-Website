@@ -32,7 +32,7 @@ export function HelpSupport() {
   const navigate = useNavigate();
 
   return (
-    <>
+    <div className="hs-page">
       <title>GILDED - HELP & SUPPORT</title>
       <Header />
 
@@ -179,6 +179,6 @@ export function HelpSupport() {
       </section>
 
       <Footer />
-    </>
+    </div>
   )
 }

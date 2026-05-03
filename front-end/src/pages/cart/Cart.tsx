@@ -12,6 +12,19 @@ const Cart: React.FC = () => {
   const [toast, setToast] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  const requireLogin = (then: () => void) => {
+    const user = (() => {
+      try { return JSON.parse(sessionStorage.getItem('currentUser') ?? 'null') }
+      catch { return null }
+    })()
+    if (!user) {
+      sessionStorage.setItem('redirectAfterLogin', JSON.stringify({ path: '/checkout' }))
+      navigate('/auth')
+      return
+    }
+    then()
+  }
+
   const [cart, setCart] = useState<CartItem[]>(() => {
     // Load directly in useState initializer — runs once, synchronously
     try {
@@ -111,6 +124,7 @@ const Cart: React.FC = () => {
                 onRemove={removeItem}
                 onUpdate={updateItem}
                 onUpdateDelivery={updateDelivery}
+                onRequireLogin={requireLogin}
               />
             ))
           )}
@@ -123,7 +137,7 @@ const Cart: React.FC = () => {
               <SummaryItem label="Shipping" value={formatCurrency(totals.shipping)} />
               <SummaryItem label="Order Total" value={formatCurrency(totals.subtotal + totals.shipping)} />
             </div>
-            <button className="btn-checkout-main" onClick={() => navigate('/checkout')}>
+            <button className="btn-checkout-main" onClick={() => requireLogin(() => navigate('/checkout'))}>
               Checkout All
             </button>
           </div>
@@ -139,9 +153,10 @@ interface CartItemRowProps {
   onRemove: (id: string) => void;
   onUpdate: (item: CartItem) => void;
   onUpdateDelivery: (id: string, optionId: number) => void;
+  onRequireLogin: (then: () => void) => void;
 }
 
-const CartItemRow = ({ item, onUpdateQty, onRemove, onUpdate, onUpdateDelivery }: CartItemRowProps) => {
+const CartItemRow = ({ item, onUpdateQty, onRemove, onUpdate, onUpdateDelivery, onRequireLogin }: CartItemRowProps) => {
   const delivery = deliveryOpts.find(o => o.id === item.deliveryOptionId) || deliveryOpts[0];
   const navigate = useNavigate();
 
@@ -176,11 +191,12 @@ const CartItemRow = ({ item, onUpdateQty, onRemove, onUpdate, onUpdateDelivery }
           </div>
           <div className="cart-meta-button">
             <button className="btn-checkout-item" onClick={() => {
-              sessionStorage.setItem('checkoutItems', JSON.stringify([item]));
-              const current = JSON.parse(localStorage.getItem('cart') ?? '[]');
-              const updated = current.filter((c: CartItem) => c.id !== item.id);
-              localStorage.setItem('cart', JSON.stringify(updated));
-              navigate('/checkout');
+              onRequireLogin(() => {
+                sessionStorage.setItem('checkoutItems', JSON.stringify([item]))
+                const current = JSON.parse(localStorage.getItem('cart') ?? '[]')
+                localStorage.setItem('cart', JSON.stringify(current.filter((c: CartItem) => c.id !== item.id)))
+                navigate('/checkout')
+              })
             }}>
               Checkout
             </button>

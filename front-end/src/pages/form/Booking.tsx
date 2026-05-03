@@ -221,7 +221,7 @@ export function Booking() {
           {/* ── FORM CARD ── */}
           <section className="bk-card">
             <div className="bk-section-head">
-              <div className="bk-section-title">Appointment Details</div>
+              <div className="bk-section-title">Book an Appointment</div>
               <div className="bk-section-copy">Refined booking, tailored to your preferences</div>
             </div>
 

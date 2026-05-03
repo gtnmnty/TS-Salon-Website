@@ -1,31 +1,37 @@
 import { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router'
 import { Header } from '../../components/Header'
 import { Footer } from '../../components/Footer'
 import { products } from '../../../../backend/data/products'
+import type { CartItem } from '../../../../backend/types/cart'
 import './HomePage.css'
 
 const offerItems = [
   {
     img: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&auto=format&fit=crop',
     title: 'Facial Treatments',
+    category: 'Skin Care',
     desc: 'Your special day deserves flawless elegance and radiant skin care.',
     price: '₱7,350.85',
   },
   {
     img: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&auto=format&fit=crop',
     title: 'Hair Styling',
+    category: 'Hair Care',
     desc: 'Your special day deserves flawless elegance and expert styling.',
     price: '₱7,350.85',
   },
   {
     img: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&auto=format&fit=crop',
     title: 'Nail Artistry',
+    category: 'Nail Care',
     desc: 'Your special day deserves flawless elegance and creative nail art.',
     price: '₱7,350.85',
   },
   {
     img: 'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&auto=format&fit=crop',
     title: 'Bridal Packages',
+    category: 'Make Up',
     desc: 'Your special day deserves flawless elegance and timeless beauty.',
     price: '₱7,350.85',
   },
@@ -38,7 +44,52 @@ const galleryImgs = [
 ]
 
 export function HomePage() {
+  const navigate = useNavigate()
   const [galleryIdx, setGalleryIdx] = useState(0)
+  const [toast, setToast] = useState('')
+
+  const showToast = (msg: string) => {
+    setToast(msg)
+    setTimeout(() => setToast(''), 2800)
+  }
+
+  const addToCart = (product: typeof products[0]) => {
+    try {
+      const existing: CartItem[] = JSON.parse(localStorage.getItem('cart') ?? '[]')
+      const idx = existing.findIndex(i => i.id === String(product.id))
+      if (idx > -1) {
+        existing[idx]!.qty += 1
+      } else {
+        existing.push({
+          id: String(product.id),
+          name: product.name,
+          desc: product.desc,
+          price: product.priceNum,
+          qty: 1,
+          image: product.imgs[0] ?? '',
+          deliveryOptionId: 1,
+        })
+      }
+      localStorage.setItem('cart', JSON.stringify(existing))
+      showToast(`${product.name} added to cart!`)
+    } catch {
+      showToast('Could not add to cart.')
+    }
+  }
+
+  const buyNow = (product: typeof products[0]) => {
+    const item: CartItem = {
+      id: String(product.id),
+      name: product.name,
+      desc: product.desc,
+      price: product.priceNum,
+      qty: 1,
+      image: product.imgs[0] ?? '',
+      deliveryOptionId: 1,
+    }
+    sessionStorage.setItem('checkoutItems', JSON.stringify([item]))
+    navigate('/checkout')
+  }
 
   useEffect(() => {
     const els = document.querySelectorAll('.hp-page .reveal')
@@ -65,6 +116,7 @@ export function HomePage() {
   return (
     <div className="hp-page">
       <title>GILDED - Homepage</title>
+      {toast && <div className="hp-toast">{toast}</div>}
 
       <Header />
 
@@ -90,7 +142,7 @@ export function HomePage() {
 
         <div className="hero-right">
           <div className="hero-circle" aria-hidden="true">
-            <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&auto=format&fit=crop" alt="hero-pic" />
+            <img src="hero-pic.png" alt="hero-pic" />
           </div>
           <div className="rating-badge">
             <span className="star" aria-hidden="true">&#9733;</span>
@@ -118,7 +170,7 @@ export function HomePage() {
                 <p>{item.desc}</p>
                 <div className="offer-footer">
                   <span className="offer-price">{item.price}</span>
-                  <a href="#" className="offer-more">More →</a>
+                  <Link to={`/services?category=${encodeURIComponent(item.category)}`} className="offer-more">More →</Link>
                 </div>
               </div>
             </div>
@@ -139,13 +191,13 @@ export function HomePage() {
                 <img src={product.imgs[0]} alt={product.name} />
               </div>
               <div className="product-footer">
-                <div className="product-name">{product.name}</div>
-                <div className="product-meta">
+                <div>
+                  <div className="product-name">{product.name}</div>
                   <div className="product-price">{product.price}</div>
-                  <div className="product-actions">
-                    <button className="btn-cart">Add to Cart</button>
-                    <button className="btn-buy">Buy</button>
-                  </div>
+                </div>
+                <div className="product-actions">
+                  <button className="btn-cart" onClick={e => { e.stopPropagation(); addToCart(product) }}>Add to Cart</button>
+                  <button className="btn-buy" onClick={e => { e.stopPropagation(); buyNow(product) }}>Buy</button>
                 </div>
               </div>
             </div>
@@ -153,7 +205,7 @@ export function HomePage() {
         </div>
 
         <div className="view-all-wrap reveal">
-          <a href="#" className="btn-view-all">View All Products</a>
+          <Link to="/products" className="btn-view-all">View All Products</Link>
         </div>
       </section>
 

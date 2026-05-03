@@ -1,72 +1,89 @@
 import { deliveryOpts } from '../../../../backend/data/deliveryOption';
 import type { CartItem } from '../../../../backend/types/cart';
+import { users } from '../../../../backend/data/users';
 import type { UserAccount } from '../../../../backend/types/users';
 import type { Order } from '../../../../backend/types/orders';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import './Checkout.css';
 
-interface Profile {
-  name: string;
-  email: string;
-  phone: string;
-  addr: string;
+const TAX_RATE = 0.12;
+
+// ── helpers (outside component, no re-creation on render) ──
+function getSource(): UserAccount {
+  try {
+    const session = JSON.parse(sessionStorage.getItem('currentUser') ?? 'null');
+    if (session) return session;
+  } catch { }
+  return users[0]!;
 }
 
-const profile: Profile = {
-  name: 'Jon Snow',
-  email: 'jdncanthtall8678@mail.com',
-  phone: '09354334633',
-  addr: '123 Sample St, Quezon City, Metro Manila 1100',
-};
-
-const TAX_RATE = 0.12;
+function formatAddress(addr: UserAccount['address']): string {
+  if (!addr) return '';
+  return `${addr.street}, ${addr.barangay}, ${addr.city}, ${addr.zipcode}, ${addr.country}`;
+}
 
 export const Checkout: React.FC = () => {
   const navigate = useNavigate();
   const [items, setItems] = useState<CartItem[]>([]);
   const [payMethod, setPayMethod] = useState<string>('visa');
   const [toast, setToast] = useState<string | null>(null);
+  const [shChecked, setShChecked] = useState(false)
+  const [billChecked, setBillChecked] = useState(false)
 
-  // Form State
+  // Shipping
   const [shName, setShName] = useState('');
   const [shPhone, setShPhone] = useState('');
   const [shEmail, setShEmail] = useState('');
   const [shAddr, setShAddr] = useState('');
 
+  // Billing
   const [billName, setBillName] = useState('');
   const [billAddr, setBillAddr] = useState('');
 
+  // Card
   const [cardNumber, setCardNumber] = useState('');
   const [cardExp, setCardExp] = useState('');
 
+  useEffect(() => {
+    const user = (() => {
+      try { return JSON.parse(sessionStorage.getItem('currentUser') ?? 'null') }
+      catch { return null }
+    })()
+    if (!user) return  // not logged in — leave fields empty, checkboxes unchecked
+
+    const addr = formatAddress(user.address)
+    setShName(user.fullName)
+    setShEmail(user.email)
+    setShPhone(user.phone)
+    setShAddr(addr)
+    setBillName(user.fullName)
+    setBillAddr(addr)
+    setShChecked(true)
+    setBillChecked(true)
+  }, [])
+
+  // ── load cart items ──
   useEffect(() => {
     const getCheckoutItems = () => {
       try {
         const fromSession = JSON.parse(sessionStorage.getItem('checkoutItems') || '[]');
         if (Array.isArray(fromSession) && fromSession.length > 0) return fromSession;
-      } catch (e) {
-        // ignore
-      }
+      } catch { }
       try {
         const fromCart = JSON.parse(localStorage.getItem('cart') || '[]');
         if (Array.isArray(fromCart)) return fromCart;
-      } catch (e) {
-        // ignore
-      }
+      } catch { }
       return [];
     };
 
-    // Normalize items
-    const rawItems = getCheckoutItems();
-    const normalized = rawItems.map((item: any) => ({
+    const normalized = getCheckoutItems().map((item: any) => ({
       ...item,
       name: item.name || 'Unnamed Item',
       price: Number(item.price) || 0,
       qty: Number(item.qty) || 1,
-      deliveryOptionId: Number(item.deliveryOptionId) || deliveryOpts[0]?.id || 1
+      deliveryOptionId: Number(item.deliveryOptionId) || deliveryOpts[0]?.id || 1,
     }));
-
     setItems(normalized);
   }, []);
 
@@ -77,72 +94,61 @@ export const Checkout: React.FC = () => {
 
   const fillShipping = (checked: boolean) => {
     if (checked) {
-      setShName(profile.name);
-      setShEmail(profile.email);
-      setShPhone(profile.phone);
-      setShAddr(profile.addr);
+      const src = getSource();
+      setShName(src.fullName);
+      setShEmail(src.email);
+      setShPhone(src.phone);
+      setShAddr(formatAddress(src.address));
     } else {
-      setShName('');
-      setShEmail('');
-      setShPhone('');
-      setShAddr('');
+      setShName(''); setShEmail(''); setShPhone(''); setShAddr('');
     }
   };
 
   const fillBilling = (checked: boolean) => {
     if (checked) {
-      setBillName(profile.name);
-      setBillAddr(shAddr || profile.addr);
+      const src = getSource();
+      setBillName(src.fullName);
+      setBillAddr(formatAddress(src.address));
     } else {
-      setBillName('');
-      setBillAddr('');
+      setBillName(''); setBillAddr('');
     }
   };
 
-  const formatCurrency = (amount: number) => {
-    return 'PHP ' + amount.toLocaleString('en-PH', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
-  };
+  const formatCurrency = (amount: number) =>
+    'PHP ' + amount.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-  const getDeliveryOption = (id: number) => {
-    return deliveryOpts.find(opt => opt.id === id) || deliveryOpts[0] || { id: 1, name: 'Standard Delivery', deliveryDays: 5, deliveryPrice: 0 };
-  };
+  const getDeliveryOption = (id: number) =>
+    deliveryOpts.find(opt => opt.id === id) || deliveryOpts[0] || { id: 1, name: 'Standard Delivery', deliveryDays: 5, deliveryPrice: 0 };
 
-  const totals = {
-    qty: items.reduce((sum, item) => sum + item.qty, 0),
-    subtotal: items.reduce((sum, item) => sum + (item.price * item.qty), 0),
-    shipping: items.reduce((sum, item) => sum + getDeliveryOption(item.deliveryOptionId).deliveryPrice, 0),
-    tax: 0,
-    grandTotal: 0
-  };
-  totals.tax = totals.subtotal * TAX_RATE;
-  totals.grandTotal = totals.subtotal + totals.shipping + totals.tax;
+  const totals = (() => {
+    const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
+    const shipping = items.reduce((s, i) => s + getDeliveryOption(i.deliveryOptionId).deliveryPrice, 0);
+    const tax = subtotal * TAX_RATE;
+    return { qty: items.reduce((s, i) => s + i.qty, 0), subtotal, shipping, tax, grandTotal: subtotal + shipping + tax };
+  })();
 
   const handleCardNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/\D/g, '').slice(0, 16);
-    value = value.replace(/(.{4})/g, '$1 ').trim();
-    setCardNumber(value);
+    let v = e.target.value.replace(/\D/g, '').slice(0, 16);
+    v = v.replace(/(.{4})/g, '$1 ').trim();
+    setCardNumber(v);
   };
 
-  const handleAmex = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/\D/g, '').slice(0, 15);
-    if (value.length > 10) value = value.slice(0, 4) + ' ' + value.slice(4, 10) + ' ' + value.slice(10);
-    else if (value.length > 4) value = value.slice(0, 4) + ' ' + value.slice(4);
-    setCardNumber(value);
+  const handleAmexNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let v = e.target.value.replace(/\D/g, '').slice(0, 15);
+    if (v.length > 10) v = v.slice(0, 4) + ' ' + v.slice(4, 10) + ' ' + v.slice(10);
+    else if (v.length > 4) v = v.slice(0, 4) + ' ' + v.slice(4);
+    setCardNumber(v);
   };
 
   const handleExp = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/\D/g, '');
-    if (value.length >= 2) value = value.slice(0, 2) + ' / ' + value.slice(2, 4);
-    setCardExp(value);
+    let v = e.target.value.replace(/\D/g, '');
+    if (v.length >= 2) v = v.slice(0, 2) + ' / ' + v.slice(2, 4);
+    setCardExp(v);
   };
 
   const placeOrder = () => {
     if (!items.length) { showToastMsg('No items to place.'); return; }
 
-    // get current user from sessionStorage
     const currentUser: UserAccount | null = (() => {
       try { return JSON.parse(sessionStorage.getItem('currentUser') ?? 'null'); }
       catch { return null; }
@@ -150,6 +156,8 @@ export const Checkout: React.FC = () => {
 
     if (!currentUser) {
       showToastMsg('Please log in to place an order.');
+      sessionStorage.setItem('checkoutItems', JSON.stringify(items));
+      sessionStorage.setItem('redirectAfterLogin', JSON.stringify({ path: '/checkout' }));
       navigate('/auth');
       return;
     }
@@ -170,18 +178,12 @@ export const Checkout: React.FC = () => {
           deliveryType: opt.name,
           deliveryDays: opt.deliveryDays,
         };
-      })
+      }),
     };
 
-    // push to user and save back to sessionStorage
     currentUser.orders.push(newOrder);
     sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
     localStorage.removeItem('cart');
-    sessionStorage.removeItem('checkoutItems');
-
-    // clear cart
-    const fromSession = sessionStorage.getItem('checkoutItems');
-    if (!fromSession) localStorage.removeItem('cart');
     sessionStorage.removeItem('checkoutItems');
 
     showToastMsg('Order placed! Thank you. ✦');
@@ -243,8 +245,6 @@ export const Checkout: React.FC = () => {
                 ) : (
                   items.map((item, idx) => {
                     const delivery = getDeliveryOption(item.deliveryOptionId);
-                    const subtotal = item.price * item.qty;
-                    const shippingText = delivery.deliveryPrice === 0 ? 'Free' : formatCurrency(delivery.deliveryPrice);
                     return (
                       <div className="order-item" key={idx}>
                         <div className={`item-thumb ${!item.image ? 'is-empty' : ''}`}>
@@ -254,8 +254,11 @@ export const Checkout: React.FC = () => {
                           <div className="item-name">{item.name}</div>
                           <div className="item-meta">
                             <div className="item-meta-row"><span>Qty:</span><strong>{item.qty}</strong></div>
-                            <div className="item-meta-row"><span>Total:</span><strong>{formatCurrency(subtotal)}</strong></div>
-                            <div className="item-meta-row"><span>Delivery:</span><strong>{delivery.name} ({shippingText})</strong></div>
+                            <div className="item-meta-row"><span>Total:</span><strong>{formatCurrency(item.price * item.qty)}</strong></div>
+                            <div className="item-meta-row">
+                              <span>Delivery:</span>
+                              <strong>{delivery.name} ({delivery.deliveryPrice === 0 ? 'Free' : formatCurrency(delivery.deliveryPrice)})</strong>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -268,21 +271,23 @@ export const Checkout: React.FC = () => {
         </aside>
 
         <div className="card card-forms">
-
-
           <div className="card-head">
             <span className="card-title">Shipping Information</span>
           </div>
 
           <div className="card-body">
             <label className="autofill-check">
-              <input type="checkbox" onChange={(e) => fillShipping(e.target.checked)} />
+              <input
+                type="checkbox"
+                checked={shChecked}
+                onChange={e => { setShChecked(e.target.checked); fillShipping(e.target.checked) }}
+              />
               <span>Same info as account</span>
             </label>
 
             <div className="form-grid">
               <div className="form-group">
-                <label className="form-label full">Full Name</label>
+                <label className="form-label">Full Name</label>
                 <input className="form-input" type="text" placeholder="Full Name" value={shName} onChange={e => setShName(e.target.value)} />
               </div>
               <div className="form-group">
@@ -305,11 +310,9 @@ export const Checkout: React.FC = () => {
           </div>
 
           <div className="card-body">
-
             <div className="pymnt-section">
-
               <div className="pay-tabs">
-                {['visa', 'gcash', 'maya', 'paypal', 'amex', 'cod'].map(method => (
+                {['visa', 'mastercard', 'gcash', 'maya', 'paypal', 'amex', 'cod'].map(method => (
                   <button
                     key={method}
                     className={`pay-tab ${payMethod === method ? 'active' : ''}`}
@@ -321,11 +324,15 @@ export const Checkout: React.FC = () => {
                 ))}
               </div>
 
-              {payMethod === 'visa' && (
+              {['visa', 'mastercard', 'amex'].includes(payMethod) && (
                 <div className="pay-panel active">
                   <div className="form-grid">
                     <label className="autofill-check full">
-                      <input type="checkbox" onChange={(e) => fillBilling(e.target.checked)} />
+                      <input
+                        type="checkbox"
+                        checked={billChecked}
+                        onChange={e => { setBillChecked(e.target.checked); fillBilling(e.target.checked) }}
+                      />
                       <span>Same info as account and shipping</span>
                     </label>
                     <div className="form-group">
@@ -338,7 +345,13 @@ export const Checkout: React.FC = () => {
                     </div>
                     <div className="form-group full">
                       <label className="form-label">Card Number</label>
-                      <input className="form-input" type="text" placeholder="**** **** **** ****" maxLength={19} value={cardNumber} onChange={handleCardNumber} />
+                      <input
+                        className="form-input" type="text"
+                        placeholder="**** **** **** ****"
+                        maxLength={payMethod === 'amex' ? 17 : 19}
+                        value={cardNumber}
+                        onChange={payMethod === 'amex' ? handleAmexNumber : handleCardNumber}
+                      />
                     </div>
                     <div className="form-group">
                       <label className="form-label">Expiration Date</label>
@@ -346,71 +359,25 @@ export const Checkout: React.FC = () => {
                     </div>
                     <div className="form-group">
                       <label className="form-label">CVV</label>
-                      <input className="form-input" type="password" placeholder="***" maxLength={3} />
+                      <input className="form-input" type="password" placeholder="***" maxLength={payMethod === 'amex' ? 4 : 3} />
                     </div>
                   </div>
                 </div>
               )}
 
-              {payMethod === 'gcash' && (
+              {['gcash', 'maya', 'paypal'].includes(payMethod) && (
                 <div className="pay-panel active">
                   <div className="form-grid">
                     <div className="form-group full">
-                      <label className="form-label">GCash Number</label>
-                      <input className="form-input" type="tel" placeholder="09XX XXX XXXX" maxLength={13} />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {payMethod === 'maya' && (
-                <div className="pay-panel active">
-                  <div className="form-grid">
-                    <div className="form-group full">
-                      <label className="form-label">Maya Number</label>
-                      <input className="form-input" type="tel" placeholder="09XX XXX XXXX" maxLength={13} />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {payMethod === 'paypal' && (
-                <div className="pay-panel active">
-                  <div className="form-grid">
-                    <div className="form-group full">
-                      <label className="form-label">PayPal Email</label>
-                      <input className="form-input" type="email" placeholder="paypal@example.com" />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {payMethod === 'amex' && (
-                <div className="pay-panel active">
-                  <div className="form-grid">
-                    <label className="autofill-check full">
-                      <input type="checkbox" onChange={(e) => fillBilling(e.target.checked)} />
-                      <span>Same info as account and shipping</span>
-                    </label>
-                    <div className="form-group">
-                      <label className="form-label">Billing Full Name</label>
-                      <input className="form-input" type="text" placeholder="Name on card" value={billName} onChange={e => setBillName(e.target.value)} />
-                    </div>
-                    <div className="form-group full">
-                      <label className="form-label">Billing Address</label>
-                      <input className="form-input" type="text" placeholder="Billing address" value={billAddr} onChange={e => setBillAddr(e.target.value)} />
-                    </div>
-                    <div className="form-group full">
-                      <label className="form-label">Card Number</label>
-                      <input className="form-input" type="text" placeholder="**** ****** *****" maxLength={17} value={cardNumber} onChange={handleAmex} />
-                    </div>
-                    <div className="form-group">
-                      <label className="form-label">Expiration Date</label>
-                      <input className="form-input" type="text" placeholder="MM / YY" maxLength={7} value={cardExp} onChange={handleExp} />
-                    </div>
-                    <div className="form-group">
-                      <label className="form-label">CID (4-digit)</label>
-                      <input className="form-input" type="password" placeholder="****" maxLength={4} />
+                      <label className="form-label">
+                        {payMethod === 'paypal' ? 'PayPal Email' : `${payMethod.charAt(0).toUpperCase() + payMethod.slice(1)} Number`}
+                      </label>
+                      <input
+                        className="form-input"
+                        type={payMethod === 'paypal' ? 'email' : 'tel'}
+                        placeholder={payMethod === 'paypal' ? 'your@paypal.com' : '09XX XXX XXXX'}
+                        maxLength={payMethod === 'paypal' ? undefined : 13}
+                      />
                     </div>
                   </div>
                 </div>
@@ -421,7 +388,9 @@ export const Checkout: React.FC = () => {
                   <div style={{ background: 'rgba(249,219,189,0.4)', border: '1px solid rgba(218,98,125,0.2)', borderRadius: '3px', padding: '16px 18px' }}>
                     <p style={{ fontSize: '13.5px', color: 'var(--wine)', lineHeight: '1.7' }}>
                       Pay in cash upon delivery.<br />
-                      <span style={{ color: 'var(--muted)', fontSize: '12.5px' }}>Please have the exact amount ready. Our courier will collect payment on delivery.</span>
+                      <span style={{ color: 'var(--muted)', fontSize: '12.5px' }}>
+                        Please have the exact amount ready. Our courier will collect payment on delivery.
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -439,9 +408,9 @@ export const Checkout: React.FC = () => {
             </div>
           </div>
         </div>
-      </main >
+      </main>
 
       <div className={`toast ${toast ? 'show' : ''}`}>{toast}</div>
-    </div >
+    </div>
   );
 };

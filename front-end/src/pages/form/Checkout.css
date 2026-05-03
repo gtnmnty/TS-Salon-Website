@@ -15,7 +15,7 @@
   --shadow-md: 0 4px 24px rgba(165, 56, 96, 0.12);
 }
 
-.checkout-page .checkout-page {
+.checkout-page {
   background: var(--off);
   color: var(--deep);
   font-family: 'Jost', sans-serif;
@@ -25,7 +25,7 @@
   position: relative;
 }
 
-.checkout-page .checkout-page::before {
+.checkout-page::before {
   content: '';
   position: fixed;
   inset: 0;
@@ -36,6 +36,7 @@
   z-index: 0;
 }
 
+/* ── TOP BAR ── */
 .checkout-page .checkout-top-bar {
   position: sticky;
   top: 0;
@@ -45,7 +46,7 @@
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   padding: 0.75rem 0;
-  min-height: 60px;
+  min-height: clamp(52px, 8vw, 60px);
 }
 
 .checkout-page .top-bar-inner {
@@ -62,7 +63,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
+  font-size: clamp(11px, calc(10px + 0.3vw), 13px);
   font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -88,7 +89,7 @@
 
 .checkout-page .page-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 2.5rem;
+  font-size: clamp(1.2rem, calc(0.9rem + 1.8vw), 2.5rem);
   font-weight: 500;
   letter-spacing: 0.08em;
   color: var(--wine);
@@ -101,18 +102,20 @@
   grid-column: 3;
 }
 
+/* ── WRAPPER / LAYOUT ── */
 .checkout-page .checkout-wrapper {
   position: relative;
   z-index: 1;
   width: min(calc(100% - 2 * clamp(1rem, 4vw, 2.5rem)), 80rem);
   margin: 0 auto;
-  padding: 36px 0 80px;
+  padding: clamp(20px, 4vw, 36px) 0 clamp(48px, 8vw, 80px);
   display: grid;
-  grid-template-columns: minmax(0, 1fr) clamp(430px, 38vw, 500px);
+  grid-template-columns: minmax(0, 1fr) clamp(300px, 38vw, 500px);
   grid-template-rows: auto;
-  gap: 28px;
+  gap: clamp(16px, 3vw, 28px);
 }
 
+/* ── CARD ── */
 .checkout-page .card {
   background: var(--card);
   border: 1px solid var(--border);
@@ -127,33 +130,27 @@
     opacity: 0;
     transform: translateY(14px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-.checkout-page .card:nth-child(2) {
-  animation-delay: 0.07s;
-}
-
-.checkout-page .card:nth-child(3) {
-  animation-delay: 0.14s;
-}
+.checkout-page .card:nth-child(2) { animation-delay: 0.07s; }
+.checkout-page .card:nth-child(3) { animation-delay: 0.14s; }
 
 .checkout-page .card-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 24px;
+  padding: clamp(12px, 2.5vw, 16px) clamp(16px, 3vw, 24px);
   border-bottom: 1px solid var(--border);
   background: rgba(249, 219, 189, 0.25);
 }
 
 .checkout-page .card-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 17px;
+  font-size: clamp(14px, calc(12px + 0.4vw), 17px);
   font-weight: 600;
   letter-spacing: 0.05em;
   color: var(--deep);
@@ -161,23 +158,24 @@
 }
 
 .checkout-page .card-body {
-  padding: 24px;
+  padding: clamp(16px, 3vw, 24px);
 }
 
+/* ── ORDER ITEMS ── */
 .checkout-page .orders-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: clamp(10px, 2vw, 14px);
 }
 
 .checkout-page .order-item {
   border: 1px solid var(--border);
   border-radius: 3px;
-  padding: 18px 20px;
+  padding: clamp(12px, 2.5vw, 18px) clamp(14px, 2.5vw, 20px);
   background: rgba(255, 255, 255, 0.6);
   display: grid;
-  grid-template-columns: 108px minmax(0, 1fr) auto;
-  gap: 12px 20px;
+  grid-template-columns: clamp(72px, 12vw, 108px) minmax(0, 1fr) auto;
+  gap: clamp(8px, 2vw, 12px) clamp(12px, 2.5vw, 20px);
   align-items: start;
   transition: box-shadow 0.2s;
 }
@@ -188,8 +186,8 @@
 
 .checkout-page .item-thumb {
   position: relative;
-  width: 108px;
-  height: 108px;
+  width: clamp(72px, 12vw, 108px);
+  height: clamp(72px, 12vw, 108px);
   border-radius: 3px;
   border: 1px dashed rgba(165, 56, 96, 0.28);
   background: linear-gradient(135deg, rgba(249, 219, 189, 0.85) 0%, rgba(255, 165, 171, 0.55) 100%);
@@ -226,7 +224,7 @@
 
 .checkout-page .item-name {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 17px;
+  font-size: clamp(14px, calc(12px + 0.5vw), 17px);
   font-weight: 600;
   color: var(--deep);
   margin-bottom: 8px;
@@ -241,7 +239,7 @@
 .checkout-page .item-meta-row {
   display: flex;
   gap: 6px;
-  font-size: 13px;
+  font-size: clamp(11px, calc(10px + 0.3vw), 13px);
   color: var(--muted);
   align-items: flex-start;
   flex-wrap: wrap;
@@ -266,15 +264,16 @@
   border-radius: 3px;
   padding: 18px;
   text-align: center;
-  font-size: 13px;
+  font-size: clamp(11px, calc(10px + 0.3vw), 13px);
   color: var(--muted);
   background: rgba(255, 255, 255, 0.5);
 }
 
+/* ── FORM ── */
 .checkout-page .form-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 2vw, 14px);
 }
 
 .checkout-page .form-group {
@@ -288,7 +287,7 @@
 }
 
 .checkout-page .form-label {
-  font-size: 10.5px;
+  font-size: clamp(9px, calc(8.5px + 0.25vw), 10.5px);
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -297,12 +296,12 @@
 
 .checkout-page .form-input {
   font-family: 'Jost', sans-serif;
-  font-size: 13.5px;
+  font-size: clamp(12px, calc(11.5px + 0.3vw), 13.5px);
   color: var(--deep);
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid var(--border);
   border-radius: 3px;
-  padding: 10px 13px;
+  padding: clamp(8px, 1.5vw, 10px) clamp(10px, 2vw, 13px);
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
   width: 100%;
@@ -320,7 +319,7 @@
   gap: 8px;
   margin-bottom: 14px;
   cursor: pointer;
-  font-size: 12.5px;
+  font-size: clamp(11px, calc(10.5px + 0.25vw), 12.5px);
   color: var(--muted);
   letter-spacing: 0.03em;
 }
@@ -337,20 +336,21 @@
   grid-column: 1 / -1;
 }
 
+/* ── PAYMENT TABS ── */
 .checkout-page .pay-tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: clamp(6px, 1.5vw, 8px);
+  margin-bottom: clamp(14px, 3vw, 20px);
 }
 
 .checkout-page .pay-tab {
   font-family: 'Jost', sans-serif;
-  font-size: 12px;
+  font-size: clamp(10px, calc(9.5px + 0.3vw), 12px);
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 9px 20px;
+  padding: clamp(7px, 1.5vw, 9px) clamp(12px, 2.5vw, 20px);
   border: 1px solid var(--border);
   background: transparent;
   color: var(--wine);
@@ -371,6 +371,7 @@
   box-shadow: 0 2px 8px rgba(218, 98, 125, 0.3);
 }
 
+/* ── SUMMARY CARD ── */
 .checkout-page .order-summary-container {
   background: var(--card);
   border: 1px solid var(--border);
@@ -397,14 +398,14 @@
 }
 
 .checkout-page .summary-head {
-  padding: 18px 24px 14px;
+  padding: clamp(14px, 2.5vw, 18px) clamp(16px, 3vw, 24px) clamp(10px, 2vw, 14px);
   border-bottom: 1px solid var(--border);
   background: linear-gradient(135deg, rgba(249, 219, 189, 0.5) 0%, rgba(255, 165, 171, 0.2) 100%);
 }
 
 .checkout-page .summary-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 19px;
+  font-size: clamp(15px, calc(13px + 0.5vw), 19px);
   font-weight: 600;
   letter-spacing: 0.06em;
   color: var(--deep);
@@ -412,14 +413,14 @@
 }
 
 .checkout-page .summary-body {
-  padding: 20px 24px;
+  padding: clamp(14px, 2.5vw, 20px) clamp(16px, 3vw, 24px);
 }
 
 .checkout-page .summary-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 13.5px;
+  font-size: clamp(12px, calc(11px + 0.35vw), 13.5px);
   padding: 8px 0;
   border-bottom: 1px solid rgba(69, 9, 32, 0.07);
   color: var(--muted);
@@ -442,7 +443,7 @@
   margin-top: 8px;
   border-top: 2px solid var(--border);
   font-family: 'Cormorant Garamond', serif;
-  font-size: 20px;
+  font-size: clamp(16px, calc(14px + 0.6vw), 20px);
   font-weight: 600;
   color: var(--deep);
 }
@@ -454,16 +455,18 @@
 .checkout-page .summary-footer {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: 12px;
-  padding: 1rem 0;
+  padding: 1rem clamp(16px, 3vw, 24px);
 }
 
+/* ── NOTE BOX ── */
 .checkout-page .note-box {
   background: rgba(249, 219, 189, 0.35);
   border: 1px solid rgba(218, 98, 125, 0.2);
   border-radius: 3px;
-  padding: 12px 14px;
-  font-size: 12px;
+  padding: clamp(10px, 2vw, 12px) clamp(12px, 2vw, 14px);
+  font-size: clamp(11px, calc(10.5px + 0.25vw), 12px);
   color: var(--wine);
   line-height: 1.65;
   margin: 12px 0;
@@ -485,14 +488,15 @@
   align-items: center;
 }
 
+/* ── PLACE ORDER BTN ── */
 .checkout-page .place-order-btn {
   display: block;
   width: 100%;
-  padding: 1rem 2rem;
+  padding: clamp(0.8rem, 2vw, 1rem) clamp(1.2rem, 3vw, 2rem);
   background: linear-gradient(135deg, var(--wine) 0%, var(--mauve) 100%);
   color: #fff;
   font-family: 'Jost', sans-serif;
-  font-size: 12.5px;
+  font-size: clamp(11px, calc(10.5px + 0.3vw), 12.5px);
   font-weight: 600;
   letter-spacing: 0.3em;
   text-transform: uppercase;
@@ -509,6 +513,7 @@
   box-shadow: 0 6px 20px rgba(165, 56, 96, 0.4);
 }
 
+/* ── TOAST ── */
 .checkout-page .toast {
   position: fixed;
   bottom: 28px;
@@ -517,16 +522,17 @@
   background: var(--deep);
   color: #fff;
   font-family: 'Jost', sans-serif;
-  font-size: 13px;
+  font-size: clamp(12px, calc(11.5px + 0.3vw), 13px);
   font-weight: 500;
   letter-spacing: 0.05em;
-  padding: 11px 28px;
+  padding: clamp(9px, 1.5vw, 11px) clamp(20px, 3vw, 28px);
   border-radius: 3px;
   opacity: 0;
   pointer-events: none;
   transition: all 0.3s cubic-bezier(.34, 1.56, .64, 1);
   z-index: 999;
   white-space: nowrap;
+  max-width: calc(100vw - 2rem);
 }
 
 .checkout-page .toast.show {
@@ -534,94 +540,118 @@
   transform: translateX(-50%) translateY(0);
 }
 
+/* ══════════════════════════════════════════
+   RESPONSIVE — all selectors scoped to .checkout-page
+══════════════════════════════════════════ */
+
+/* Tablet (≤ 900px) */
 @media (max-width: 900px) {
-  .checkout-wrapper {
+  .checkout-page .checkout-wrapper {
     grid-template-columns: 1fr;
-    padding: 24px 0 60px;
-    gap: 20px;
+    padding: clamp(16px, 3vw, 24px) 0 clamp(40px, 6vw, 60px);
+    gap: clamp(14px, 2.5vw, 20px);
   }
 
-  .summary-card {
+  .checkout-page .summary-card {
     grid-column: 1;
     grid-row: auto;
     position: static;
   }
 
-  .checkout-top-bar {
-    height: 60px;
+  .checkout-page .checkout-top-bar {
+    min-height: 60px;
+  }
+
+  .checkout-page .note-box {
+    width: 100%;
   }
 }
 
+/* Mobile (≤ 600px) */
 @media (max-width: 600px) {
-  .checkout-top-bar {
-    height: 52px;
+  .checkout-page .checkout-top-bar {
+    min-height: 52px;
   }
 
-  .top-bar-inner {
+  .checkout-page .top-bar-inner {
     width: min(calc(100% - 1.2rem), 100%);
   }
 
-  .page-title {
-    font-size: 17px;
+  .checkout-page .page-title {
+    font-size: clamp(1rem, 5vw, 1.2rem);
   }
 
-  .checkout-wrapper {
-    padding: 16px 0 56px;
-    gap: 16px;
+  .checkout-page .checkout-wrapper {
+    padding: clamp(12px, 3vw, 16px) 0 clamp(36px, 8vw, 56px);
+    gap: clamp(12px, 3vw, 16px);
     display: flex;
     flex-direction: column;
   }
 
-  .card-order-details {
-    order: 1;
+  .checkout-page .card-order-details { order: 1; }
+  .checkout-page .summary-card       { order: 2; }
+  .checkout-page .card-forms         { order: 3; }
+
+  .checkout-page .card-body {
+    padding: clamp(12px, 4vw, 16px);
   }
 
-  .summary-card {
-    order: 2;
-  }
-
-  .card-forms {
-    order: 3;
-  }
-
-  .card-body {
-    padding: 16px;
-  }
-
-  .form-grid {
+  .checkout-page .form-grid {
     grid-template-columns: 1fr;
   }
 
-  .form-group.full {
+  .checkout-page .form-group.full {
     grid-column: 1;
   }
 
-  .pay-tabs {
+  .checkout-page .pay-tabs {
     gap: 6px;
   }
 
-  .pay-tab {
-    padding: 8px 14px;
-    font-size: 11px;
+  .checkout-page .summary-body,
+  .checkout-page .summary-footer {
+    padding-left: clamp(12px, 4vw, 16px);
+    padding-right: clamp(12px, 4vw, 16px);
   }
 
-  .summary-body,
-  .summary-footer {
-    padding-left: 16px;
-    padding-right: 16px;
+  .checkout-page .summary-head {
+    padding: clamp(12px, 3vw, 14px) clamp(12px, 4vw, 16px);
   }
 
-  .summary-head {
-    padding: 14px 16px;
-  }
-
-  .order-item {
-    grid-template-columns: 64px minmax(0, 1fr);
+  .checkout-page .order-item {
+    grid-template-columns: clamp(56px, 16vw, 72px) minmax(0, 1fr);
     align-items: start;
   }
 
-  .item-thumb {
-    width: 64px;
-    height: 64px;
+  .checkout-page .item-thumb {
+    width: clamp(56px, 16vw, 72px);
+    height: clamp(56px, 16vw, 72px);
+  }
+
+  .checkout-page .toast {
+    white-space: normal;
+    text-align: center;
+    width: calc(100vw - 2rem);
+  }
+}
+
+/* Small phones (≤ 400px) */
+@media (max-width: 400px) {
+  .checkout-page .back-link span {
+    display: none;
+  }
+
+  .checkout-page .pay-tab {
+    padding: 6px 10px;
+    font-size: 10px;
+  }
+
+  .checkout-page .note-box {
+    width: 100%;
+    font-size: 11px;
+  }
+
+  .checkout-page .summary-footer {
+    flex-direction: column;
   }
 }

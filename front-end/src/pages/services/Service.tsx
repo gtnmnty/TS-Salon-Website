@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
+import { useSearchParams } from 'react-router'
 import type { ServiceItem } from '../../../../backend/types/services.ts'
 import { Header } from '../../components/Header'
 import { Footer } from '../../components/Footer'
@@ -12,7 +13,7 @@ const CATEGORIES = ['All', 'Hair Care', 'Skin Care', 'Nail Care', 'Make Up']
 
 function ServiceCard({ service, onOpen }: { service: ServiceItem; onOpen: (s: ServiceItem) => void }) {
   const navigate = useNavigate()
-  
+
   return (
     <div className="card" onClick={() => onOpen(service)}>
       <div className="card-img" style={{ backgroundImage: `url('${service.imgs[0]}')` }}>
@@ -47,6 +48,12 @@ export function Services() {
   const [search, setSearch] = useState('')
   const [sort, setSort] = useState('default')
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const cat = searchParams.get('category')
+    if (cat) setActiveCategory(cat)
+  }, [searchParams])
 
   const filtered = services
     .filter(s => activeCategory === 'All' || s.category === activeCategory)
@@ -58,7 +65,7 @@ export function Services() {
     )
     .sort((a, b) =>
       sort === 'price-asc' ? a.priceNum - b.priceNum :
-      sort === 'price-desc' ? b.priceNum - a.priceNum : 0
+        sort === 'price-desc' ? b.priceNum - a.priceNum : 0
     )
 
   const handleBook = (service: ServiceItem) => {
@@ -126,12 +133,12 @@ export function Services() {
         <div className="item-grid">
           {filtered.length > 0
             ? filtered.map(service => (
-                <ServiceCard
-                  key={service.id}
-                  service={service}
-                  onOpen={setSelectedService}
-                />
-              ))
+              <ServiceCard
+                key={service.id}
+                service={service}
+                onOpen={setSelectedService}
+              />
+            ))
             : <p className="no-results">No services found.</p>
           }
         </div>

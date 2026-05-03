@@ -422,18 +422,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 2.5rem;
+  width: 2.5rem;   
+  min-width: 0;
   font-family: 'Jost', sans-serif;
   font-size: clamp(0.82rem, 1.6vw, 1rem);
   color: var(--deep, #450920);
-  border-left: 1px solid rgba(165, 56, 96, 0.15);
-  border-right: 1px solid rgba(165, 56, 96, 0.15);
-  min-height: 100%;
+  border-left: 1px solid rgba(165, 56, 96, 0);
+  border-right: 1px solid rgba(165, 56, 96, 0);
+  align-self: stretch;
+  text-align: center;
+  background: transparent;
+  border-top: none;
+  border-bottom: none;
+  outline: none;
+  padding: 0;
+  box-sizing: border-box;
   user-select: none;
 
   -webkit-appearance: none;
   -moz-appearance: textfield;
   appearance: textfield;
+}
+
+.products-page .card-qty-num:focus {
+  border-left: 1px solid rgba(165, 56, 96, 0.2);
+  border-right: 1px solid rgba(165, 56, 96, 0.2);
 }
 
 .products-page .card-qty-num::-webkit-outer-spin-button,

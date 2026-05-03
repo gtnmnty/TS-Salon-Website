@@ -13,28 +13,32 @@ import { HelpSupport } from './pages/utilities/HelpSupport'
 import { Appointments } from './pages/appointments/Appointments'
 import { Orders } from './pages/order/Orders'
 import { Tracking } from './pages/routes/Track'
+import { ScrollToTop } from './components/ScrollToTop'
 
 import './App.css'
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/home" element={<HomePage />} />
-      <Route path="/services" element={<Services />} />
-      <Route path="/products" element={<Products />} />
-      <Route path="/booking" element={<Booking />} />
-      <Route path="/cart" element={<Cart/>}/>
-      <Route path="/checkout" element={<Checkout />} />
-      <Route path="/account" element={<Account />} />
-      <Route path="/about-us" element={<AboutUs/>}/>
-      <Route path="/faqs" element={<Faqs/>}/>
-      <Route path="/help" element={<HelpSupport/>}/>
-      <Route path="/auth" element={<Auth />} />
-      <Route path="/appointments" element={<Appointments/>}/>
-      <Route path="/orders" element={<Orders />}/>
-      <Route path="/track" element={<Tracking />}/>
-    </Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/booking" element={<Booking />} />
+        <Route path="/cart" element={<Cart/>}/>
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/about-us" element={<AboutUs/>}/>
+        <Route path="/faqs" element={<Faqs/>}/>
+        <Route path="/help" element={<HelpSupport/>}/>
+        <Route path="/auth" element={<Auth />} />
+        <Route path="/appointments" element={<Appointments/>}/>
+        <Route path="/orders" element={<Orders />}/>
+        <Route path="/track" element={<Tracking />}/>
+      </Routes>
+    </>
   )
 }
 

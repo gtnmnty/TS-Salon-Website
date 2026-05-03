@@ -1,7 +1,7 @@
 /* ── HERO ── */
 .bk-page .bk-hero {
   background: linear-gradient(160deg, var(--deep) 0%, var(--wine) 55%, var(--mauve) 100%);
-  padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1rem, 4vw, 3rem);
+  padding: clamp(2rem, 6vw, 4.5rem) clamp(1rem, 4vw, 3rem);
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -17,7 +17,7 @@
 .bk-page .bk-hero h1 {
   position: relative;
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2.5rem, calc(1.65rem + 2.8vw), 4.4rem);
+  font-size: clamp(1.9rem, calc(1.2rem + 3.5vw), 4.4rem);
   font-weight: 300;
   color: var(--white);
   letter-spacing: 0.1em;
@@ -32,13 +32,13 @@
   position: relative;
   margin-top: 0.5rem;
   color: rgba(255,255,255,0.62);
-  font-size: clamp(0.78rem, calc(0.72rem + 0.18vw), 0.92rem);
+  font-size: clamp(0.72rem, calc(0.68rem + 0.3vw), 0.92rem);
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
 .bk-page .bk-hero-line {
-  width: clamp(3rem, 7vw, 4.2rem);
+  width: clamp(2.5rem, 7vw, 4.2rem);
   height: 1px;
   background: var(--blush);
   margin: 1.2rem auto 0;
@@ -49,13 +49,13 @@
 .bk-page .bk-shell {
   width: min(calc(100% - 2 * clamp(1rem, 4vw, 2.5rem)), 80rem);
   margin: 0 auto;
-  padding: clamp(1.8rem, 4vw, 3rem) 0 clamp(3rem, 6vw, 5rem);
+  padding: clamp(1.2rem, 4vw, 3rem) 0 clamp(2rem, 6vw, 5rem);
 }
 
 .bk-page .bk-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
-  gap: clamp(1.25rem, 2.5vw, 2rem);
+  grid-template-columns: minmax(0, 1.25fr) minmax(clamp(240px, 28vw, 320px), 0.75fr);
+  gap: clamp(1rem, 2.5vw, 2rem);
   align-items: start;
 }
 
@@ -76,14 +76,15 @@
 }
 
 .bk-page .bk-section-head {
-  padding: 1.15rem 1.4rem 1rem;
+  padding: clamp(0.85rem, 2vw, 1.15rem) clamp(1rem, 2.5vw, 1.4rem) 1rem;
   border-bottom: 1px solid rgba(69,9,32,0.15);
   background: rgba(249,219,189,0.28);
+  text-align: center;
 }
 
 .bk-page .bk-section-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.5rem;
+  font-size: clamp(1.1rem, calc(0.9rem + 0.8vw), 1.5rem);
   font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -92,14 +93,14 @@
 
 .bk-page .bk-section-copy {
   margin-top: 0.25rem;
-  font-size: 0.8rem;
+  font-size: clamp(0.7rem, calc(0.66rem + 0.2vw), 0.8rem);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(69,9,32,0.48);
 }
 
 .bk-page .bk-body {
-  padding: 1.4rem;
+  padding: clamp(1rem, 2.5vw, 1.4rem);
 }
 
 /* ── SAME INFO ── */
@@ -112,7 +113,7 @@
   border: 1px solid rgba(165,56,96,0.16);
   background: rgba(249,219,189,0.24);
   border-radius: 0.85rem;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, calc(0.76rem + 0.2vw), 0.9rem);
   color: var(--wine);
   cursor: pointer;
 }
@@ -128,8 +129,8 @@
 /* ── FORM ── */
 .bk-page .bk-form-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.75rem, 2vw, 1rem);
   margin-bottom: 1rem;
 }
 
@@ -145,7 +146,7 @@
 }
 
 .bk-page .bk-label {
-  font-size: 0.72rem;
+  font-size: clamp(0.65rem, calc(0.62rem + 0.15vw), 0.72rem);
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -157,12 +158,12 @@
 .bk-page .bk-textarea {
   width: 100%;
   font-family: 'Jost', sans-serif;
-  font-size: 0.92rem;
+  font-size: clamp(0.85rem, calc(0.8rem + 0.2vw), 0.92rem);
   color: var(--deep);
   background: rgba(255,255,255,0.9);
   border: 1px solid rgba(69,9,32,0.15);
   border-radius: 0.75rem;
-  padding: 0.9rem 1rem;
+  padding: clamp(0.7rem, 2vw, 0.9rem) clamp(0.75rem, 2vw, 1rem);
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
@@ -180,7 +181,7 @@
 }
 
 .bk-page .bk-textarea {
-  min-height: 110px;
+  min-height: clamp(90px, 15vw, 110px);
   resize: vertical;
   line-height: 1.65;
 }
@@ -188,14 +189,14 @@
 /* ── CONDITIONAL PANEL ── */
 .bk-page .bk-conditional-panel {
   margin-bottom: 1rem;
-  padding: 1rem;
+  padding: clamp(0.75rem, 2vw, 1rem);
   border: 1px solid rgba(165,56,96,0.14);
   border-radius: 0.9rem;
   background: rgba(255,255,255,0.62);
 }
 
 .bk-page .bk-conditional-title {
-  font-size: 0.72rem;
+  font-size: clamp(0.65rem, calc(0.62rem + 0.15vw), 0.72rem);
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -208,7 +209,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
-  padding: 1.1rem 1.15rem;
+  padding: clamp(0.85rem, 2.5vw, 1.1rem) clamp(0.9rem, 2.5vw, 1.15rem);
   background: linear-gradient(135deg, rgba(249,219,189,0.35) 0%, rgba(255,255,255,0.9) 100%);
   border: 1px solid rgba(197,160,89,0.22);
   border-radius: 0.9rem;
@@ -223,7 +224,7 @@
   border-radius: 999px;
   background: rgba(165,56,96,0.08);
   color: var(--wine);
-  font-size: 0.68rem;
+  font-size: clamp(0.62rem, calc(0.6rem + 0.15vw), 0.68rem);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-weight: 600;
@@ -231,35 +232,35 @@
 
 .bk-page .bk-service-name {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.75rem;
+  font-size: clamp(1.3rem, calc(1rem + 1.5vw), 1.75rem);
   font-weight: 500;
   line-height: 1.12;
   color: var(--deep);
 }
 
 .bk-page .bk-service-note {
-  font-size: 0.84rem;
+  font-size: clamp(0.78rem, calc(0.74rem + 0.2vw), 0.84rem);
   line-height: 1.6;
   color: rgba(69,9,32,0.48);
 }
 
 /* ── ASIDE BODY ── */
 .bk-page .bk-aside-body {
-  padding: 1.4rem;
+  padding: clamp(1rem, 2.5vw, 1.4rem);
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
 .bk-page .bk-aside-block {
-  padding: 1rem 1.05rem;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(0.8rem, 2vw, 1.05rem);
   border: 1px solid rgba(165,56,96,0.14);
   border-radius: 0.9rem;
   background: rgba(255,255,255,0.74);
 }
 
 .bk-page .bk-aside-kicker {
-  font-size: 0.68rem;
+  font-size: clamp(0.62rem, calc(0.6rem + 0.15vw), 0.68rem);
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -269,13 +270,13 @@
 
 .bk-page .bk-aside-main {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.32rem;
+  font-size: clamp(1rem, calc(0.9rem + 0.6vw), 1.32rem);
   color: var(--deep);
   line-height: 1.18;
 }
 
 .bk-page .bk-aside-text {
-  font-size: 0.84rem;
+  font-size: clamp(0.78rem, calc(0.74rem + 0.2vw), 0.84rem);
   color: rgba(69,9,32,0.48);
   line-height: 1.65;
 }
@@ -292,10 +293,10 @@
 .bk-page .bk-btn {
   border: none;
   border-radius: 0.85rem;
-  padding: 0.92rem 1.45rem;
+  padding: clamp(0.75rem, 2vw, 0.92rem) clamp(1rem, 2.5vw, 1.45rem);
   cursor: pointer;
   font-family: 'Jost', sans-serif;
-  font-size: 0.76rem;
+  font-size: clamp(0.68rem, calc(0.65rem + 0.2vw), 0.76rem);
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -325,7 +326,7 @@
 
 /* ── ERROR ── */
 .bk-page .bk-error-msg {
-  font-size: 0.72rem;
+  font-size: clamp(0.65rem, calc(0.62rem + 0.15vw), 0.72rem);
   color: var(--wine);
   margin-top: 2px;
 }
@@ -337,9 +338,9 @@
   left: 50%;
   background: var(--deep);
   color: var(--blush);
-  padding: 0.9rem 1.4rem;
+  padding: clamp(0.7rem, 2vw, 0.9rem) clamp(1rem, 2.5vw, 1.4rem);
   border-radius: 0.45rem;
-  font-size: 0.84rem;
+  font-size: clamp(0.78rem, calc(0.74rem + 0.2vw), 0.84rem);
   letter-spacing: 0.08em;
   z-index: 9999;
   transform: translateX(-50%) translateY(-20px);
@@ -348,6 +349,7 @@
   border-left: 3px solid var(--gold);
   white-space: nowrap;
   pointer-events: none;
+  max-width: calc(100vw - 2rem);
 }
 
 .bk-page .bk-toast.show {
@@ -355,14 +357,66 @@
   opacity: 1;
 }
 
-/* ── RESPONSIVE ── */
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+
+/* Tablet (≤ 920px) */
 @media (max-width: 920px) {
-  .bk-grid { grid-template-columns: 1fr; }
+  .bk-page .bk-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bk-page .bk-aside {
+    position: static;
+  }
 }
 
+/* Mobile (≤ 640px) */
 @media (max-width: 640px) {
-  .bk-form-grid { grid-template-columns: 1fr; }
-  .bk-body, .bk-aside-body { padding: 1rem; }
-  .bk-action-row { justify-content: stretch; }
-  .bk-btn { width: 100%; }
+  .bk-page .bk-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bk-page .bk-body,
+  .bk-page .bk-aside-body {
+    padding: clamp(0.75rem, 4vw, 1rem);
+  }
+
+  .bk-page .bk-action-row {
+    justify-content: stretch;
+    flex-direction: column;
+  }
+
+  .bk-page .bk-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .bk-page .bk-service-name {
+    font-size: clamp(1.2rem, 5vw, 1.5rem);
+  }
+
+  .bk-page .bk-toast {
+    white-space: normal;
+    text-align: center;
+    width: calc(100vw - 2rem);
+  }
+}
+
+/* Small phones (≤ 400px) */
+@media (max-width: 400px) {
+  .bk-page .bk-hero h1 {
+    font-size: clamp(1.6rem, 9vw, 2rem);
+    letter-spacing: 0.05em;
+  }
+
+  .bk-page .bk-section-head {
+    padding: 0.75rem;
+  }
+
+  .bk-page .bk-same-info-row {
+    flex-wrap: wrap;
+    font-size: 0.78rem;
+  }
 }

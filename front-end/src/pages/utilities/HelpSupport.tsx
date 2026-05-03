@@ -80,6 +80,7 @@ export function HelpSupport() {
             <div className="faq-item reveal" onClick={() => navigate('/faqs?cat=products-aftercare')}>Product Care</div>
             <div className="faq-item reveal" onClick={() => navigate('/faqs')}>Special Request</div>
           </div>
+          <p className='section-subtitle'>View All</p>
         </div>
       </section>
 
@@ -93,7 +94,19 @@ export function HelpSupport() {
               service or a store credit for eligible items, ensuring your experience remains seamless and luxurious.</p>
           </div>
           <div className="policy-card reveal">
-            <p className="policy-title policy">Privacy Policy</p>
+            <p className="policy-title policy" id="privacy">Privacy Policy</p>
+            <p>Your trust is essential to us. We collect only the information needed to provide appointments, personalized
+              recommendations, and client support. All data is handled with discretion, stored securely, and never shared
+              without consent—so your beauty journey with Gilded remains private and protected.</p>
+          </div>
+          <div className="policy-card reveal">
+            <p className="policy-title policy" id="termsnconditions">Terms &amp; Conditions</p>
+            <p>Your trust is essential to us. We collect only the information needed to provide appointments, personalized
+              recommendations, and client support. All data is handled with discretion, stored securely, and never shared
+              without consent—so your beauty journey with Gilded remains private and protected.</p>
+          </div>
+          <div className="policy-card reveal">
+            <p className="policy-title policy" id="shipping">Shipping Policy</p>
             <p>Your trust is essential to us. We collect only the information needed to provide appointments, personalized
               recommendations, and client support. All data is handled with discretion, stored securely, and never shared
               without consent—so your beauty journey with Gilded remains private and protected.</p>

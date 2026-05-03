@@ -133,16 +133,16 @@ export function HomePage() {
           </p>
           <div className="hero-actions">
             <div className="hero-btns">
-              <a href="services.html" className="btn btn-outline-blush">Explore Services &rarr;</a>
-              <a href="products.html" className="btn btn-outline-blush">Shop Products</a>
+              <Link to="/services" className="btn btn-outline-blush">Explore Services &rarr;</Link>
+              <Link to="/products" className="btn btn-outline-blush">Shop Products</Link>
             </div>
-            <a href="booking.html" className="btn btn-dark">Book Now</a>
+            <Link to="/booking" className="btn btn-dark">Book Now</Link>
           </div>
         </div>
 
         <div className="hero-right">
           <div className="hero-circle" aria-hidden="true">
-            <img src="hero-pic.png" alt="hero-pic" />
+            <img src='https://images.unsplash.com/photo-1571875257727-256c39da42af?w=800&auto=format&fit=crop' />
           </div>
           <div className="rating-badge">
             <span className="star" aria-hidden="true">&#9733;</span>
@@ -191,13 +191,13 @@ export function HomePage() {
                 <img src={product.imgs[0]} alt={product.name} />
               </div>
               <div className="product-footer">
-                <div>
                   <div className="product-name">{product.name}</div>
-                  <div className="product-price">{product.price}</div>
-                </div>
                 <div className="product-actions">
-                  <button className="btn-cart" onClick={e => { e.stopPropagation(); addToCart(product) }}>Add to Cart</button>
-                  <button className="btn-buy" onClick={e => { e.stopPropagation(); buyNow(product) }}>Buy</button>
+                  <div className="product-price">{product.price}</div>
+                    <div className="product-btns">
+                      <button className="btn-cart" onClick={e => { e.stopPropagation(); addToCart(product) }}>Add to Cart</button>
+                      <button className="btn-buy" onClick={e => { e.stopPropagation(); buyNow(product) }}>Buy</button>
+                    </div>
                 </div>
               </div>
             </div>

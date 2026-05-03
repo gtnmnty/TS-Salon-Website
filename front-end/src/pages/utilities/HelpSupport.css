@@ -136,7 +136,7 @@
   border: 1px solid rgba(165, 56, 96, 0.25);
   background: var(--white);
   padding: 3rem;
-  margin-bottom: 0;
+  margin-bottom: 2rem;
 }
 
 .hs-page .policy-card .policy-title {
@@ -157,7 +157,7 @@
 
 /* Contact Form */
 .hs-page .form-section {
-  padding: 96px 20px;
+  padding: 0 20px 20px;
 }
 
 .hs-page .form-container {

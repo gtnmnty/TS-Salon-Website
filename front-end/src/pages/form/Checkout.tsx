@@ -192,6 +192,8 @@ export const Checkout: React.FC = () => {
 
   return (
     <div className="checkout-page">
+      <title>Checkout</title>
+
       <header className="checkout-top-bar">
         <div className="top-bar-inner">
           <a className="back-link" onClick={() => navigate(-1)}>

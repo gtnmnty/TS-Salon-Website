@@ -385,8 +385,7 @@
   position: sticky;
   top: 76px;
   align-self: start;
-  background: transparent;
-  border: 1px solid var(--border);
+  background-color: transparent;
   border-radius: 4px;
   box-shadow: var(--shadow-md);
   overflow: hidden;

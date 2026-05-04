@@ -1,19 +1,19 @@
 import express from 'express';
 import cors from 'cors';
 
-import { accordions } from './data/about-us/accordion.ts';
-import { reviews } from './data/about-us/reviews.ts';
+import { accordions } from './data/about-us/accordion.js';
+import { reviews } from './data/about-us/reviews.js';
 
-import { accountPayments } from './data/faqs/account-payments.ts';
-import { appointmentsBooking } from './data/faqs/appointments-booking.ts';
-import { ordersDelivery } from './data/faqs/orders-delivery.ts';
-import { productsAftercare } from './data/faqs/products-aftercare.ts';
-import { servicesPricing } from './data/faqs/services-pricing.ts';
-import { shippingReturns } from './data/faqs/shipping-returns.ts';
+import { accountPayments } from './data/faqs/account-payments.js';
+import { appointmentsBooking } from './data/faqs/appointments-booking.js';
+import { ordersDelivery } from './data/faqs/orders-delivery.js';
+import { productsAftercare } from './data/faqs/products-aftercare.js';
+import { servicesPricing } from './data/faqs/services-pricing.js';
+import { shippingReturns } from './data/faqs/shipping-returns.js';
 
-import { services } from './data/services.ts';
-import { products } from './data/products.ts';
-import { deliveryOpts } from './data/deliveryOption.ts';
+import { services } from './data/services.js';
+import { products } from './data/products.js';
+import { deliveryOpts } from './data/deliveryOption.js';
 
 
 import mongoose from 'mongoose';

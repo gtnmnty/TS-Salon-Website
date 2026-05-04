@@ -145,7 +145,7 @@ export function Appointments() {
   );
 
   return (
-    <>
+    <div className='apt-page'>
       <title>GILDED - Appointments</title>
       <Header />
 
@@ -161,7 +161,7 @@ export function Appointments() {
 
           <div className="apt-gold-rule" />
 
-          <nav className="apt-filter-tabs" role="tablist" aria-label="Appointment filters">
+          <div className="apt-filter-tabs" role="tablist" aria-label="Appointment filters">
             {FILTERS.map(f => (
               <button
                 key={f.value}
@@ -173,7 +173,7 @@ export function Appointments() {
                 {f.label}
               </button>
             ))}
-          </nav>
+          </div>
 
           <div className="apt-cards-container">
             {appointments.length === 0 ? (
@@ -199,6 +199,6 @@ export function Appointments() {
 
         </div>
       </div>
-    </>
+    </div>
   );
 }

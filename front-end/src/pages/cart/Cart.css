@@ -21,7 +21,7 @@
 }
 
 .page-title {
-  font-family: 'Jost', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: clamp(3rem, calc(1.85rem + 2.6vw), 5rem);
   font-weight: 300;
   line-height: 0.95;
@@ -334,7 +334,9 @@
   border-radius: 1rem;
   box-shadow: var(--shadow-sm);
   color: var(--text-mid);
-  font-size: clamp(1rem, calc(0.86rem + 0.22vw), 1.1rem);
+  font-size: clamp(1rem, calc(0.86rem + 0.5vw), 1.5rem);
+  font-family: 'Cormorant Garamond', sans-serif;
+  font-weight: 500;
 }
 
 .cart-empty a {

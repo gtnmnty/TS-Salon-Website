@@ -88,8 +88,8 @@
 .apt-filter-tabs {
   display: flex;
   align-items: flex-end;
+  justify-content: start;
   gap: 0;
-  border-bottom: 1px solid rgba(165, 56, 96, 0.15);
   margin-bottom: clamp(1.5rem, 5vw, 3rem);
   overflow-x: auto;
   scrollbar-width: none;

@@ -231,7 +231,6 @@ export function Orders() {
           Back
         </button>
         <div className="ord-page-title">My Orders</div>
-        <div />
       </header>
 
       <div className="ord-page-wrap">

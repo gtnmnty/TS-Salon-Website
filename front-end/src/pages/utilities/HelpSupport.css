@@ -24,6 +24,48 @@
   text-align: center;
 }
 
+.hs-page .section-subtitle {
+  position: relative;
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-family: 'Jost', sans-serif;
+  font-size: clamp(0.5rem, calc(0.72rem + 0.8vw), 0.75rem);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--wine);
+  background: transparent;
+  border: none;
+  padding: 10px 24px;
+  cursor: pointer;
+  margin: 3rem auto 0;
+  transition: background 0.22s, border-color 0.22s, transform 0.22s, box-shadow 0.22s;
+  text-align: center;
+}
+
+.hs-page .section-subtitle::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--wine);
+  transition: width 0.3s ease;
+}
+
+.hs-page .section-subtitle:hover::after {
+  width: 100%;
+}
+
+.hs-page .section-subtitle:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
 /* Hero */
 .hs-page .hero {
   padding: 96px 0;
@@ -105,7 +147,14 @@
   background-color: var(--blush);
 }
 
+.hs-page .faq-section .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .hs-page .faq-grid {
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 20px;

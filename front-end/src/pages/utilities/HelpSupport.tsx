@@ -80,7 +80,9 @@ export function HelpSupport() {
             <div className="faq-item reveal" onClick={() => navigate('/faqs?cat=products-aftercare')}>Product Care</div>
             <div className="faq-item reveal" onClick={() => navigate('/faqs')}>Special Request</div>
           </div>
-          <p className='section-subtitle'>View All</p>
+          <button className="section-subtitle" onClick={() => navigate('/faqs')}>
+            View All
+          </button>
         </div>
       </section>
 

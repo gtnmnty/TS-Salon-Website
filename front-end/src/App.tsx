@@ -13,7 +13,7 @@ import { HelpSupport } from './pages/utilities/HelpSupport'
 import { Appointments } from './pages/appointments/Appointments'
 import { Orders } from './pages/order/Orders'
 import { Tracking } from './pages/routes/Track'
-import { ScrollToTop } from './components/ScrollToTop.tsx'
+import { ScrollToTop } from './components/ScrollToTop'
 
 import './App.css'
 

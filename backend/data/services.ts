@@ -78,7 +78,7 @@ export const services: ServiceItem[] = [
       'https://images.unsplash.com/photo-1457972729786-0411a3b2b626?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1487412840181-f51793da6090?w=800&auto=format&fit=crop'
+      'https://plus.unsplash.com/premium_photo-1661326352695-6cbe1ff74ee9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8QnJpZGFsJTIwTWFrZSUyMFVwfGVufDB8fDB8fHww'
     ],
     info: ['Pre-Bridal Consultation', 'Skin Prep & Primer', 'Airbrush Foundation', 'Lash Application', 'Setting Spray', 'Touch-Up Kit'],
     reviewCount: 708,
@@ -118,9 +118,9 @@ export const services: ServiceItem[] = [
     desc: 'A restorative foot treatment with exfoliation, mask, and reflexology-inspired massage.',
     imgs: [
       'https://images.unsplash.com/photo-1519415510236-718bdfcd89c8?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1570942872213-1242e82c6b20?w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1765100478114-8c0141ffaf42?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fFBlZGljdXJlJTIwJTI2JTIwRm9vdCUyMFJpdHVhbHxlbnwwfHwwfHx8MA%3D%3D',
       'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1601740936369-2e6f7b8f5e3c?w=800&auto=format&fit=crop'
+      'https://images.unsplash.com/photo-1638859471856-c6793be39109?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fFBlZGljdXJlJTIwJTI2JTIwRm9vdCUyMFJpdHVhbHxlbnwwfHwwfHx8MA%3D%3D'
     ],
     info: ['Aromatic Foot Soak', 'Callus Removal', 'Sugar Scrub', 'Hydrating Mask', 'Foot Massage', 'Polish Finish'],
     reviewCount: 708,

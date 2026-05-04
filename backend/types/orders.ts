@@ -1,9 +1,11 @@
+type StepState = 'done' | 'active' | 'pending';
+
 export interface OrderItem {
   productId: string;
   name: string;
   quantity: number;
   price: number;
-  image: string;
+  image?: string;
   deliveryType?: string;
   deliveryDays?: number;
 }

@@ -56,10 +56,10 @@ export const products: ProductItem[] = [
     badge: "On Sale",
     desc: "Richly pigmented matte lip color that wears for 10 hours without drying or fading.",
     imgs: [
-      "https://images.unsplash.com/photo-1586495777744-4e6232bf5040?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1512207736890-6ffed8a84e8d?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1590156646043-7bda0b813cdb?w=800&auto=format&fit=crop"
+      "https://images.unsplash.com/photo-1631214524198-778882d35bb3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fE1hdHRlJTIwTGlwc3RpY2t8ZW58MHx8MHx8fDA%3D",
+      "https://images.unsplash.com/photo-1635011340527-f7aeac346b01?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fE1hdHRlJTIwTGlwc3RpY2t8ZW58MHx8MHx8fDA%3D",
+      "https://images.unsplash.com/photo-1617422275558-e5f616302690?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGxpcHN0aWNrfGVufDB8fDB8fHww",
+      "https://images.unsplash.com/photo-1571646034647-52e6ea84b28c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGxpcHN0aWNrfGVufDB8fDB8fHww"
     ],
     info: ["10-Hour Wear", "18 Shades", "Vitamin E", "Cruelty-Free", "3.5g"],
     reviewCount: 1024,
@@ -79,10 +79,10 @@ export const products: ProductItem[] = [
     badge: null,
     desc: "A blend of jojoba, vitamin E, and lavender oil that instantly heals dry, cracked cuticles.",
     imgs: [
-      "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1604654894610-df490982580e?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1604655840975-f9c2f8e1d3c1?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=800&auto=format&fit=crop"
+      "https://images.unsplash.com/photo-1699373381541-8508168f82ca?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Q3V0aWNsZSUyMFJlc3RvcmUlMjBPaWx8ZW58MHx8MHx8fDA%3D",
+      "https://images.unsplash.com/photo-1635870224276-01b0fa69d78c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Q3V0aWNsZSUyMFJlc3RvcmUlMjBPaWx8ZW58MHx8MHx8fDA%3D",
+      "https://images.unsplash.com/photo-1635870224067-2fc5c529caf4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fEN1dGljbGUlMjBSZXN0b3JlJTIwT2lsfGVufDB8fDB8fHww",
+      "https://images.unsplash.com/photo-1635870224272-77fcf1f3dd1f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fEN1dGljbGUlMjBSZXN0b3JlJTIwT2lsfGVufDB8fDB8fHww"
     ],
     reviewCount: 1024,
     info: ["Jojoba Oil", "Vitamin E", "Lavender Extract", "15ml Pen", "Fast-Absorbing"],
